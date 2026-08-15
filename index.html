@@ -7,15 +7,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <style>
 :root{
-  --dark:#023D22; --teal:#036E3A; --sea:#098040; --aqua:#DCEFE3; --bg:#F1F6F2;
-  --navy:#1B1B1B; --line:#D4E0D8; --grey:#4A5A52; --mint:#7DD08F; --ph:#627267;
+  --dark:#023d22; --teal:#036E3A; --sea:#098040; --aqua:#DCEFE3; --bg:#F1F6F2;
+  --navy:#1B1B1B; --line:#D4E0D8; --grey:#4a5a52; --mint:#7DD08F; --ph:#627267;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:Calibri,'Segoe UI',Arial,sans-serif;color:var(--navy);background:var(--bg)}
 header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .brand .eyebrow{font-size:10px;letter-spacing:2px;font-weight:bold;color:var(--mint)}
 .brand h1{margin:2px 0 0;font-size:20px}
-.tabs{display:flex;gap:8px;margin-left:18px}
+.tabs{display:flex;gap:8px;margin-left:18px;flex-wrap:wrap}
 .tab{border:1px solid var(--sea);background:transparent;color:#fff;padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
 .tab.on{background:var(--sea);font-weight:bold}
 .spacer{flex:1}
@@ -46,10 +46,19 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .gchip.drag{cursor:grabbing;box-shadow:0 6px 16px rgba(0,0,0,.22);z-index:20}
 .gchip .ntext{font-size:12.5px;text-align:center;padding:6px 9px}
 .gchip .ndel{top:-8px;right:-8px}
+.fprob{position:absolute;display:flex;align-items:center;justify-content:center;background:var(--dark);border-radius:10px;box-sizing:border-box;padding:8px 10px}
+.fprob .ntext{color:#fff;font-weight:bold;font-size:13px;text-align:center}
+.fhead{position:absolute;display:flex;align-items:center;background:var(--aqua);border:1.4px solid var(--teal);border-radius:8px;box-sizing:border-box;padding:4px 7px}
+.fhead .ntext{flex:1;font-size:12px;font-weight:bold;color:var(--dark);text-align:left;padding:0 2px}
+.fcause{position:absolute;display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:7px;box-sizing:border-box;padding:3px 7px}
+.fcause .ntext{flex:1;font-size:11.5px;color:var(--navy);text-align:left;padding:0 2px}
+.fcause:hover .ndel,.fhead:hover .ndel{display:block}
+.fadd{position:absolute;border:1px dashed var(--teal);background:transparent;color:var(--teal);border-radius:7px;font-size:11px;font-weight:bold;cursor:pointer;box-sizing:border-box;padding:2px 0}
+.fadd:hover{background:var(--aqua)}
 .waddw{display:block;margin:10px auto 0;border:1px dashed var(--teal);background:transparent;color:var(--teal);padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
 #livebar{display:none;align-items:center;gap:12px;padding:7px 22px;background:#E6F3EA;border-bottom:1px solid #A8D5B5;font-size:12px;color:var(--navy);flex-wrap:wrap}
 #livebar.on{display:flex}
-#livebar .dot{width:9px;height:9px;border-radius:50%;background:#0A8A46;animation:pulse 1.6s infinite}
+#livebar .dot{width:9px;height:9px;border-radius:50%;background:#0a8a46;animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 #livebar b{color:#00622A}
 #livebar .code{font-family:Consolas,monospace;font-weight:bold;letter-spacing:1px;background:#fff;border:1px solid #A8D5B5;border-radius:6px;padding:2px 8px}
@@ -81,8 +90,8 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .tbtn:hover{border-color:var(--teal);color:var(--teal)}
 .tbtn.danger:hover{border-color:#da291c;color:#da291c}
 .tbtn.red{background:#da291c;border-color:#da291c;color:#fff;font-weight:bold}
-.btn.synced{background:#0A8A46;border-color:#0A8A46;color:#fff;font-weight:bold}
-.btn.synced:hover{background:#02582F;border-color:#02582F}
+.btn.synced{background:#0a8a46;border-color:#0a8a46;color:#fff;font-weight:bold}
+.btn.synced:hover{background:#02582f;border-color:#02582f}
 .tbtn.red:hover{background:#b81f14;border-color:#b81f14;color:#fff}
 #wrap{padding:18px 22px;overflow:auto}
 #board{position:relative;width:1120px;background:#fff;border:1px solid var(--line);border-radius:10px;margin:0 auto}
@@ -154,8 +163,8 @@ footer span{float:right;color:#93A69A}
 @media (max-width:760px){
   header{padding:10px 12px;gap:8px}
   .brand h1{font-size:17px}
-  .tabs{margin-left:0}
-  .tab{padding:6px 12px;font-size:12px}
+  .tabs{margin-left:0;flex-wrap:wrap;row-gap:6px}
+  .tab{padding:6px 10px;font-size:11.5px}
   .btn{padding:6px 9px;font-size:11.5px}
   .hint{padding:8px 12px;font-size:11.5px}
   #nodebar{padding:8px 12px}
@@ -185,7 +194,7 @@ footer span{float:right;color:#93A69A}
 <body>
 <header>
   <div class="brand">
-    <div class="eyebrow">SOCIETY FOR ACUTE MEDICINE · QUALITY IMPROVEMENT</div>
+    <div class="eyebrow">SOCIETY FOR ACUTE MEDICINE \u00B7 QUALITY IMPROVEMENT</div>
     <h1>QIP Diagram Tool</h1>
   </div>
   <div class="tabs">
@@ -193,6 +202,7 @@ footer span{float:right;color:#93A69A}
     <button class="tab" id="tabG" onclick="setMode('grid')">2×2 Ideas</button>
     <button class="tab on" id="tabP" onclick="setMode('process')">Process Map</button>
     <button class="tab" id="tabW" onclick="setMode('whys')">5 Whys</button>
+    <button class="tab" id="tabF" onclick="setMode('fish')">Fishbone</button>
     <button class="tab" id="tabD" onclick="setMode('driver')">Driver Diagram</button>
   </div>
   <div class="spacer"></div>
@@ -245,6 +255,8 @@ function blankDriver(){ return { aim: "", primaries: [
   { id: nid(), text: "", secondaries: [ { id: nid(), text: "", ideas: [ { id: nid(), text: "" } ] } ] }
 ]};}
 function blankWhys(){ return { problem: "", whys: ["", "", ""] }; }
+const FISH_CATS = ["People", "Process", "Equipment", "Environment", "Policies", "Patient factors"];
+function blankFish(){ return { problem: "", bones: FISH_CATS.map(n => ({ id: nid(), name: n, causes: [] })) }; }
 const PITCH_LABELS = ["The problem", "The number", "The aim", "Why it matters", "The ask"];
 const PITCH_PH = [
   "What\u2019s going wrong, for which patients \u2014 as you\u2019ve seen it on the ward\u2026",
@@ -255,7 +267,7 @@ const PITCH_PH = [
 ];
 function blankPitch(){ return ["", "", "", "", ""]; }
 function blankGrid(){ return []; }
-state.pages = [{ id: nid(), name: "Page 1", process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid() }];
+state.pages = [{ id: nid(), name: "Page 1", process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid(), fish: blankFish() }];
 state.cur = 0;
 Object.defineProperty(state, "process", { get(){ return state.pages[state.cur].process; }, set(v){ state.pages[state.cur].process = v; } });
 Object.defineProperty(state, "driver", { get(){ return state.pages[state.cur].driver; }, set(v){ state.pages[state.cur].driver = v; } });
@@ -270,6 +282,10 @@ Object.defineProperty(state, "pitch", {
 Object.defineProperty(state, "grid", {
   get(){ const pg = state.pages[state.cur]; if (!pg.grid) pg.grid = blankGrid(); return pg.grid; },
   set(v){ state.pages[state.cur].grid = v; }
+});
+Object.defineProperty(state, "fish", {
+  get(){ const pg = state.pages[state.cur]; if (!pg.fish) pg.fish = blankFish(); return pg.fish; },
+  set(v){ state.pages[state.cur].fish = v; }
 });
 function uniqueName(base){
   const names = state.pages.map(p => p.name);
@@ -304,7 +320,7 @@ function addPage(){
   if (typed === null) return;                       // cancelled \u2014 don\u2019t create a stray page
   beginChange();
   const name = uniqueName((typed || "").trim() || fallback);
-  state.pages.push({ id: nid(), name: name, process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid() });
+  state.pages.push({ id: nid(), name: name, process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid(), fish: blankFish() });
   state.cur = state.pages.length - 1; state.sel = null; render();
 }
 function delPage(i){
@@ -334,7 +350,7 @@ function beginChange(){ pushRaw(snap()); redoStack.length = 0; updateHistBtns();
 function afterChange(){ if (typeof pushLive === "function") pushLive(); if (typeof pushCloudLibrary === "function") pushCloudLibrary(false); saveLocal(); }
 
 /* ---------- local persistence (per browser) \u2014 keeps named projects separate and durable ---------- */
-const LS_KEY = "aimqip.v1";
+const LS_KEY = "samqip.v1";
 let lsWarned = false;
 function saveLocal(){
   if (collab.on) return;   // a live room's pages are not your personal saved set
@@ -355,7 +371,7 @@ function loadLocal(){
     return true;
   } catch (e){ return false; }
 }
-function blankPageSet(){ state.pages = [{ id: nid(), name: "Page 1", process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid() }]; state.cur = 0; }
+function blankPageSet(){ state.pages = [{ id: nid(), name: "Page 1", process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid(), fish: blankFish() }]; state.cur = 0; }
 function applySnap(s){ const j = JSON.parse(s); state.pages = j.pages; state.cur = Math.min(j.cur || 0, j.pages.length - 1); state.sel = null; render(); }
 function doUndo(){ if (!undoStack.length) return; redoStack.push(snap()); applySnap(undoStack.pop()); updateHistBtns(); }
 function doRedo(){ if (!redoStack.length) return; undoStack.push(snap()); applySnap(redoStack.pop()); updateHistBtns(); }
@@ -418,7 +434,24 @@ function loadExample(){
     { id: nid(), text: "Teaching slot at induction", x: 0.70, y: 0.74 },
     { id: nid(), text: "Poster in doctors\u2019 office", x: 0.86, y: 0.86 }
   ];
-  state.pages.push({ id: nid(), name: uniqueName("Example \u2014 VTE"), process: procEx, driver: drvEx, whys: whysEx, pitch: pitchEx, grid: gridEx });
+  const fishEx = { problem: "VTE assessment missed at clerking on AMU", bones: [
+    { id: nid(), name: "People", causes: [
+      { id: nid(), text: "New F1s not shown the VTE box at induction" },
+      { id: nid(), text: "Locums unfamiliar with our proforma" } ] },
+    { id: nid(), name: "Process", causes: [
+      { id: nid(), text: "Nothing prompts it while the chart is written" },
+      { id: nid(), text: "No check before the post-take round" } ] },
+    { id: nid(), name: "Equipment", causes: [
+      { id: nid(), text: "Proforma predates the VTE requirement" } ] },
+    { id: nid(), name: "Environment", causes: [
+      { id: nid(), text: "Clerking done in a noisy bay, frequent interruptions" },
+      { id: nid(), text: "Worst at weekends when the take is busiest" } ] },
+    { id: nid(), name: "Policies", causes: [
+      { id: nid(), text: "Trust policy says 14 hours, nobody knows the number" } ] },
+    { id: nid(), name: "Patient factors", causes: [
+      { id: nid(), text: "Weight not recorded, so dose left blank" } ] }
+  ]};
+  state.pages.push({ id: nid(), name: uniqueName("Example \u2014 VTE"), process: procEx, driver: drvEx, whys: whysEx, pitch: pitchEx, grid: gridEx, fish: fishEx });
   state.cur = state.pages.length - 1;
   state.sel = null; render();
 }
@@ -429,6 +462,7 @@ function clearMode(){
   else if (state.mode === "whys") state.whys = blankWhys();
   else if (state.mode === "pitch") state.pitch = blankPitch();
   else if (state.mode === "grid") state.grid = blankGrid();
+  else if (state.mode === "fish") state.fish = blankFish();
   else state.driver = blankDriver();
   state.sel = null; render();
 }
@@ -773,6 +807,123 @@ function renderWhys(board, svg, nodes){
   const bar = $("nodebar"); bar.innerHTML = "";
   const l = document.createElement("span"); l.className = "lbl"; l.textContent = "CLICK A BOX AND TYPE   \u00B7   \u00D7 = DELETE A WHY"; bar.appendChild(l);
 }
+function renderFish(board, svg, nodes){
+  const f = state.fish;
+  if (!f.bones || !f.bones.length) f.bones = blankFish().bones;
+  const COLW = 232, GAPX = 40, LX = 46, HEADH = 30, ADDH = 22, TOPY = 34, CPL = 34;
+  const top = f.bones.slice(0, 3), bot = f.bones.slice(3, 6);
+  // a cause box grows with its text, so rows never overlap
+  const causeH = t => 10 + 15 * Math.max(1, Math.ceil(((t || "").length || 1) / CPL));
+  const stackH = b => (b.causes || []).reduce((a, c) => a + causeH(c.text) + 4, 0);
+  const blockH = b => HEADH + 4 + stackH(b) + ADDH + 8;
+  const rowH = arr => Math.max.apply(null, arr.map(blockH));
+  const topH = rowH(top), botH = rowH(bot);
+  const spineY = TOPY + topH + 46;
+  board.style.height = (spineY + 46 + botH + 26) + "px";
+  const colX = i => LX + i * (COLW + GAPX);
+  const centre = i => colX(i) + COLW / 2;
+  const SPINE_END = colX(2) + COLW + 34;
+
+  const head = document.createElement("div");
+  head.className = "colhead"; head.style.left = LX + "px"; head.style.top = "8px";
+  head.textContent = "WHAT COULD BE CAUSING IT";
+  nodes.appendChild(head);
+
+  let d = "";
+  // spine + arrowhead into the problem box
+  d += '<path d="M' + LX + ',' + spineY + ' L' + (SPINE_END - 3) + ',' + spineY +
+       '" fill="none" stroke="#036E3A" stroke-width="2.4" marker-end="url(#arr)"/>';
+
+  const drawBlock = (bone, i, isTop) => {
+    const x = colX(i), cx = centre(i);
+    const blockTop = isTop ? TOPY : spineY + 46;
+    // the bone: a diagonal from the block to the spine. Every bone in a row starts at the
+    // same height so they stay parallel, whatever number of causes each one carries.
+    const attach = Math.min(cx + 66, SPINE_END - 24);
+    const edgeY = isTop ? TOPY + topH - 4 : blockTop - 6;
+    d += '<path d="M' + cx + ',' + edgeY + ' L' + attach + ',' + spineY +
+         '" fill="none" stroke="#036E3A" stroke-width="1.8"/>';
+
+    const hd = document.createElement("div");
+    hd.className = "fhead";
+    hd.style.cssText = "left:" + x + "px;top:" + blockTop + "px;width:" + COLW + "px;height:" + HEADH + "px";
+    hd.appendChild(editable("ntext", bone.name, "category\u2026", v => { bone.name = v; }));
+    nodes.appendChild(hd);
+
+    let cy = blockTop + HEADH + 4;
+    (bone.causes || []).forEach((c, k) => {
+      const h = causeH(c.text);
+      const el = document.createElement("div");
+      el.className = "fcause" + (state.sel === c.id ? " sel" : "");
+      el.style.cssText = "left:" + (x + 14) + "px;top:" + cy + "px;width:" + (COLW - 14) + "px;min-height:" + h + "px";
+      cy += h + 4;
+      const ed = editable("ntext", c.text, "cause\u2026", v => { c.text = v; });
+      el.appendChild(ed);
+      const del = document.createElement("button");
+      del.className = "ndel"; del.textContent = "\u00D7"; del.title = "Delete this cause";
+      del.onclick = e => { e.stopPropagation(); beginChange(); bone.causes = bone.causes.filter(z => z !== c); state.sel = null; render(); };
+      el.appendChild(del);
+      el.addEventListener("mousedown", e => { if (state.sel !== c.id){ e.preventDefault(); state.sel = c.id; render(); } });
+      nodes.appendChild(el);
+      if (state.sel === c.id) focusEnd(ed);
+    });
+
+    const addY = cy;
+    const add = document.createElement("button");
+    add.className = "fadd";
+    add.style.cssText = "left:" + (x + 14) + "px;top:" + addY + "px;width:" + (COLW - 14) + "px;height:" + ADDH + "px";
+    add.textContent = "+ cause";
+    add.onclick = () => {
+      beginChange();
+      if (!bone.causes) bone.causes = [];
+      const c = { id: nid(), text: "" };
+      bone.causes.push(c); state.sel = c.id; render();
+    };
+    nodes.appendChild(add);
+  };
+  top.forEach((b, i) => drawBlock(b, i, true));
+  bot.forEach((b, i) => drawBlock(b, i, false));
+
+  const pb = document.createElement("div");
+  pb.className = "fprob";
+  pb.style.cssText = "left:" + (SPINE_END + 6) + "px;top:" + (spineY - 42) + "px;width:186px;height:84px";
+  pb.appendChild(editable("ntext", f.problem, "the problem\u2026", v => { f.problem = v; }));
+  nodes.appendChild(pb);
+
+  svg.innerHTML = markerDefs() + d;
+  $("who").style.display = "none";
+  $("drvhelp").style.display = "none";
+  $("hint").innerHTML = "<b>Fishbone:</b> the problem goes in the head on the right; every likely cause goes on a bone. Spread <i>wide</i> first \u2014 the point is to get all the candidate causes out of people\u2019s heads before you argue about which matters. Then pick one and take it deep with the 5 Whys.";
+  $("legend").innerHTML = "<span><i>Tip</i>&nbsp; rename a category if it doesn\u2019t fit your problem \u2014 six is a prompt, not a rule. Leave a bone empty rather than inventing a cause for it.</span>";
+
+  const bar = $("nodebar"); bar.innerHTML = "";
+  const l = document.createElement("span"); l.className = "lbl";
+  l.textContent = "CLICK TO TYPE   \u00B7   + CAUSE ADDS A BONE ITEM   \u00B7   \u00D7 = DELETE"; bar.appendChild(l);
+  const send = document.createElement("button"); send.className = "tbtn";
+  send.textContent = "\u21D2 Send causes to driver diagram";
+  send.title = "Turn each category into a primary driver and each cause into a secondary driver";
+  send.onclick = () => {
+    const filled = f.bones.filter(b => (b.causes || []).some(c => (c.text || "").trim()));
+    if (!filled.length){ alert("No causes written down yet \u2014 add a few to the bones first."); return; }
+    const made = filled.map(b => ({
+      id: nid(), text: (b.name || "").trim(),
+      secondaries: b.causes.filter(c => (c.text || "").trim()).map(c => ({
+        id: nid(), text: c.text.trim(), ideas: [ { id: nid(), text: "" } ]
+      }))
+    }));
+    const dd = state.driver;
+    const untouched = dd.primaries.length === 1 &&
+      !(dd.primaries[0].text || "").trim() &&
+      dd.primaries[0].secondaries.length === 1 &&
+      !(dd.primaries[0].secondaries[0].text || "").trim();
+    beginChange();
+    dd.primaries = untouched ? made : dd.primaries.concat(made);
+    state.mode = "driver"; state.sel = null; render();
+    const nS = made.reduce((a, b) => a + b.secondaries.length, 0);
+    showToast(nS + (nS === 1 ? " cause" : " causes") + " added as secondary drivers \u2014 now add a change idea to each", 5000);
+  };
+  bar.appendChild(send);
+}
 function renderPitch(board, svg, nodes){
   const P = state.pitch;
   const X = 110, W = 900, CH = 74, GAPY = 16, TOP = 44;
@@ -959,6 +1110,7 @@ function render(){
   $("tabW").className = "tab" + (state.mode === "whys" ? " on" : "");
   $("tabB").className = "tab" + (state.mode === "pitch" ? " on" : "");
   $("tabG").className = "tab" + (state.mode === "grid" ? " on" : "");
+  $("tabF").className = "tab" + (state.mode === "fish" ? " on" : "");
   const board = $("board"), svg = $("lines"), nodes = $("nodes");
   nodes.innerHTML = "";
   svg.innerHTML = markerDefs();
@@ -966,6 +1118,7 @@ function render(){
   else if (state.mode === "whys") renderWhys(board, svg, nodes);
   else if (state.mode === "pitch") renderPitch(board, svg, nodes);
   else if (state.mode === "grid") renderGrid(board, svg, nodes);
+  else if (state.mode === "fish") renderFish(board, svg, nodes);
   else renderDriver(board, svg, nodes);
   svg.setAttribute("width", 1120); svg.setAttribute("height", parseInt(board.style.height, 10) || 400);
   appendGuidanceToggle($("nodebar"));
@@ -1094,7 +1247,7 @@ function exportPNG(){
   state.fit = false; render();
   html2canvas($("board"), { backgroundColor: "#ffffff", scale: 2 }).then(cv => {
     const pgnm = state.pages[state.cur].name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-    const MODE_FILE = { process: "process-map", whys: "five-whys", driver: "driver-diagram", pitch: "five-sentence-pitch", grid: "2x2-ideas" };
+    const MODE_FILE = { process: "process-map", whys: "five-whys", driver: "driver-diagram", pitch: "five-sentence-pitch", grid: "2x2-ideas", fish: "fishbone" };
     const mname = MODE_FILE[state.mode] || "diagram";
     const name = (pgnm ? pgnm + "-" : "") + mname + ".png";
     const out = toLandscape(cv);
@@ -1263,7 +1416,7 @@ function joinRoom(code, seed){
   return loadFirebase().then(() => {
     collab.room = code;
     collab.me = Math.random().toString(36).slice(2, 10);
-    collab.ref = firebase.database().ref("rooms/" + code);
+    collab.ref = firebase.database().ref("samrooms/" + code);
     collab.on = true;
     collab.primed = !!seed;
     if (seed) collab.ref.child("doc").set({ pages: state.pages, by: collab.me, t: Date.now() });
@@ -1303,7 +1456,7 @@ function toggleCollab(){
 }
 
 /* ---------- cross-device sync (optional) \u2014 sign in with an emailed link, your named projects follow you ---------- */
-const SYNC_EMAIL_KEY = "aimqip.syncEmail";
+const SYNC_EMAIL_KEY = "samqip.syncEmail";
 function renderSync(){
   const b = $("syncbtn");
   if (sync.on){
@@ -1347,39 +1500,30 @@ function pushCloudLibrary(immediate){
   if (immediate) go(); else sync.timer = setTimeout(go, 500);
 }
 function attachSync(user){
-  sync.on = true; sync.uid = user.uid; sync.email = user.email || user.phoneNumber || "your account";
-  sync.ref = firebase.database().ref("users/" + user.uid + "/library");
-  try { localStorage.setItem("aimqip.synced", "1"); } catch (e) {}
+  sync.on = true; sync.uid = user.uid; sync.email = user.email;
+  sync.ref = firebase.database().ref("users/" + user.uid + "/samlibrary");
+  try { localStorage.setItem("samqip.synced", "1"); } catch (e) {}
   sync.ref.get().then(snap => {
     const v = snap.val();
     mergeCloudLibrary(v && v.pages, v && v.cur);
   }).catch(() => showToast("Signed in, but couldn\u2019t reach your synced projects \u2014 check your connection", 4500));
   renderSync();
 }
-function normalisePhone(v){
-  const s = (v || "").replace(/[\s\-().]/g, "");
-  if (/^\+\d{8,15}$/.test(s)) return s;                       // full international \u2014 use as-is
-  if (/^07\d{9}$/.test(s)) return "+44" + s.slice(1);          // UK mobile shorthand
-  if (/^00\d{8,15}$/.test(s)) return "+" + s.slice(2);         // 00 prefix \u2192 +
-  return null;
-}
 function signInToSync(){
   if (sync.on){ signOutOfSync(); return; }
   if (!fbReady()){
     alert("Cross-device sync isn\u2019t switched on for this copy of the tool yet.\n\n" +
-          "It needs the same free Firebase project as Collaborate, with a sign-in method turned on (Authentication \u2192 Sign-in method). See COLLABORATION_SETUP.md.\n\n" +
+          "It needs the same free Firebase project as Collaborate, with Email link sign-in turned on (Authentication \u2192 Sign-in method). See COLLABORATION_SETUP.md.\n\n" +
           "Until then, use \u201CSave file\u201D and \u201COpen\u2026\u201D to move projects between devices.");
     return;
   }
-  const entry = window.prompt("Your email address, or your mobile number (07\u2026 or +44\u2026) \u2014 we\u2019ll send a one-click link or a 6-digit code. No password, no account to set up.");
+  const entry = window.prompt("Your email address \u2014 we\u2019ll send a one-click sign-in link. No password, no account to set up.");
   if (!entry || !entry.trim()) return;
   const clean = entry.trim();
-  const phone = normalisePhone(clean);
-  if (phone){ phoneSignIn(phone); return; }
-  if (clean.indexOf("@") > 0){ emailLinkSignIn(clean); return; }
-  alert("That doesn\u2019t look like an email address or a mobile number.\n\nUse either your full email, or a mobile as 07\u2026 (UK) or +country-code\u2026 (elsewhere).");
-}
-function emailLinkSignIn(clean){
+  if (clean.indexOf("@") < 1){
+    alert("That doesn\u2019t look like an email address \u2014 check it and try again.");
+    return;
+  }
   loadFirebase().then(() => {
     const url = location.origin + location.pathname;   // no query string \u2014 Firebase appends its own mode=/oobCode= here
     return firebase.auth().sendSignInLinkToEmail(clean, { url: url, handleCodeInApp: true });
@@ -1388,43 +1532,11 @@ function emailLinkSignIn(clean){
     showToast("Check " + clean + " for a sign-in link \u2014 open it on any device to sync", 6000);
   }).catch(err => alert("Couldn\u2019t send the sign-in link (" + (err && err.message ? err.message : "check your connection") + ")."));
 }
-let recapVerifier = null;
-function clearRecap(){ if (recapVerifier){ try { recapVerifier.clear(); } catch (e) {} recapVerifier = null; } $("recap").innerHTML = ""; }
-function phoneSignIn(phone){
-  loadFirebase().then(() => {
-    clearRecap();
-    recapVerifier = new firebase.auth.RecaptchaVerifier("recap", { size: "invisible" });
-    return firebase.auth().signInWithPhoneNumber(phone, recapVerifier);
-  }).then(conf => {
-    const code = window.prompt("We\u2019ve texted a 6-digit code to " + phone + " \u2014 type it here:");
-    if (!code || !code.trim()){ clearRecap(); return null; }
-    return conf.confirm(code.trim());
-  }).then(result => {
-    clearRecap();
-    if (result && result.user){
-      attachSync(result.user);
-      showToast("Signed in \u2014 your projects now follow this number to any device", 5500);
-    }
-  }).catch(err => {
-    clearRecap();
-    const c = (err && err.code) || "";
-    if (c === "auth/operation-not-allowed")
-      alert("Phone sign-in isn\u2019t switched on for this Firebase project yet.\n\nConsole \u2192 Authentication \u2192 Sign-in method \u2192 enable Phone. Note: Google requires the Blaze (pay-as-you-go) plan for SMS \u2014 see COLLABORATION_SETUP.md. Email sign-in works without it.");
-    else if (c === "auth/invalid-verification-code")
-      alert("That code didn\u2019t match \u2014 press \u201CSign in to sync\u201D and try again.");
-    else if (c === "auth/invalid-phone-number")
-      alert("Firebase didn\u2019t accept that number \u2014 check it and try again as 07\u2026 or +44\u2026");
-    else if (c === "auth/too-many-requests")
-      alert("Too many attempts from this device \u2014 wait a few minutes, or use email sign-in instead.");
-    else
-      alert("Couldn\u2019t sign in by phone (" + (err && err.message ? err.message : "check your connection") + "). Email sign-in is the fallback.");
-  });
-}
 function signOutOfSync(){
   if (!sync.on) return;
   try { sync.ref.off(); } catch (e) {}
   try { firebase.auth().signOut(); } catch (e) {}
-  try { localStorage.removeItem("aimqip.synced"); } catch (e) {}
+  try { localStorage.removeItem("samqip.synced"); } catch (e) {}
   sync.on = false; sync.uid = null; sync.email = null; sync.ref = null;
   renderSync();
   showToast("Signed out \u2014 these projects stay on this device; sign in again anytime to reconnect them", 5000);
@@ -1450,7 +1562,7 @@ function completeEmailLinkSignIn(){
 
 /* ---------- boot ---------- */
 const q = new URLSearchParams(location.search);
-if (q.get("mode")){ const m = q.get("mode"); state.mode = ["driver","whys","pitch","grid"].indexOf(m) >= 0 ? m : "process"; }
+if (q.get("mode")){ const m = q.get("mode"); state.mode = ["driver","whys","pitch","grid","fish"].indexOf(m) >= 0 ? m : "process"; }
 const hadLocal = loadLocal();                 // restore this browser's own named, separate projects
 const opened = loadShared(!hadLocal);         // replace only into a truly empty tool; otherwise merge in as new pages
 render();
@@ -1473,13 +1585,12 @@ if (q.get("example")) loadExample();
 if (fbReady() && q.get("oobCode")){
   bootToasted = true;
   completeEmailLinkSignIn();      // async; renders/toasts itself once it resolves
-} else if (fbReady() && (() => { try { return !!localStorage.getItem("aimqip.synced"); } catch (e) { return false; } })()){
+} else if (fbReady() && (() => { try { return !!localStorage.getItem("samqip.synced"); } catch (e) { return false; } })()){
   loadFirebase().then(() => {
     firebase.auth().onAuthStateChanged(user => { if (user && !sync.on) attachSync(user); });
   }).catch(() => {});
 }
 if (!bootToasted && hadLocal) showToast("Welcome back \u2014 your saved projects are just as you left them", 3200);
 </script>
-<div id="recap"></div>
 </body>
 </html>
