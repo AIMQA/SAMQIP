@@ -9,6 +9,7 @@
 :root{
   --dark:#023d22; --teal:#036E3A; --sea:#098040; --aqua:#DCEFE3; --bg:#F1F6F2;
   --navy:#1B1B1B; --line:#D4E0D8; --grey:#4a5a52; --mint:#7DD08F; --ph:#627267;
+  --dline:#000; --dfill:#ECECEC; --dmute:#555;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:Calibri,'Segoe UI',Arial,sans-serif;color:var(--navy);background:var(--bg)}
@@ -27,35 +28,35 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .btn.primary{background:var(--sea);border-color:var(--sea);font-weight:bold}
 .hint{padding:9px 22px;font-size:12.5px;color:var(--grey);background:#fff;border-bottom:1px solid var(--line)}
 .hint b{color:var(--teal)}
-.wprob{background:var(--dark);color:#fff;border-radius:10px;padding:12px 16px;font-weight:bold;font-size:15px;position:relative}
-.wcard{background:#fff;border:1px solid var(--teal);border-radius:10px;padding:11px 16px;font-size:15px;color:var(--navy);position:relative;display:flex;align-items:center;gap:12px}
-.wcard .wlab{font-size:11px;font-weight:bold;letter-spacing:1.1px;color:var(--dark);white-space:nowrap}
-.wroot{background:var(--aqua);border:1px solid var(--teal);border-radius:10px;padding:11px 16px;font-size:15px;font-weight:bold;color:var(--dark);display:flex;align-items:center;gap:12px}
-.warrow{text-align:center;font-size:11px;font-style:italic;font-weight:bold;color:var(--teal);padding:5px 0}
+.wprob{background:var(--dline);color:#fff;border-radius:10px;padding:12px 16px;font-weight:bold;font-size:15px;position:relative}
+.wcard{background:#fff;border:1px solid var(--dline);border-radius:10px;padding:11px 16px;font-size:15px;color:var(--navy);position:relative;display:flex;align-items:center;gap:12px}
+.wcard .wlab{font-size:11px;font-weight:bold;letter-spacing:1.1px;color:var(--dline);white-space:nowrap}
+.wroot{background:var(--dfill);border:1px solid var(--dline);border-radius:10px;padding:11px 16px;font-size:15px;font-weight:bold;color:var(--dline);display:flex;align-items:center;gap:12px}
+.warrow{text-align:center;font-size:11px;font-style:italic;font-weight:bold;color:var(--dline);padding:5px 0}
 .wcard .ntext,.wprob .ntext{text-align:left}
-.pcard{position:absolute;display:flex;align-items:stretch;gap:0;border:1px solid var(--teal);border-radius:10px;background:#fff;overflow:hidden}
-.pcard .pnum{flex:0 0 42px;background:var(--dark);color:#fff;font-weight:bold;font-size:15px;display:flex;align-items:center;justify-content:center}
-.pcard .plab{flex:0 0 128px;background:var(--aqua);color:var(--dark);font-weight:bold;font-size:12px;display:flex;align-items:center;padding:0 12px}
+.pcard{position:absolute;display:flex;align-items:stretch;gap:0;border:1px solid var(--dline);border-radius:10px;background:#fff;overflow:hidden}
+.pcard .pnum{flex:0 0 42px;background:var(--dline);color:#fff;font-weight:bold;font-size:15px;display:flex;align-items:center;justify-content:center}
+.pcard .plab{flex:0 0 128px;background:var(--dfill);color:var(--dline);font-weight:bold;font-size:12px;display:flex;align-items:center;padding:0 12px}
 .pcard .ntext{flex:1;text-align:left;font-size:14px;justify-content:flex-start;padding:10px 14px}
-.gaxis{position:absolute;background:var(--grey)}
-.gtick{position:absolute;font-size:10px;font-weight:bold;letter-spacing:1.2px;color:var(--grey)}
-.gquad{position:absolute;font-size:10.5px;font-style:italic;color:var(--ph);pointer-events:none}
-.gquad.win{font-style:normal;font-weight:bold;color:var(--teal);background:var(--aqua);border-radius:12px;padding:3px 10px}
-.gchip{position:absolute;border:1.4px solid var(--teal);background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.12);cursor:grab;touch-action:none}
+.gaxis{position:absolute;background:var(--dline)}
+.gtick{position:absolute;font-size:10px;font-weight:bold;letter-spacing:1.2px;color:var(--dline)}
+.gquad{position:absolute;font-size:10.5px;font-style:italic;color:var(--dmute);pointer-events:none}
+.gquad.win{font-style:normal;font-weight:bold;color:var(--dline);background:var(--dfill);border-radius:12px;padding:3px 10px}
+.gchip{position:absolute;border:1.4px solid var(--dline);background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.12);cursor:grab;touch-action:none}
 .gchip.sel{box-shadow:0 0 0 2.5px var(--sea)}
 .gchip.drag{cursor:grabbing;box-shadow:0 6px 16px rgba(0,0,0,.22);z-index:20}
 .gchip .ntext{font-size:12.5px;text-align:center;padding:6px 9px}
 .gchip .ndel{top:-8px;right:-8px}
-.fprob{position:absolute;display:flex;align-items:center;justify-content:center;background:var(--dark);border-radius:10px;box-sizing:border-box;padding:8px 10px}
+.fprob{position:absolute;display:flex;align-items:center;justify-content:center;background:var(--dline);border-radius:10px;box-sizing:border-box;padding:8px 10px}
 .fprob .ntext{color:#fff;font-weight:bold;font-size:13px;text-align:center}
-.fhead{position:absolute;display:flex;align-items:center;background:var(--aqua);border:1.4px solid var(--teal);border-radius:8px;box-sizing:border-box;padding:4px 7px}
-.fhead .ntext{flex:1;font-size:12px;font-weight:bold;color:var(--dark);text-align:left;padding:0 2px}
-.fcause{position:absolute;display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:7px;box-sizing:border-box;padding:3px 7px}
+.fhead{position:absolute;display:flex;align-items:center;background:var(--dfill);border:1.4px solid var(--dline);border-radius:8px;box-sizing:border-box;padding:4px 7px}
+.fhead .ntext{flex:1;font-size:12px;font-weight:bold;color:var(--dline);text-align:left;padding:0 2px}
+.fcause{position:absolute;display:flex;align-items:center;background:#fff;border:1px solid #bbb;border-radius:7px;box-sizing:border-box;padding:3px 7px}
 .fcause .ntext{flex:1;font-size:11.5px;color:var(--navy);text-align:left;padding:0 2px}
 .fcause:hover .ndel,.fhead:hover .ndel{display:block}
-.fadd{position:absolute;border:1px dashed var(--teal);background:transparent;color:var(--teal);border-radius:7px;font-size:11px;font-weight:bold;cursor:pointer;box-sizing:border-box;padding:2px 0}
-.fadd:hover{background:var(--aqua)}
-.waddw{display:block;margin:10px auto 0;border:1px dashed var(--teal);background:transparent;color:var(--teal);padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
+.fadd{position:absolute;border:1px dashed var(--dline);background:transparent;color:var(--dline);border-radius:7px;font-size:11px;font-weight:bold;cursor:pointer;box-sizing:border-box;padding:2px 0}
+.fadd:hover{background:var(--dfill)}
+.waddw{display:block;margin:10px auto 0;border:1px dashed var(--dline);background:transparent;color:var(--dline);padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
 #livebar{display:none;align-items:center;gap:12px;padding:7px 22px;background:#E6F3EA;border-bottom:1px solid #A8D5B5;font-size:12px;color:var(--navy);flex-wrap:wrap}
 #livebar.on{display:flex}
 #livebar .dot{width:9px;height:9px;border-radius:50%;background:#0a8a46;animation:pulse 1.6s infinite}
@@ -96,32 +97,32 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 #wrap{padding:18px 22px;overflow:auto}
 #board{position:relative;width:1120px;background:#fff;border:1px solid var(--line);border-radius:10px;margin:0 auto}
 #lines{position:absolute;inset:0;pointer-events:none}
-.colhead{position:absolute;top:10px;font-size:11px;font-weight:bold;letter-spacing:1.4px;color:var(--teal)}
+.colhead{position:absolute;top:10px;font-size:11px;font-weight:bold;letter-spacing:1.4px;color:var(--dline)}
 .node{position:absolute;font-size:13px;line-height:1.3}
 .ntext{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px 9px;outline:none;overflow:hidden}
 .ntext:empty:before{content:attr(data-ph);color:var(--grey);font-style:italic}
 .node.sel .shape, .dnode.sel{box-shadow:0 0 0 2.5px var(--sea)}
-.shape{position:absolute;inset:0;border-radius:8px;background:#fff;border:1.6px solid var(--teal)}
-.node.terminator .shape{border-radius:44px;background:var(--dark);border-color:var(--dark)}
+.shape{position:absolute;inset:0;border-radius:8px;background:#fff;border:1.6px solid var(--dline)}
+.node.terminator .shape{border-radius:44px;background:var(--dline);border-color:var(--dline)}
 .node.terminator .ntext{color:#fff;font-weight:bold}
-.node.decision .shape{border:0;background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23DCEFE3" stroke="%23036E3A" stroke-width="2.4"/></svg>') center/100% 100% no-repeat}
+.node.decision .shape{border:0;background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23ECECEC" stroke="%23000000" stroke-width="2.4"/></svg>') center/100% 100% no-repeat}
 .node.decision .ntext{padding:10px 22px;font-size:11.5px}
 .node.wait .shape{border-style:dashed;background:var(--bg)}
 .node.wait .ntext{font-style:italic}
 .nobranch{position:absolute;left:-8px;right:-8px;top:100%;margin-top:3px;font-size:10.5px;font-style:italic;color:var(--grey);text-align:center;outline:none}
 .nobranch:empty:before{content:'if no: click to note…';color:var(--grey)}
-.branchhead{position:absolute;font-size:10px;font-weight:bold;letter-spacing:1.2px;color:var(--teal)}
+.branchhead{position:absolute;font-size:10px;font-weight:bold;letter-spacing:1.2px;color:var(--dline)}
 .branchlabel{position:absolute;display:flex;align-items:baseline;gap:5px;font-size:11px;color:var(--navy)}
-.branchlabel b{color:var(--teal);white-space:nowrap;font-size:10px;letter-spacing:.5px}
+.branchlabel b{color:var(--dline);white-space:nowrap;font-size:10px;letter-spacing:.5px}
 .branchnote{outline:none;border-bottom:1px dashed var(--line);min-width:140px;padding:1px 2px}
 .branchnote:empty:before{content:attr(data-ph);color:var(--grey);font-style:italic}
-.dnode{position:absolute;background:var(--bg);border:1.4px solid var(--line);border-radius:8px;font-size:13px;line-height:1.3}
+.dnode{position:absolute;background:var(--bg);border:1.4px solid #999;border-radius:8px;font-size:13px;line-height:1.3}
 .dnode .ntext{align-items:center;text-align:left;padding:7px 10px}
-.dnode.aim{background:var(--dark);border-color:var(--dark)}
+.dnode.aim{background:var(--dline);border-color:var(--dline)}
 .dnode.aim .ntext{color:#fff;font-weight:bold}
-.dnode.primary{background:var(--aqua);border-color:var(--teal)}
-.dnode.primary .ntext{font-weight:bold;color:var(--dark)}
-.dnode.secondary{background:#fff;border-color:var(--teal)}
+.dnode.primary{background:var(--dfill);border-color:var(--dline)}
+.dnode.primary .ntext{font-weight:bold;color:var(--dline)}
+.dnode.secondary{background:#fff;border-color:var(--dline)}
 .dnode.idea{background:var(--bg)}
 .nadd,.ndel{position:absolute;width:20px;height:20px;border-radius:50%;border:0;color:#fff;font-size:13px;line-height:20px;text-align:center;cursor:pointer;padding:0;display:none}
 .nadd{background:var(--sea);right:-10px;top:calc(50% - 10px)}
@@ -350,7 +351,7 @@ function beginChange(){ pushRaw(snap()); redoStack.length = 0; updateHistBtns();
 function afterChange(){ if (typeof pushLive === "function") pushLive(); if (typeof pushCloudLibrary === "function") pushCloudLibrary(false); saveLocal(); }
 
 /* ---------- local persistence (per browser) \u2014 keeps named projects separate and durable ---------- */
-const LS_KEY = "samqip.v1";
+const LS_KEY = "aimqip.v1";
 let lsWarned = false;
 function saveLocal(){
   if (collab.on) return;   // a live room's pages are not your personal saved set
@@ -405,7 +406,7 @@ function loadExample(){
         { id: nid(), text: "Prescriber awareness", secondaries: [
           { id: nid(), text: "Doctors know it\u2019s expected at clerking", ideas: [
             { id: nid(), text: "Teaching slot at induction" },
-            { id: nid(), text: "Poster in doctors\u2019 office" } ] } ] },
+            { id: nid(), text: "Screensaver reminder on ward computers" } ] } ] },
         { id: nid(), text: "Easy to do in the moment", secondaries: [
           { id: nid(), text: "Prompt at the point of prescribing", ideas: [
             { id: nid(), text: "VTE prompt on the clerking proforma" } ] },
@@ -432,7 +433,7 @@ function loadExample(){
     { id: nid(), text: "Pre-printed VTE box on the chart", x: 0.30, y: 0.24 },
     { id: nid(), text: "Weekly run chart at board round", x: 0.62, y: 0.44 },
     { id: nid(), text: "Teaching slot at induction", x: 0.70, y: 0.74 },
-    { id: nid(), text: "Poster in doctors\u2019 office", x: 0.86, y: 0.86 }
+    { id: nid(), text: "Screensaver reminder on ward computers", x: 0.86, y: 0.86 }
   ];
   const fishEx = { problem: "VTE assessment missed at clerking on AMU", bones: [
     { id: nid(), name: "People", causes: [
@@ -493,6 +494,7 @@ function editable(cls, txt, ph, oninput){
 
 /* ---------- PROCESS MAP ---------- */
 const PW = 150, PH = 84, GX = 46, GY = 78, COLS = 5, PAD = 26;
+const BRANCH_DASH = ["5,3", "2,3", "9,3,2,3", "10,4", "1,4", "12,3,3,3,3,3"];
 function pPos(i){
   const row = Math.floor(i / COLS); let col = i % COLS;
   if (row % 2 === 1) col = COLS - 1 - col;
@@ -533,18 +535,12 @@ function renderProcess(board, svg, nodes){
     }
   }
   // branch spurs \u2014 one row per branching decision, below the main grid
-  if (branches.length){
-    const bh = document.createElement("div"); bh.className = "branchhead";
-    bh.style.cssText = "left:" + PAD + "px;top:" + (mainH - GY / 2 + 2) + "px";
-    bh.textContent = "\u201CNO\u201D PATHS";
-    nodes.appendChild(bh);
-  }
   branches.forEach((br, bi) => {
     const rowY = mainH + 24 + bi * (BROWH + BGAP);
     const labY = rowY, boxY = rowY + 36;
     const lw = document.createElement("div"); lw.className = "branchlabel";
     lw.style.cssText = "left:" + PAD + "px;top:" + labY + "px;width:" + (PW * 3) + "px";
-    const tag = document.createElement("b"); tag.textContent = "IF NO \u2014";
+    const tag = document.createElement("b"); tag.textContent = "OTHERWISE \u2014";
     lw.appendChild(tag);
     lw.appendChild(editable("branchnote", br.decision.no, "click to note what happens\u2026", v => { br.decision.no = v; }));
     nodes.appendChild(lw);
@@ -561,18 +557,19 @@ function renderProcess(board, svg, nodes){
       if (k < br.decision.branch.length - 1) d += arrow(bx + PW, boxY + PH / 2, bx + PW + GX - 3, boxY + PH / 2, svg);
       bx += PW + GX;
     });
-    // route via a right-hand gutter so the dashed line never crosses main-grid boxes, whatever row the decision sits in
+    // route via a right-hand gutter so the dashed line never crosses main-grid boxes, whatever row the decision sits in —
+    // each branch gets its own lane (offset by bi) so multiple "otherwise" routes never overlap one another
     const dPos = pPos(br.idx);
     const cx = dPos.x + PW / 2, startX = PAD + PW / 2;
-    const gutterX = PAD + COLS * (PW + GX) - GX + 40;
-    const dropY = dPos.y + PH + 14, runY = boxY - 12;
+    const gutterX = PAD + COLS * (PW + GX) - GX + 40 + bi * 18;
+    const dropY = dPos.y + PH + 14 + bi * 10, runY = boxY - 12;
     d += '<path d="M' + cx + ',' + (dPos.y + PH) +
       ' L' + cx + ',' + dropY +
       ' L' + gutterX + ',' + dropY +
       ' L' + gutterX + ',' + runY +
       ' L' + startX + ',' + runY +
       ' L' + startX + ',' + (boxY - 3) +
-      '" fill="none" stroke="#036E3A" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>';
+      '" fill="none" stroke="#000000" stroke-width="2" stroke-dasharray="' + BRANCH_DASH[bi % BRANCH_DASH.length] + '" marker-end="url(#arr)"/>';
   });
   svg.innerHTML = markerDefs() + d;
   $("who").style.display = "none";
@@ -582,10 +579,10 @@ function renderProcess(board, svg, nodes){
   renderProcessBar();
 }
 function arrow(x1, y1, x2, y2){
-  return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#036E3A" stroke-width="2" marker-end="url(#arr)"/>';
+  return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#000000" stroke-width="2" marker-end="url(#arr)"/>';
 }
 function markerDefs(){
-  return '<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#036E3A"/></marker></defs>';
+  return '<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#000000"/></marker></defs>';
 }
 function renderProcessBar(){
   const bar = $("nodebar"); bar.innerHTML = "";
@@ -832,7 +829,7 @@ function renderFish(board, svg, nodes){
   let d = "";
   // spine + arrowhead into the problem box
   d += '<path d="M' + LX + ',' + spineY + ' L' + (SPINE_END - 3) + ',' + spineY +
-       '" fill="none" stroke="#036E3A" stroke-width="2.4" marker-end="url(#arr)"/>';
+       '" fill="none" stroke="#000000" stroke-width="2.4" marker-end="url(#arr)"/>';
 
   const drawBlock = (bone, i, isTop) => {
     const x = colX(i), cx = centre(i);
@@ -842,7 +839,7 @@ function renderFish(board, svg, nodes){
     const attach = Math.min(cx + 66, SPINE_END - 24);
     const edgeY = isTop ? TOPY + topH - 4 : blockTop - 6;
     d += '<path d="M' + cx + ',' + edgeY + ' L' + attach + ',' + spineY +
-         '" fill="none" stroke="#036E3A" stroke-width="1.8"/>';
+         '" fill="none" stroke="#000000" stroke-width="1.8"/>';
 
     const hd = document.createElement("div");
     hd.className = "fhead";
@@ -1100,7 +1097,7 @@ function renderWho(){
 }
 function elbow(a, b){
   const x1 = a.x + a.w, y1 = a.y + DH / 2, x2 = b.x, y2 = b.y + DH / 2, xm = (x1 + x2) / 2;
-  return '<path d="M' + x1 + ',' + y1 + ' L' + xm + ',' + y1 + ' L' + xm + ',' + y2 + ' L' + (x2 - 2) + ',' + y2 + '" fill="none" stroke="#036E3A" stroke-width="1.8"/>';
+  return '<path d="M' + x1 + ',' + y1 + ' L' + xm + ',' + y1 + ' L' + xm + ',' + y2 + ' L' + (x2 - 2) + ',' + y2 + '" fill="none" stroke="#000000" stroke-width="1.8"/>';
 }
 
 /* ---------- render root ---------- */
@@ -1416,7 +1413,7 @@ function joinRoom(code, seed){
   return loadFirebase().then(() => {
     collab.room = code;
     collab.me = Math.random().toString(36).slice(2, 10);
-    collab.ref = firebase.database().ref("samrooms/" + code);
+    collab.ref = firebase.database().ref("rooms/" + code);
     collab.on = true;
     collab.primed = !!seed;
     if (seed) collab.ref.child("doc").set({ pages: state.pages, by: collab.me, t: Date.now() });
@@ -1456,7 +1453,7 @@ function toggleCollab(){
 }
 
 /* ---------- cross-device sync (optional) \u2014 sign in with an emailed link, your named projects follow you ---------- */
-const SYNC_EMAIL_KEY = "samqip.syncEmail";
+const SYNC_EMAIL_KEY = "aimqip.syncEmail";
 function renderSync(){
   const b = $("syncbtn");
   if (sync.on){
@@ -1501,8 +1498,8 @@ function pushCloudLibrary(immediate){
 }
 function attachSync(user){
   sync.on = true; sync.uid = user.uid; sync.email = user.email;
-  sync.ref = firebase.database().ref("users/" + user.uid + "/samlibrary");
-  try { localStorage.setItem("samqip.synced", "1"); } catch (e) {}
+  sync.ref = firebase.database().ref("users/" + user.uid + "/library");
+  try { localStorage.setItem("aimqip.synced", "1"); } catch (e) {}
   sync.ref.get().then(snap => {
     const v = snap.val();
     mergeCloudLibrary(v && v.pages, v && v.cur);
@@ -1536,7 +1533,7 @@ function signOutOfSync(){
   if (!sync.on) return;
   try { sync.ref.off(); } catch (e) {}
   try { firebase.auth().signOut(); } catch (e) {}
-  try { localStorage.removeItem("samqip.synced"); } catch (e) {}
+  try { localStorage.removeItem("aimqip.synced"); } catch (e) {}
   sync.on = false; sync.uid = null; sync.email = null; sync.ref = null;
   renderSync();
   showToast("Signed out \u2014 these projects stay on this device; sign in again anytime to reconnect them", 5000);
@@ -1585,7 +1582,7 @@ if (q.get("example")) loadExample();
 if (fbReady() && q.get("oobCode")){
   bootToasted = true;
   completeEmailLinkSignIn();      // async; renders/toasts itself once it resolves
-} else if (fbReady() && (() => { try { return !!localStorage.getItem("samqip.synced"); } catch (e) { return false; } })()){
+} else if (fbReady() && (() => { try { return !!localStorage.getItem("aimqip.synced"); } catch (e) { return false; } })()){
   loadFirebase().then(() => {
     firebase.auth().onAuthStateChanged(user => { if (user && !sync.on) attachSync(user); });
   }).catch(() => {});
