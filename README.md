@@ -28,9 +28,10 @@ Each tab is a separate diagram; a **page** bundles all six together as one proje
 - **It saves itself** — everything autosaves to the browser's local storage as you go, so closing the tab is safe.
 - **Save file / Open…** downloads or reloads a portable `.json` copy of all your pages — the way to move a project between computers or keep an offline backup.
 - **Share link** sends a snapshot to a colleague; **Collaborate** starts a live room so more than one person can edit the same page at once.
-- **Sign in to sync** keeps named projects following you across devices.
+- **Sign in with Google** keeps named projects following you across devices — a popup, nothing emailed. See `COLLABORATION_SETUP.md` if it isn't working.
 - **Download PNG** exports the current diagram only (not the toolbar or guidance panels) as a landscape image — the format made for dropping straight into slides or a workbook.
 - **Print / PDF** produces a one-page landscape PDF of the current diagram.
+- **Download PPTX** builds a full PowerPoint deck — one slide per diagram type (Pitch, 2×2, Process Map, 5 Whys, Fishbone, Driver Diagram), for every page in the project, each slide with a SAM-branded header. Useful for a full QIP project handover deck.
 
 ## Notes on this version
 

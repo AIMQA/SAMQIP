@@ -224,7 +224,7 @@ footer span{float:right;color:#93A69A}
     <button class="btn" onclick="saveFile()">Save file</button>
     <button class="btn" onclick="shareLink()">Share link</button>
     <button class="btn" id="collabbtn" onclick="toggleCollab()">Collaborate</button>
-    <button class="btn" id="syncbtn" onclick="signInToSync()">Sign in to sync</button>
+    <button class="btn" id="syncbtn" onclick="signInWithGoogle()">Sign in with Google</button>
     <button class="btn" id="fitbtn" onclick="toggleFit()" style="display:none">Zoom 100%</button>
     <button class="btn" onclick="doPrint()">Print / PDF</button>
     <button class="btn primary" onclick="exportPNG()">Download PNG</button>
@@ -1145,7 +1145,7 @@ const HOWTO = [
   ["Pages = projects", "Each page is a separate project with its own diagrams. Tap \u270E on the page tab to name it \u2014 naming this one also dismisses this guide."],
   ["+ New page", "Start another project, or a fresh page for cycle 2, without losing this one."],
   ["It saves itself", "Everything autosaves in this browser as you go \u2014 close the tab and it\u2019s still here next time."],
-  ["Save file / Open\u2026 / Sign in to sync", "Download a portable copy, open one elsewhere, or sign in to have your named projects follow you automatically."],
+  ["Save file / Open\u2026 / Sign in with Google", "Download a portable copy, open one elsewhere, or sign in with Google to have your named projects follow you automatically."],
   ["Share link / Collaborate", "Send a snapshot to a colleague, or start a live room and edit the same page together in real time."],
   ["Download PNG / Print / PPTX", "PNG exports the current diagram as an image, Print makes a one-page PDF, and Download PPTX builds a full slide deck \u2014 one slide per diagram, for every page in the project."],
   ["Undo / Redo, top left", "Every change is one click to reverse, including Load example and Clear."]
@@ -1405,20 +1405,22 @@ window.addEventListener("hashchange", () => {
      2. Build \u2192 Realtime Database \u2192 Create database \u2192 pick a region
         (europe-west1) \u2192 start in LOCKED mode.
      3. Rules tab \u2192 paste the contents of firebase-rules.json \u2192 Publish.
-     4. Build \u2192 Authentication \u2192 Get started \u2192 Sign-in method \u2192 enable
-        \u201CEmail/Password\u201D \u2192 turn on the \u201CEmail link (passwordless sign-in)\u201D
-        toggle within it. (Only needed for cross-device sync, not for rooms.)
+     4. Build \u2192 Authentication \u2192 Get started \u2192 Sign-in method \u2192 enable the
+        \u201CGoogle\u201D provider. (Only needed for cross-device sync, not for rooms.)
      5. Project settings \u2192 Your apps \u2192 Web app (</>) \u2192 register \u2192 copy the
-        apiKey and databaseURL out of the config it shows you.
+        apiKey, authDomain and databaseURL out of the config it shows you.
+        (authDomain is required for \u201cSign in with Google\u201d specifically \u2014
+        without it Firebase throws auth/auth-domain-config-required.)
      6. Paste them below, save, push to GitHub. That\u2019s it.
    Leave FB_CONFIG blank and everything else in the tool still works \u2014 the
-   Collaborate and \u201CSign in to sync\u201D buttons simply explain they haven\u2019t
+   Collaborate and \u201CSign in with Google\u201D buttons simply explain they haven\u2019t
    been set up yet.
    NOTE: these keys are meant to be public; the rules are what protect data.
    Never put patient-identifiable data in a shared room or synced project.
    ========================================================================= */
 const FB_CONFIG = {
   apiKey: "AIzaSyCmhue-4pHOxLalW8zEy96dmEklhxLARQE",
+  authDomain: "aim-qip-qehb.firebaseapp.com",
   databaseURL: "https://aim-qip-qehb-default-rtdb.europe-west1.firebasedatabase.app"
 };
 const FB_SDK = "https://www.gstatic.com/firebasejs/12.17.0/";
@@ -1524,8 +1526,7 @@ function toggleCollab(){
     .catch(() => alert("Couldn\u2019t reach Firebase. Check your connection, or use \u201CShare link\u201D instead."));
 }
 
-/* ---------- cross-device sync (optional) \u2014 sign in with an emailed link, your named projects follow you ---------- */
-const SYNC_EMAIL_KEY = "aimqip.syncEmail";
+/* ---------- cross-device sync (optional) \u2014 sign in with Google, your named projects follow you ---------- */
 function renderSync(){
   const b = $("syncbtn");
   const bar = $("syncbar");
@@ -1536,12 +1537,12 @@ function renderSync(){
     bar.className = "on";
     bar.innerHTML = '<b>Synced</b>' +
       '<span>' + sync.email + '</span>' +
-      '<span style="color:var(--grey)">This tool can\u2019t guarantee the security of stored addresses \u2014 if you haven\u2019t already, consider signing out and back in with a burner or disposable email instead of your main one.</span>' +
-      '<button onclick="signInToSync()">Sign out</button>';
+      '<span style="color:var(--grey)">Signed in with your Google account \u2014 no email is stored or sent by this tool.</span>' +
+      '<button onclick="signInWithGoogle()">Sign out</button>';
   } else {
-    b.textContent = "Sign in to sync";
+    b.textContent = "Sign in with Google";
     b.className = "btn";
-    b.title = "Make your named projects follow you to another device.";
+    b.title = "Sign in with your Google account to make your named projects follow you to another device.";
     bar.className = "";
     bar.innerHTML = "";
   }
@@ -1586,28 +1587,28 @@ function attachSync(user){
   }).catch(() => showToast("Signed in, but couldn\u2019t reach your synced projects \u2014 check your connection", 4500));
   renderSync();
 }
-function signInToSync(){
+function signInWithGoogle(){
   if (sync.on){ signOutOfSync(); return; }
   if (!fbReady()){
     alert("Cross-device sync isn\u2019t switched on for this copy of the tool yet.\n\n" +
-          "It needs the same free Firebase project as Collaborate, with Email link sign-in turned on (Authentication \u2192 Sign-in method). See COLLABORATION_SETUP.md.\n\n" +
+          "It needs the same free Firebase project as Collaborate, with the Google sign-in provider turned on (Authentication \u2192 Sign-in method). See COLLABORATION_SETUP.md.\n\n" +
           "Until then, use \u201CSave file\u201D and \u201COpen\u2026\u201D to move projects between devices.");
     return;
   }
-  const entry = window.prompt("Your email address \u2014 we\u2019ll send a one-click sign-in link. No password, no account to set up.\n\nTip: this tool can\u2019t guarantee the security of stored addresses \u2014 consider using a burner or disposable email rather than your main one.");
-  if (!entry || !entry.trim()) return;
-  const clean = entry.trim();
-  if (clean.indexOf("@") < 1){
-    alert("That doesn\u2019t look like an email address \u2014 check it and try again.");
-    return;
-  }
   loadFirebase().then(() => {
-    const url = location.origin + location.pathname;   // no query string \u2014 Firebase appends its own mode=/oobCode= here
-    return firebase.auth().sendSignInLinkToEmail(clean, { url: url, handleCodeInApp: true });
-  }).then(() => {
-    try { localStorage.setItem(SYNC_EMAIL_KEY, clean); } catch (e) {}
-    showToast("Check " + clean + " for a sign-in link \u2014 open it on any device to sync", 6000);
-  }).catch(err => alert("Couldn\u2019t send the sign-in link (" + (err && err.message ? err.message : "check your connection") + ")."));
+    const provider = new firebase.auth.GoogleAuthProvider();
+    return firebase.auth().signInWithPopup(provider);
+  }).then(result => {
+    attachSync(result.user);
+    showToast("Signed in as " + result.user.email + " \u2014 your saved projects have joined this device", 5500);
+  }).catch(err => {
+    if (!err || err.code === "auth/popup-closed-by-user" || err.code === "auth/cancelled-popup-request") return;
+    if (err.code === "auth/popup-blocked"){
+      alert("Your browser blocked the Google sign-in popup \u2014 allow popups for this page and try again.");
+    } else {
+      alert("Couldn\u2019t sign in with Google (" + (err.message || "check your connection") + ").");
+    }
+  });
 }
 function signOutOfSync(){
   if (!sync.on) return;
@@ -1617,24 +1618,6 @@ function signOutOfSync(){
   sync.on = false; sync.uid = null; sync.email = null; sync.ref = null;
   renderSync();
   showToast("Signed out \u2014 these projects stay on this device; sign in again anytime to reconnect them", 5000);
-}
-function completeEmailLinkSignIn(){
-  return loadFirebase().then(() => {
-    if (!firebase.auth().isSignInWithEmailLink(location.href)) return false;
-    let email = null;
-    try { email = localStorage.getItem(SYNC_EMAIL_KEY); } catch (e) {}
-    if (!email) email = window.prompt("Confirm the email address you requested the sign-in link with:");
-    if (!email) return false;
-    return firebase.auth().signInWithEmailLink(email, location.href).then(result => {
-      try { localStorage.removeItem(SYNC_EMAIL_KEY); } catch (e) {}
-      const u = new URL(location.href);
-      ["apiKey", "oobCode", "mode", "lang", "continueUrl"].forEach(k => u.searchParams.delete(k));
-      history.replaceState(null, "", u.pathname + (u.search || ""));
-      attachSync(result.user);
-      showToast("Signed in \u2014 your saved projects have joined this device", 5500);
-      return true;
-    });
-  }).catch(err => { alert("That sign-in link didn\u2019t work (" + (err && err.message ? err.message : "it may have expired") + "). Try \u201CSign in to sync\u201D again."); return false; });
 }
 
 /* ---------- boot ---------- */
@@ -1659,10 +1642,7 @@ if (opened){
   bootToasted = true;
 }
 if (q.get("example")) loadExample();
-if (fbReady() && q.get("oobCode")){
-  bootToasted = true;
-  completeEmailLinkSignIn();      // async; renders/toasts itself once it resolves
-} else if (fbReady() && (() => { try { return !!localStorage.getItem("aimqip.synced"); } catch (e) { return false; } })()){
+if (fbReady() && (() => { try { return !!localStorage.getItem("aimqip.synced"); } catch (e) { return false; } })()){
   loadFirebase().then(() => {
     firebase.auth().onAuthStateChanged(user => { if (user && !sync.on) attachSync(user); });
   }).catch(() => {});
