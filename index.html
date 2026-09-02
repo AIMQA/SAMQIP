@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SAM QIP Diagram Tool — pitch, 2×2, process maps, 5 Whys & driver diagrams</title>
+<title>Sample Website QIP Diagram Tool — pitch, 2×2, process maps, 5 Whys & driver diagrams</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js" defer></script>
 <style>
 :root{
   --dark:#023d22; --teal:#036E3A; --sea:#098040; --aqua:#DCEFE3; --bg:#F1F6F2;
@@ -67,6 +68,13 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 #livebar button:hover{border-color:#00622A;color:#00622A}
 @media print{#livebar{display:none!important}}
 @media (max-width:760px){#livebar{padding:7px 12px;font-size:11.5px}}
+#syncbar{display:none;align-items:center;gap:12px;padding:7px 22px;background:#FFF4E0;border-bottom:1px solid #EAC373;font-size:12px;color:var(--navy);flex-wrap:wrap}
+#syncbar.on{display:flex}
+#syncbar b{color:#8A5A00}
+#syncbar button{border:1px solid #EAC373;background:#fff;color:var(--navy);padding:4px 10px;border-radius:7px;cursor:pointer;font:inherit;font-size:11.5px}
+#syncbar button:hover{border-color:#8A5A00;color:#8A5A00}
+@media print{#syncbar{display:none!important}}
+@media (max-width:760px){#syncbar{padding:7px 12px;font-size:11.5px}}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--dark);color:#fff;padding:11px 20px;border-radius:22px;font-size:13px;font-weight:bold;box-shadow:0 6px 20px rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:opacity .25s;z-index:60;max-width:88vw;text-align:center}
 #toast.on{opacity:1}
 @media print{#toast{display:none!important}}
@@ -195,7 +203,7 @@ footer span{float:right;color:#93A69A}
 <body>
 <header>
   <div class="brand">
-    <div class="eyebrow">SOCIETY FOR ACUTE MEDICINE \u00B7 QUALITY IMPROVEMENT</div>
+    <div class="eyebrow">SAMPLE WEBSITE &middot; QUALITY IMPROVEMENT</div>
     <h1>QIP Diagram Tool</h1>
   </div>
   <div class="tabs">
@@ -220,12 +228,14 @@ footer span{float:right;color:#93A69A}
     <button class="btn" id="fitbtn" onclick="toggleFit()" style="display:none">Zoom 100%</button>
     <button class="btn" onclick="doPrint()">Print / PDF</button>
     <button class="btn primary" onclick="exportPNG()">Download PNG</button>
+    <button class="btn primary" id="pptxbtn" onclick="exportPPTX()">Download PPTX</button>
     <input type="file" id="filein" accept=".json" style="display:none">
   </div>
 </header>
 
 <div id="toast"></div>
 <div id="livebar"></div>
+<div id="syncbar"></div>
 <div id="pagebar"></div>
 <div id="howto"></div>
 <div class="hint" id="hint"></div>
@@ -234,7 +244,7 @@ footer span{float:right;color:#93A69A}
 <div id="who"></div>
 <div id="wrap"><div id="fit"><div id="board"><svg id="lines"></svg><div id="nodes"></div></div></div></div>
 <div class="legend" id="legend"></div>
-<footer>Society for Acute Medicine&nbsp; | &nbsp;Society for Acute Medicine <span>Stages 1–2 of the QIP Roadmap — export the PNG into your slides or workbook</span></footer>
+<footer>Sample Website&nbsp; | &nbsp;Sample Website <span>Stages 1–2 of the QIP Roadmap — export the PNG into your slides or workbook</span></footer>
 
 <script>
 "use strict";
@@ -1137,7 +1147,7 @@ const HOWTO = [
   ["It saves itself", "Everything autosaves in this browser as you go \u2014 close the tab and it\u2019s still here next time."],
   ["Save file / Open\u2026 / Sign in to sync", "Download a portable copy, open one elsewhere, or sign in to have your named projects follow you automatically."],
   ["Share link / Collaborate", "Send a snapshot to a colleague, or start a live room and edit the same page together in real time."],
-  ["Download PNG / Print", "Exports as a clean landscape image or a one-page PDF \u2014 ready for your slides or workbook."],
+  ["Download PNG / Print / PPTX", "PNG exports the current diagram as an image, Print makes a one-page PDF, and Download PPTX builds a full slide deck \u2014 one slide per diagram, for every page in the project."],
   ["Undo / Redo, top left", "Every change is one click to reverse, including Load example and Clear."]
 ];
 function renderHowTo(){
@@ -1234,6 +1244,10 @@ function doPrint(){
   setTimeout(() => { printReset(); state.fit = prevFit; state.sel = prevSel; render(); }, 800);
 }
 
+const MODE_FILE = { process: "process-map", whys: "five-whys", driver: "driver-diagram", pitch: "five-sentence-pitch", grid: "2x2-ideas", fish: "fishbone" };
+const MODE_LABEL = { pitch: "Five-Sentence Pitch", grid: "2\u00d72 Ideas", process: "Process Map", whys: "5 Whys", fish: "Fishbone", driver: "Driver Diagram" };
+const MODE_ORDER = ["pitch", "grid", "process", "whys", "fish", "driver"];
+
 function exportPNG(){
   if (typeof html2canvas === "undefined"){
     alert("PNG export needs an internet connection the first time the page loads. Use Print / PDF instead, or reload when online.");
@@ -1244,7 +1258,6 @@ function exportPNG(){
   state.fit = false; render();
   html2canvas($("board"), { backgroundColor: "#ffffff", scale: 2 }).then(cv => {
     const pgnm = state.pages[state.cur].name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-    const MODE_FILE = { process: "process-map", whys: "five-whys", driver: "driver-diagram", pitch: "five-sentence-pitch", grid: "2x2-ideas", fish: "fishbone" };
     const mname = MODE_FILE[state.mode] || "diagram";
     const name = (pgnm ? pgnm + "-" : "") + mname + ".png";
     const out = toLandscape(cv);
@@ -1259,6 +1272,65 @@ function exportPNG(){
     }, "image/png");
   }).catch(() => { alert("PNG export failed \u2014 try Print / PDF instead."); })
     .finally(() => { state.fit = prevFit; applyScale(); });
+}
+
+/* ---------- PPTX export \u2014 one slide per diagram, for every page in the project ---------- */
+function pptxCtor(){
+  if (typeof PptxGenJS !== "undefined") return PptxGenJS;
+  if (typeof window !== "undefined" && window.pptxgen) return window.pptxgen;
+  return undefined;
+}
+async function exportPPTX(){
+  const PPTX = pptxCtor();
+  if (typeof html2canvas === "undefined" || !PPTX){
+    alert("PPTX export needs an internet connection the first time the page loads. Try again when online, or use Download PNG / Print instead.");
+    return;
+  }
+  const btn = $("pptxbtn");
+  const prevPage = state.cur, prevMode = state.mode, prevSel = state.sel, prevFit = state.fit;
+  state.sel = null; state.fit = false;
+  btn.disabled = true; btn.textContent = "Building\u2026";
+  showToast("Building your slide deck \u2014 " + (state.pages.length * MODE_ORDER.length) + " slides, this can take a minute\u2026", 60000);
+  try {
+    const pptx = new PPTX();
+    pptx.defineLayout({ name: "AIMQIP", width: 13.333, height: 7.5 });
+    pptx.layout = "AIMQIP";
+    const SLIDE_W = 13.333, SLIDE_H = 7.5;
+    const HEAD_H = 0.86;                      // dark header band, matches the roadmap deck style
+    const MARGIN = 0.35;
+    const boxX = MARGIN, boxY = HEAD_H + 0.2, boxW = SLIDE_W - MARGIN * 2, boxH = SLIDE_H - boxY - 0.3;
+    for (let pi = 0; pi < state.pages.length; pi++){
+      state.cur = pi;
+      for (const mode of MODE_ORDER){
+        state.mode = mode;
+        render();
+        await new Promise(r => setTimeout(r, 40));   // let layout settle before capture
+        const cv = await html2canvas($("board"), { backgroundColor: "#ffffff", scale: 2 });
+        const dataUrl = cv.toDataURL("image/png");
+        const ratio = cv.width / cv.height;
+        let imgW = boxW, imgH = boxW / ratio;
+        if (imgH > boxH){ imgH = boxH; imgW = boxH * ratio; }
+        const imgX = boxX + (boxW - imgW) / 2, imgY = boxY + (boxH - imgH) / 2;
+        const slide = pptx.addSlide();
+        slide.background = { color: "FFFFFF" };
+        slide.addShape("rect", { x: 0, y: 0, w: SLIDE_W, h: HEAD_H, fill: { color: "023D22" }, line: { type: "none" } });
+        slide.addText(state.pages[pi].name.toUpperCase(), { x: MARGIN, y: 0.12, w: SLIDE_W - MARGIN * 2, h: 0.28, fontSize: 11, bold: true, color: "7DD08F", fontFace: "Calibri", charSpacing: 2 });
+        slide.addText(MODE_LABEL[mode], { x: MARGIN, y: 0.38, w: SLIDE_W - MARGIN * 2, h: 0.44, fontSize: 22, bold: true, color: "FFFFFF", fontFace: "Calibri" });
+        slide.addImage({ data: dataUrl, x: imgX, y: imgY, w: imgW, h: imgH });
+        slide.addText("Sample Website  |  Quality Improvement", { x: MARGIN, y: SLIDE_H - 0.3, w: SLIDE_W - MARGIN * 2, h: 0.25, fontSize: 9, color: "036E3A", fontFace: "Calibri" });
+      }
+    }
+    const fname = (state.pages.length > 1 ? "qip-projects" : (state.pages[0].name || "qip-project"))
+      .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    await pptx.writeFile({ fileName: (fname || "qip-diagrams") + ".pptx" });
+    showToast("PPTX downloaded \u2014 " + (state.pages.length * MODE_ORDER.length) + " slides", 4000);
+  } catch (err){
+    alert("PPTX export failed \u2014 try Download PNG or Print / PDF instead.");
+  } finally {
+    state.cur = prevPage; state.mode = prevMode; state.sel = prevSel; state.fit = prevFit;
+    render();
+    btn.disabled = false; btn.textContent = "Download PPTX";
+  }
 }
 
 /* ---------- share by link (works on a static host \u2014 no server needed) ---------- */
@@ -1456,14 +1528,22 @@ function toggleCollab(){
 const SYNC_EMAIL_KEY = "aimqip.syncEmail";
 function renderSync(){
   const b = $("syncbtn");
+  const bar = $("syncbar");
   if (sync.on){
     b.textContent = "Synced \u2014 " + sync.email + "  \u00D7";
     b.className = "btn synced";
     b.title = "Click to sign out. Your projects stay on this device \u2014 signing out just stops the cloud copy.";
+    bar.className = "on";
+    bar.innerHTML = '<b>Synced</b>' +
+      '<span>' + sync.email + '</span>' +
+      '<span style="color:var(--grey)">This tool can\u2019t guarantee the security of stored addresses \u2014 if you haven\u2019t already, consider signing out and back in with a burner or disposable email instead of your main one.</span>' +
+      '<button onclick="signInToSync()">Sign out</button>';
   } else {
     b.textContent = "Sign in to sync";
     b.className = "btn";
     b.title = "Make your named projects follow you to another device.";
+    bar.className = "";
+    bar.innerHTML = "";
   }
 }
 function stripIds(v){ return JSON.parse(JSON.stringify(v), (k, val) => k === "id" ? undefined : val); }
@@ -1514,7 +1594,7 @@ function signInToSync(){
           "Until then, use \u201CSave file\u201D and \u201COpen\u2026\u201D to move projects between devices.");
     return;
   }
-  const entry = window.prompt("Your email address \u2014 we\u2019ll send a one-click sign-in link. No password, no account to set up.");
+  const entry = window.prompt("Your email address \u2014 we\u2019ll send a one-click sign-in link. No password, no account to set up.\n\nTip: this tool can\u2019t guarantee the security of stored addresses \u2014 consider using a burner or disposable email rather than your main one.");
   if (!entry || !entry.trim()) return;
   const clean = entry.trim();
   if (clean.indexOf("@") < 1){
