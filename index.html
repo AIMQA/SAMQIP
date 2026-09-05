@@ -3,12 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SAM QIP Diagram Tool — pitch, 2×2, process maps, 5 Whys & driver diagrams</title>
+<title>AIM QIP Diagram Tool — pitch, 2×2, process maps, 5 Whys & driver diagrams</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <style>
 :root{
-  --dark:#023d22; --teal:#036E3A; --sea:#098040; --aqua:#DCEFE3; --bg:#F1F6F2;
-  --navy:#1B1B1B; --line:#D4E0D8; --grey:#4a5a52; --mint:#7DD08F; --ph:#627267;
+  --dark:#003087; --teal:#005EB8; --sea:#0072CE; --aqua:#D9E7F5; --bg:#F0F4F5;
+  --navy:#231F20; --line:#D8DEE1;
+  --dline:#000; --dfill:#ECECEC; --dmute:#555; --grey:#425563; --mint:#41B6E6; --ph:#768692;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:Calibri,'Segoe UI',Arial,sans-serif;color:var(--navy);background:var(--bg)}
@@ -21,7 +22,7 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .spacer{flex:1}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{border:1px solid var(--sea);background:transparent;color:#fff;padding:7px 12px;border-radius:8px;cursor:pointer;font:inherit;font-size:12.5px}
-.btn:hover{background:#098040}
+.btn:hover{background:#0072CE}
 .btn:disabled{opacity:.35;cursor:default}
 .btn:disabled:hover{background:transparent}
 .btn.primary{background:var(--sea);border-color:var(--sea);font-weight:bold}
@@ -58,7 +59,7 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .waddw{display:block;margin:10px auto 0;border:1px dashed var(--teal);background:transparent;color:var(--teal);padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
 #livebar{display:none;align-items:center;gap:12px;padding:7px 22px;background:#E6F3EA;border-bottom:1px solid #A8D5B5;font-size:12px;color:var(--navy);flex-wrap:wrap}
 #livebar.on{display:flex}
-#livebar .dot{width:9px;height:9px;border-radius:50%;background:#0a8a46;animation:pulse 1.6s infinite}
+#livebar .dot{width:9px;height:9px;border-radius:50%;background:#009639;animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 #livebar b{color:#00622A}
 #livebar .code{font-family:Consolas,monospace;font-weight:bold;letter-spacing:1px;background:#fff;border:1px solid #A8D5B5;border-radius:6px;padding:2px 8px}
@@ -90,8 +91,8 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .tbtn:hover{border-color:var(--teal);color:var(--teal)}
 .tbtn.danger:hover{border-color:#da291c;color:#da291c}
 .tbtn.red{background:#da291c;border-color:#da291c;color:#fff;font-weight:bold}
-.btn.synced{background:#0a8a46;border-color:#0a8a46;color:#fff;font-weight:bold}
-.btn.synced:hover{background:#02582f;border-color:#02582f}
+.btn.synced{background:#009639;border-color:#009639;color:#fff;font-weight:bold}
+.btn.synced:hover{background:#00762c;border-color:#00762c}
 .tbtn.red:hover{background:#b81f14;border-color:#b81f14;color:#fff}
 #wrap{padding:18px 22px;overflow:auto}
 #board{position:relative;width:1120px;background:#fff;border:1px solid var(--line);border-radius:10px;margin:0 auto}
@@ -104,7 +105,7 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .shape{position:absolute;inset:0;border-radius:8px;background:#fff;border:1.6px solid var(--teal)}
 .node.terminator .shape{border-radius:44px;background:var(--dark);border-color:var(--dark)}
 .node.terminator .ntext{color:#fff;font-weight:bold}
-.node.decision .shape{border:0;background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23DCEFE3" stroke="%23036E3A" stroke-width="2.4"/></svg>') center/100% 100% no-repeat}
+.node.decision .shape{border:0;background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23D9E7F5" stroke="%23005EB8" stroke-width="2.4"/></svg>') center/100% 100% no-repeat}
 .node.decision .ntext{padding:10px 22px;font-size:11.5px}
 .node.wait .shape{border-style:dashed;background:var(--bg)}
 .node.wait .ntext{font-style:italic}
@@ -126,7 +127,7 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .nadd,.ndel{position:absolute;width:20px;height:20px;border-radius:50%;border:0;color:#fff;font-size:13px;line-height:20px;text-align:center;cursor:pointer;padding:0;display:none}
 .nadd{background:var(--sea);right:-10px;top:calc(50% - 10px)}
 .nsib{position:absolute;width:20px;height:20px;border-radius:50%;border:0;color:#fff;font-size:13px;line-height:20px;text-align:center;cursor:pointer;padding:0;display:none;background:var(--teal);left:calc(50% - 10px);bottom:-10px}
-.ndel{background:#627267;right:-8px;top:-8px;font-size:11px}
+.ndel{background:#768692;right:-8px;top:-8px;font-size:11px}
 .ndel:hover{background:#da291c}
 .node:hover .nadd,.node:hover .ndel,.dnode:hover .nadd,.dnode:hover .ndel,.dnode:hover .nsib,.wcard:hover .ndel{display:block}
 #drvhelp{display:none;padding:10px 22px 0}
@@ -155,7 +156,7 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .legend{max-width:1120px;margin:8px auto 0;padding:0 4px;font-size:10.5px;color:var(--grey);display:flex;gap:18px;flex-wrap:wrap}
 .legend i{font-style:normal;color:var(--teal);font-weight:bold}
 footer{padding:14px 22px;font-size:11px;color:var(--teal)}
-footer span{float:right;color:#93A69A}
+footer span{float:right;color:#9AA5AA}
 #fit{margin:0 auto}
 #board{transform-origin:0 0}
 @media (hover:none),(pointer:coarse){.node .nadd,.node .ndel,.dnode .nadd,.dnode .ndel,.dnode .nsib,.wcard .ndel{display:block}
@@ -189,12 +190,30 @@ footer span{float:right;color:#93A69A}
   .node.sel .shape,.dnode.sel{box-shadow:none!important}
 }
 @page{size:A4 landscape;margin:10mm}
+
+/* ---------- grey/white diagram output (on-screen editing stays in colour) ---------- */
+#board.mono{
+  --dark:#4A4A4A; --teal:#666666; --sea:#7A7A7A; --aqua:#ECECEC; --bg:#F4F4F4;
+  --navy:#222222; --line:#CCCCCC; --grey:#666666; --ph:#8A8A8A;
+}
+#board.mono svg path, #board.mono svg line{stroke:#555 !important}
+#board.mono svg marker path{fill:#555 !important}
+#board.mono .node.decision .shape{background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23ECECEC" stroke="%23555555" stroke-width="2.4"/></svg>') center/100% 100% no-repeat !important}
+@media print{
+  #board{
+    --dark:#4A4A4A; --teal:#666666; --sea:#7A7A7A; --aqua:#ECECEC; --bg:#F4F4F4;
+    --navy:#222222; --line:#CCCCCC; --grey:#666666; --ph:#8A8A8A;
+  }
+  #board svg path, #board svg line{stroke:#555 !important}
+  #board svg marker path{fill:#555 !important}
+  #board .node.decision .shape{background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23ECECEC" stroke="%23555555" stroke-width="2.4"/></svg>') center/100% 100% no-repeat !important}
+}
 </style>
 </head>
 <body>
 <header>
   <div class="brand">
-    <div class="eyebrow">SOCIETY FOR ACUTE MEDICINE \u00B7 QUALITY IMPROVEMENT</div>
+    <div class="eyebrow">ACUTE INTERNAL MEDICINE (AIM) QUALITY IMPROVEMENT TEAM</div>
     <h1>QIP Diagram Tool</h1>
   </div>
   <div class="tabs">
@@ -233,7 +252,7 @@ footer span{float:right;color:#93A69A}
 <div id="who"></div>
 <div id="wrap"><div id="fit"><div id="board"><svg id="lines"></svg><div id="nodes"></div></div></div></div>
 <div class="legend" id="legend"></div>
-<footer>Society for Acute Medicine&nbsp; | &nbsp;Society for Acute Medicine <span>Stages 1–2 of the QIP Roadmap — export the PNG into your slides or workbook</span></footer>
+<footer>AIM Quality Improvement Team&nbsp; | &nbsp;Queen Elizabeth Hospital Birmingham <span>Stages 1–2 of the QIP Roadmap — export the PNG into your slides or workbook</span></footer>
 
 <script>
 "use strict";
@@ -498,6 +517,7 @@ function pPos(i){
   if (row % 2 === 1) col = COLS - 1 - col;
   return { x: PAD + col * (PW + GX), y: PAD + row * (PH + GY), row: row, col: col };
 }
+const BRANCH_DASH = ["5,3", "2,3", "9,3,2,3", "10,4", "1,4", "12,3,3,3,3,3"];
 function renderProcess(board, svg, nodes){
   const list = state.process;
   const rows = Math.max(1, Math.ceil(list.length / COLS));
@@ -533,18 +553,12 @@ function renderProcess(board, svg, nodes){
     }
   }
   // branch spurs \u2014 one row per branching decision, below the main grid
-  if (branches.length){
-    const bh = document.createElement("div"); bh.className = "branchhead";
-    bh.style.cssText = "left:" + PAD + "px;top:" + (mainH - GY / 2 + 2) + "px";
-    bh.textContent = "\u201CNO\u201D PATHS";
-    nodes.appendChild(bh);
-  }
   branches.forEach((br, bi) => {
     const rowY = mainH + 24 + bi * (BROWH + BGAP);
     const labY = rowY, boxY = rowY + 36;
     const lw = document.createElement("div"); lw.className = "branchlabel";
     lw.style.cssText = "left:" + PAD + "px;top:" + labY + "px;width:" + (PW * 3) + "px";
-    const tag = document.createElement("b"); tag.textContent = "IF NO \u2014";
+    const tag = document.createElement("b"); tag.textContent = "OTHERWISE \u2014";
     lw.appendChild(tag);
     lw.appendChild(editable("branchnote", br.decision.no, "click to note what happens\u2026", v => { br.decision.no = v; }));
     nodes.appendChild(lw);
@@ -564,15 +578,16 @@ function renderProcess(board, svg, nodes){
     // route via a right-hand gutter so the dashed line never crosses main-grid boxes, whatever row the decision sits in
     const dPos = pPos(br.idx);
     const cx = dPos.x + PW / 2, startX = PAD + PW / 2;
-    const gutterX = PAD + COLS * (PW + GX) - GX + 40;
-    const dropY = dPos.y + PH + 14, runY = boxY - 12;
+    // each branch gets its own lane (offset by bi) so multiple "otherwise" routes never overlap one another
+    const gutterX = PAD + COLS * (PW + GX) - GX + 40 + bi * 18;
+    const dropY = dPos.y + PH + 14 + bi * 10, runY = boxY - 12;
     d += '<path d="M' + cx + ',' + (dPos.y + PH) +
       ' L' + cx + ',' + dropY +
       ' L' + gutterX + ',' + dropY +
       ' L' + gutterX + ',' + runY +
       ' L' + startX + ',' + runY +
       ' L' + startX + ',' + (boxY - 3) +
-      '" fill="none" stroke="#036E3A" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>';
+      '" fill="none" stroke="#000000" stroke-width="2" stroke-dasharray="' + BRANCH_DASH[bi % BRANCH_DASH.length] + '" marker-end="url(#arr)"/>';
   });
   svg.innerHTML = markerDefs() + d;
   $("who").style.display = "none";
@@ -582,10 +597,10 @@ function renderProcess(board, svg, nodes){
   renderProcessBar();
 }
 function arrow(x1, y1, x2, y2){
-  return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#036E3A" stroke-width="2" marker-end="url(#arr)"/>';
+  return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#005EB8" stroke-width="2" marker-end="url(#arr)"/>';
 }
 function markerDefs(){
-  return '<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#036E3A"/></marker></defs>';
+  return '<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#005EB8"/></marker></defs>';
 }
 function renderProcessBar(){
   const bar = $("nodebar"); bar.innerHTML = "";
@@ -832,7 +847,7 @@ function renderFish(board, svg, nodes){
   let d = "";
   // spine + arrowhead into the problem box
   d += '<path d="M' + LX + ',' + spineY + ' L' + (SPINE_END - 3) + ',' + spineY +
-       '" fill="none" stroke="#036E3A" stroke-width="2.4" marker-end="url(#arr)"/>';
+       '" fill="none" stroke="#005EB8" stroke-width="2.4" marker-end="url(#arr)"/>';
 
   const drawBlock = (bone, i, isTop) => {
     const x = colX(i), cx = centre(i);
@@ -842,7 +857,7 @@ function renderFish(board, svg, nodes){
     const attach = Math.min(cx + 66, SPINE_END - 24);
     const edgeY = isTop ? TOPY + topH - 4 : blockTop - 6;
     d += '<path d="M' + cx + ',' + edgeY + ' L' + attach + ',' + spineY +
-         '" fill="none" stroke="#036E3A" stroke-width="1.8"/>';
+         '" fill="none" stroke="#005EB8" stroke-width="1.8"/>';
 
     const hd = document.createElement("div");
     hd.className = "fhead";
@@ -1100,7 +1115,7 @@ function renderWho(){
 }
 function elbow(a, b){
   const x1 = a.x + a.w, y1 = a.y + DH / 2, x2 = b.x, y2 = b.y + DH / 2, xm = (x1 + x2) / 2;
-  return '<path d="M' + x1 + ',' + y1 + ' L' + xm + ',' + y1 + ' L' + xm + ',' + y2 + ' L' + (x2 - 2) + ',' + y2 + '" fill="none" stroke="#036E3A" stroke-width="1.8"/>';
+  return '<path d="M' + x1 + ',' + y1 + ' L' + xm + ',' + y1 + ' L' + xm + ',' + y2 + ' L' + (x2 - 2) + ',' + y2 + '" fill="none" stroke="#005EB8" stroke-width="1.8"/>';
 }
 
 /* ---------- render root ---------- */
@@ -1245,7 +1260,9 @@ function exportPNG(){
   state.sel = null;
   const prevFit = state.fit;
   state.fit = false; render();
-  html2canvas($("board"), { backgroundColor: "#ffffff", scale: 2 }).then(cv => {
+  const boardEl = $("board");
+  boardEl.classList.add("mono");
+  html2canvas(boardEl, { backgroundColor: "#ffffff", scale: 2 }).then(cv => {
     const pgnm = state.pages[state.cur].name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     const MODE_FILE = { process: "process-map", whys: "five-whys", driver: "driver-diagram", pitch: "five-sentence-pitch", grid: "2x2-ideas", fish: "fishbone" };
     const mname = MODE_FILE[state.mode] || "diagram";
@@ -1261,7 +1278,7 @@ function exportPNG(){
       setTimeout(() => URL.revokeObjectURL(url), 60000);
     }, "image/png");
   }).catch(() => { alert("PNG export failed \u2014 try Print / PDF instead."); })
-    .finally(() => { state.fit = prevFit; applyScale(); });
+    .finally(() => { boardEl.classList.remove("mono"); state.fit = prevFit; applyScale(); });
 }
 
 /* ---------- share by link (works on a static host \u2014 no server needed) ---------- */
