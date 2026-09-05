@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AIM QIP Diagram Tool — pitch, 2×2, process maps, 5 Whys & driver diagrams</title>
+<title>Sample Website QIP Diagram Tool — pitch, 2×2, process maps, 5 Whys & driver diagrams</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js" defer></script>
 <style>
 :root{
-  --dark:#003087; --teal:#005EB8; --sea:#0072CE; --aqua:#D9E7F5; --bg:#F0F4F5;
-  --navy:#231F20; --line:#D8DEE1;
-  --dline:#000; --dfill:#ECECEC; --dmute:#555; --grey:#425563; --mint:#41B6E6; --ph:#5B6B78; --edge:#7F8C97;
+  --dark:#023d22; --teal:#036E3A; --sea:#098040; --aqua:#DCEFE3; --bg:#F1F6F2;
+  --navy:#1B1B1B; --line:#D4E0D8;
+  --dline:#000; --dfill:#ECECEC; --dmute:#555; --grey:#4a5a52; --mint:#7DD08F; --ph:#627267; --edge:#78877F;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:Calibri,'Segoe UI',Arial,sans-serif;color:var(--navy);background:var(--bg)}
@@ -25,7 +25,7 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .spacer{flex:1}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{border:1px solid var(--sea);background:transparent;color:#fff;padding:7px 12px;border-radius:8px;cursor:pointer;font:inherit;font-size:12.5px}
-.btn:hover{background:#0072CE}
+.btn:hover{background:#098040}
 .btn:disabled{opacity:.35;cursor:default}
 .btn:disabled:hover{background:transparent}
 .btn.primary{background:var(--sea);border-color:var(--sea);font-weight:bold}
@@ -79,7 +79,7 @@ dialog#a11y::backdrop,dialog#howtoDlg::backdrop{background:rgba(0,0,0,.5)}
 .waddw{display:block;margin:10px auto 0;border:1px dashed var(--teal);background:transparent;color:var(--teal);padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
 #livebar{display:none;align-items:center;gap:12px;padding:7px 22px;background:#E6F3EA;border-bottom:1px solid #A8D5B5;font-size:12px;color:var(--navy);flex-wrap:wrap}
 #livebar.on{display:flex}
-#livebar .dot{width:9px;height:9px;border-radius:50%;background:#009639;animation:pulse 1.6s infinite}
+#livebar .dot{width:9px;height:9px;border-radius:50%;background:#0a8a46;animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 #livebar b{color:#00622A}
 #livebar .code{font-family:Consolas,monospace;font-weight:bold;letter-spacing:1px;background:#fff;border:1px solid #A8D5B5;border-radius:6px;padding:2px 8px}
@@ -118,8 +118,8 @@ dialog#a11y::backdrop,dialog#howtoDlg::backdrop{background:rgba(0,0,0,.5)}
 .tbtn:hover{border-color:var(--teal);color:var(--teal)}
 .tbtn.danger:hover{border-color:#da291c;color:#da291c}
 .tbtn.red{background:#da291c;border-color:#da291c;color:#fff;font-weight:bold}
-.btn.synced{background:#009639;border-color:#009639;color:#fff;font-weight:bold}
-.btn.synced:hover{background:#00762c;border-color:#00762c}
+.btn.synced{background:#0a8a46;border-color:#0a8a46;color:#fff;font-weight:bold}
+.btn.synced:hover{background:#02582f;border-color:#02582f}
 .tbtn.red:hover{background:#b81f14;border-color:#b81f14;color:#fff}
 #wrap{padding:18px 22px;overflow:auto}
 #board{position:relative;width:1120px;background:#fff;border:1px solid var(--line);border-radius:10px;margin:0 auto}
@@ -132,7 +132,7 @@ dialog#a11y::backdrop,dialog#howtoDlg::backdrop{background:rgba(0,0,0,.5)}
 .shape{position:absolute;inset:0;border-radius:8px;background:#fff;border:1.6px solid var(--teal)}
 .node.terminator .shape{border-radius:44px;background:var(--dark);border-color:var(--dark)}
 .node.terminator .ntext{color:#fff;font-weight:bold}
-.node.decision .shape{border:0;background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23D9E7F5" stroke="%23005EB8" stroke-width="2.4"/></svg>') center/100% 100% no-repeat}
+.node.decision .shape{border:0;background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23DCEFE3" stroke="%23036E3A" stroke-width="2.4"/></svg>') center/100% 100% no-repeat}
 .node.decision .ntext{padding:10px 22px;font-size:11.5px}
 .node.wait .shape{border-style:dashed;background:var(--bg)}
 .node.wait .ntext{font-style:italic}
@@ -243,7 +243,7 @@ footer span{float:right;color:var(--grey)}
 <a href="#board" class="skip">Skip to diagram</a>
 <header>
   <div class="brand">
-    <div class="eyebrow">ACUTE INTERNAL MEDICINE (AIM) QUALITY IMPROVEMENT TEAM</div>
+    <div class="eyebrow">SAMPLE WEBSITE &middot; QUALITY IMPROVEMENT</div>
     <h1>QIP Diagram Tool</h1>
   </div>
   <div class="tabs" role="navigation" aria-label="Diagram type and help">
@@ -301,7 +301,7 @@ footer span{float:right;color:var(--grey)}
   <div class="a11y-body">
     <button class="a11y-close" onclick="closeA11y()" aria-label="Close accessibility statement">&times;</button>
     <h2 id="a11yTitle">Accessibility statement for the QIP Diagram Tool</h2>
-    <p>This website is run by the Acute Internal Medicine (AIM) Quality Improvement Team, Queen Elizabeth Hospital Birmingham. We want as many people as possible to be able to use it. For example, you should be able to:</p>
+    <p>This website is run by Sample Website | Quality Improvement. We want as many people as possible to be able to use it. For example, you should be able to:</p>
     <ul>
       <li>use the whole tool with a keyboard alone</li>
       <li>zoom in up to 400% without the controls disappearing off the screen</li>
@@ -324,18 +324,18 @@ footer span{float:right;color:var(--grey)}
       <li><b>The Google sign-in window</b> (used only for optional cross-device sync) is provided by Google and is outside our control.</li>
     </ul>
     <h3>Feedback and contact information</h3>
-    <p>If you find a problem that is not listed here, or think we are not meeting accessibility requirements, contact the AIM QI team at <a href="mailto:aimqip4@gmail.com">aimqip4@gmail.com</a>. We aim to respond within 10 working days.</p>
+    <p>If you find a problem that is not listed here, or think we are not meeting accessibility requirements, contact the Sample Website QI team at <a href="mailto:aimqip4@gmail.com">aimqip4@gmail.com</a>. We aim to respond within 10 working days.</p>
     <h3>Enforcement procedure</h3>
     <p>The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the &ldquo;accessibility regulations&rdquo;). If you&rsquo;re not happy with how we respond to your complaint, <a href="https://www.equalityadvisoryservice.com/" target="_blank" rel="noopener">contact the Equality Advisory and Support Service (EASS)</a>.</p>
     <h3>Technical information about this website&rsquo;s accessibility</h3>
-    <p>The Acute Internal Medicine (AIM) Quality Improvement Team, Queen Elizabeth Hospital Birmingham is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.</p>
+    <p>Sample Website | Quality Improvement is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.</p>
     <h3>Preparation of this accessibility statement</h3>
     <p>This statement was prepared on 5 September 2026. It was last reviewed on 5 September 2026.</p>
-    <p>This website was last tested on 5 September 2026. The test was carried out by the AIM QI team using automated testing (axe-core 4.10 against the WCAG 2.2 AA rule set) on every diagram type, together with manual keyboard-only testing, colour-contrast measurement, target-size and reflow checks, and a text-spacing override test. It has not yet been tested with assistive-technology users; if you use a screen reader or other assistive technology, we would particularly welcome your feedback.</p>
+    <p>This website was last tested on 5 September 2026. The test was carried out by the Sample Website QI team using automated testing (axe-core 4.10 against the WCAG 2.2 AA rule set) on every diagram type, together with manual keyboard-only testing, colour-contrast measurement, target-size and reflow checks, and a text-spacing override test. It has not yet been tested with assistive-technology users; if you use a screen reader or other assistive technology, we would particularly welcome your feedback.</p>
     <p><button class="tbtn" onclick="closeA11y()">Close</button></p>
   </div>
 </dialog>
-<footer>AIM Quality Improvement Team&nbsp; | &nbsp;Queen Elizabeth Hospital Birmingham&nbsp; | &nbsp;<button class="linkbtn" onclick="openA11y()">Accessibility statement (WCAG 2.2 AA)</button></footer>
+<footer>Sample Website&nbsp; | &nbsp;Quality Improvement&nbsp; | &nbsp;<button class="linkbtn" onclick="openA11y()">Accessibility statement (WCAG 2.2 AA)</button></footer>
 
 <script>
 "use strict";
@@ -1498,11 +1498,11 @@ async function exportPPTX(){
         const imgX = boxX + (boxW - imgW) / 2, imgY = boxY + (boxH - imgH) / 2;
         const slide = pptx.addSlide();
         slide.background = { color: "FFFFFF" };
-        slide.addShape("rect", { x: 0, y: 0, w: SLIDE_W, h: HEAD_H, fill: { color: "003087" }, line: { type: "none" } });
-        slide.addText(state.pages[pi].name.toUpperCase(), { x: MARGIN, y: 0.12, w: SLIDE_W - MARGIN * 2, h: 0.28, fontSize: 11, bold: true, color: "41B6E6", fontFace: "Calibri", charSpacing: 2 });
+        slide.addShape("rect", { x: 0, y: 0, w: SLIDE_W, h: HEAD_H, fill: { color: "023D22" }, line: { type: "none" } });
+        slide.addText(state.pages[pi].name.toUpperCase(), { x: MARGIN, y: 0.12, w: SLIDE_W - MARGIN * 2, h: 0.28, fontSize: 11, bold: true, color: "7DD08F", fontFace: "Calibri", charSpacing: 2 });
         slide.addText(MODE_LABEL[mode], { x: MARGIN, y: 0.38, w: SLIDE_W - MARGIN * 2, h: 0.44, fontSize: 22, bold: true, color: "FFFFFF", fontFace: "Calibri" });
         slide.addImage({ data: dataUrl, x: imgX, y: imgY, w: imgW, h: imgH });
-        slide.addText("AIM Quality Improvement Team  |  Queen Elizabeth Hospital Birmingham", { x: MARGIN, y: SLIDE_H - 0.3, w: SLIDE_W - MARGIN * 2, h: 0.25, fontSize: 9, color: "005EB8", fontFace: "Calibri" });
+        slide.addText("Sample Website  |  Quality Improvement", { x: MARGIN, y: SLIDE_H - 0.3, w: SLIDE_W - MARGIN * 2, h: 0.25, fontSize: 9, color: "036E3A", fontFace: "Calibri" });
       }
     }
     const fname = (state.pages.length > 1 ? "qip-projects" : (state.pages[0].name || "qip-project"))
