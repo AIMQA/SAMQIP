@@ -20,6 +20,8 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 .tabs{display:flex;gap:8px;margin-left:18px;flex-wrap:wrap}
 .tab{border:1px solid var(--sea);background:transparent;color:#fff;padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
 .tab.on{background:var(--sea);font-weight:bold}
+.tab.help{border-style:dashed;margin-left:6px}
+.tab.help:hover{background:rgba(255,255,255,.12)}
 .spacer{flex:1}
 .actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{border:1px solid var(--sea);background:transparent;color:#fff;padding:7px 12px;border-radius:8px;cursor:pointer;font:inherit;font-size:12.5px}
@@ -54,8 +56,8 @@ header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wra
 
 .linkbtn{border:0;background:transparent;color:var(--teal);font:inherit;padding:0;cursor:pointer;text-decoration:underline}
 .linkbtn:hover{color:var(--dark)}
-dialog#a11y{border:0;border-radius:12px;padding:0;max-width:720px;width:calc(100% - 32px);color:var(--navy);background:#fff}
-dialog#a11y::backdrop{background:rgba(0,0,0,.5)}
+dialog#a11y,dialog#howtoDlg{border:0;border-radius:12px;padding:0;max-width:720px;width:calc(100% - 32px);color:var(--navy);background:#fff}
+dialog#a11y::backdrop,dialog#howtoDlg::backdrop{background:rgba(0,0,0,.5)}
 .a11y-body{position:relative;padding:22px 28px 18px;font-size:14px;line-height:1.55;max-height:85vh;overflow:auto}
 .a11y-body h2{margin:0 40px 10px 0;font-size:20px;color:var(--dark)}
 .a11y-body h3{margin:18px 0 6px;font-size:14.5px;color:var(--teal)}
@@ -63,7 +65,7 @@ dialog#a11y::backdrop{background:rgba(0,0,0,.5)}
 .a11y-body li{margin:3px 0}
 .a11y-body a{color:var(--teal)}
 .a11y-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:20px;line-height:30px;cursor:pointer;color:var(--navy)}
-@media print{dialog#a11y{display:none!important}}
+@media print{dialog#a11y,dialog#howtoDlg{display:none!important}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 .fprob{position:absolute;display:flex;align-items:center;justify-content:center;background:var(--dark);border-radius:10px;box-sizing:border-box;padding:8px 10px}
 .fprob .ntext{color:#fff;font-weight:bold;font-size:13px;text-align:center}
@@ -177,7 +179,7 @@ dialog#a11y::backdrop{background:rgba(0,0,0,.5)}
 .whogrid{display:flex;gap:8px;flex-wrap:wrap}
 .whocard{flex:1 1 140px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:10.5px;color:var(--grey)}
 .whocard b{display:block;color:var(--teal);font-size:11px;margin-bottom:1px}
-@media print{#who{display:none!important}#drvhelp{display:none!important}#howto{display:none!important}#pagebar{display:none!important}}
+@media print{#who{display:none!important}#drvhelp{display:none!important}#pagebar{display:none!important}}
 .legend{max-width:1120px;margin:8px auto 0;padding:0 4px;font-size:10.5px;color:var(--grey);display:flex;gap:18px;flex-wrap:wrap}
 .legend i{font-style:normal;color:var(--teal);font-weight:bold}
 footer{padding:14px 22px;font-size:11px;color:var(--teal)}
@@ -244,13 +246,14 @@ footer span{float:right;color:var(--grey)}
     <div class="eyebrow">SAMPLE WEBSITE &middot; QUALITY IMPROVEMENT</div>
     <h1>QIP Diagram Tool</h1>
   </div>
-  <div class="tabs" role="navigation" aria-label="Diagram type">
+  <div class="tabs" role="navigation" aria-label="Diagram type and help">
     <button class="tab" id="tabB" onclick="setMode('pitch')">Pitch</button>
     <button class="tab" id="tabG" onclick="setMode('grid')">2×2 Ideas</button>
     <button class="tab on" id="tabP" onclick="setMode('process')">Process Map</button>
     <button class="tab" id="tabW" onclick="setMode('whys')">5 Whys</button>
     <button class="tab" id="tabF" onclick="setMode('fish')">Fishbone</button>
     <button class="tab" id="tabD" onclick="setMode('driver')">Driver Diagram</button>
+    <button class="tab help" id="tabHelp" onclick="openHowTo()" aria-haspopup="dialog">? How to use</button>
   </div>
   <div class="spacer"></div>
   <div class="actions">
@@ -276,7 +279,6 @@ footer span{float:right;color:var(--grey)}
 <div id="livebar" role="status"></div>
 <main id="main">
 <div id="pagebar" role="navigation" aria-label="Pages"></div>
-<div id="howto"></div>
 <div class="hint" id="hint"></div>
 <div id="nodebar"></div>
 <div id="drvhelp"></div>
@@ -285,6 +287,16 @@ footer span{float:right;color:var(--grey)}
 <div class="legend" id="legend"></div>
 </main>
 
+<dialog id="howtoDlg" aria-labelledby="howtoTitle">
+  <div class="a11y-body">
+    <button class="a11y-close" onclick="closeHowTo()" aria-label="Close">&times;</button>
+    <h2 id="howtoTitle">How to use this tool</h2>
+    <p>A quick tour. Each diagram type also has its own short guidance above the drawing area &mdash; the <b>Hide guidance</b> button turns that on and off.</p>
+    <ul class="howlist" id="howtoList"></ul>
+    <p style="color:var(--grey);font-size:13px">Keyboard shortcuts are listed in the Accessibility statement, linked in the footer.</p>
+    <p><button class="tbtn" onclick="closeHowTo()">Close</button></p>
+  </div>
+</dialog>
 <dialog id="a11y" aria-labelledby="a11yTitle">
   <div class="a11y-body">
     <button class="a11y-close" onclick="closeA11y()" aria-label="Close accessibility statement">&times;</button>
@@ -323,7 +335,7 @@ footer span{float:right;color:var(--grey)}
     <p><button class="tbtn" onclick="closeA11y()">Close</button></p>
   </div>
 </dialog>
-<footer>Sample Website&nbsp; | &nbsp;Quality Improvement&nbsp; | &nbsp;<button class="linkbtn" onclick="openA11y()">Accessibility statement (WCAG 2.2 AA)</button> <span>Stages 1–2 of the QIP Roadmap — export the PNG into your slides or workbook</span></footer>
+<footer>Sample Website&nbsp; | &nbsp;Quality Improvement&nbsp; | &nbsp;<button class="linkbtn" onclick="openA11y()">Accessibility statement (WCAG 2.2 AA)</button></footer>
 
 <script>
 "use strict";
@@ -1268,6 +1280,9 @@ function render(){
   else if (state.mode === "fish") renderFish(board, svg, nodes);
   else renderDriver(board, svg, nodes);
   svg.setAttribute("width", 1120); svg.setAttribute("height", parseInt(board.style.height, 10) || 400);
+  // "Hide guidance" now means the same thing on every tab: the hint line, the legend and any help cards
+  $("hint").style.display = state.help ? "" : "none";
+  $("legend").style.display = state.help ? "" : "none";
   appendGuidanceToggle($("nodebar"));
   board.setAttribute("aria-label", (typeof MODE_LABEL !== "undefined" && MODE_LABEL[state.mode] ? MODE_LABEL[state.mode] : "Diagram") + " \u2014 reads left to right, top to bottom");
   document.querySelectorAll("#board button:not([aria-label]),#nodebar button:not([aria-label])").forEach(b => {
@@ -1276,7 +1291,6 @@ function render(){
     if (name) b.setAttribute("aria-label", name);
   });
   renderPages();
-  renderHowTo();
   applyScale();
   afterChange();
 }
@@ -1287,8 +1301,8 @@ function appendGuidanceToggle(bar){
   bar.appendChild(t);
 }
 const HOWTO = [
-  ["Five tabs, left to right", "Stage 1: Pitch (five sentences) \u00B7 2\u00D72 Ideas (what to test first). Stage 2: Process Map (what happens) \u2192 5 Whys (why) \u2192 Driver Diagram (what to change)."],
-  ["Pages = projects", "Each page is a separate project with its own diagrams. Tap \u270E on the page tab to name it \u2014 naming this one also dismisses this guide."],
+  ["Six tabs, left to right", "Stage 1: Pitch (five sentences) \u00B7 2\u00D72 Ideas (what to test first). Stage 2: Process Map (what happens) \u2192 5 Whys (why) \u2192 Fishbone (every likely cause) \u2192 Driver Diagram (what to change)."],
+  ["Pages = projects", "Each page is a separate project with its own diagrams. Tap \u270E on the page tab to name it."],
   ["+ New page", "Start another project, or a fresh page for cycle 2, without losing this one."],
   ["It saves itself", "Everything autosaves in this browser as you go \u2014 close the tab and it\u2019s still here next time."],
   ["Save file / Open\u2026 / Sign in with Google", "Download a portable copy, open one elsewhere, or sign in with Google to have your named projects follow you automatically."],
@@ -1296,17 +1310,6 @@ const HOWTO = [
   ["Download PNG / Print / PPTX", "PNG exports the current diagram as an image, Print makes a one-page PDF, and Download PPTX builds a full slide deck \u2014 one slide per diagram, for every page in the project."],
   ["Undo / Redo, top left", "Every change is one click to reverse, including Load example and Clear."]
 ];
-function renderHowTo(){
-  const el = $("howto");
-  const pg = state.pages[state.cur];
-  if (!state.help || !pg || pg.name !== "Page 1"){ el.style.display = "none"; return; }
-  el.style.display = "block";
-  el.innerHTML = '<div class="whoin"><div class="whohead">HOW TO USE THIS TOOL' +
-    '<a href="#" id="howtoRename">\u270E Name this page to dismiss \u2192</a></div>' +
-    '<div class="wholine">A quick tour \u2014 then make this page yours.</div>' +
-    '<ul class="howlist">' + HOWTO.map(h => '<li><b>' + h[0] + '</b> \u2014 ' + h[1] + '</li>').join('') + '</ul></div>';
-  $("howtoRename").onclick = e => { e.preventDefault(); renamePage(state.cur); };
-}
 if (state.fit === undefined) state.fit = true;
 if (state.help === undefined) state.help = true;
 function applyScale(){
@@ -1423,6 +1426,21 @@ function exportPNG(){
 }
 
 
+/* ---------- "How to use" dialog: the generic tour, on demand from the lozenge ---------- */
+let howtoOpener = null;
+function openHowTo(){
+  howtoOpener = document.activeElement;
+  const d = $("howtoDlg");
+  $("howtoList").innerHTML = HOWTO.map(h => '<li><b>' + h[0] + '</b> \u2014 ' + h[1] + '</li>').join('');
+  d.showModal();
+  const h = d.querySelector("h2"); h.setAttribute("tabindex", "-1"); h.focus();
+}
+function closeHowTo(){ const d = $("howtoDlg"); if (d.open) d.close(); }
+document.addEventListener("DOMContentLoaded", () => {
+  const d = $("howtoDlg"); if (!d) return;
+  d.addEventListener("close", () => { if (howtoOpener && howtoOpener.focus) howtoOpener.focus(); });
+  d.addEventListener("click", e => { if (e.target === d) d.close(); });
+});
 /* ---------- accessibility statement dialog (focus returns to the opener on close) ---------- */
 let a11yOpener = null;
 function openA11y(){
@@ -1849,6 +1867,10 @@ if (fbReady() && lsGet("aimqip.redirectPending")){
   if (window.requestIdleCallback) requestIdleCallback(preload, { timeout: 4000 }); else setTimeout(preload, 1500);
 }
 if (!bootToasted && hadLocal) showToast("Welcome back \u2014 your saved projects are just as you left them", 3200);
+if (!lsGet("aimqip.tourSeen")){
+  try { localStorage.setItem("aimqip.tourSeen", "1"); } catch (e) {}
+  setTimeout(() => { try { openHowTo(); howtoOpener = $("tabHelp"); } catch (e) {} }, 400);
+}
 </script>
 </body>
 </html>
