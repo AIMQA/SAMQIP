@@ -25,30 +25,29 @@ Plain HTML — no build step, no server code, no analytics, no cookies. Everythi
 | `SAM_ARCP_Evidence_Checklist.pdf` | RES-11 |
 | `.nojekyll` | Tells GitHub Pages to serve the files as they are. Keep it. |
 
-RES-04, the QIP Diagram Tool, is a separate site (https://aimqa.github.io/SAMQIP/) and is linked, not copied.
+RES-04, the QIP Diagram Tool, is not in this bundle — it is the site already at https://aimqa.github.io/SAMQIP/, which stays where it is.
 
 Every link between the pages and to the files is relative, so the whole folder must stay together and file names must not change. Rename a file and its resource row breaks.
 
-## Publish on GitHub Pages
+## Publish — a `hub` folder inside the existing SAMQIP repository
 
-1. Create a repository (public, or private on a plan that allows Pages), e.g. `SAMQIPHub`.
-2. Upload everything in this folder to the root of the repository — including `.nojekyll`, which some file managers hide.
-3. In the repository: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, folder `/ (root)`. Save.
-4. After a minute or two the site is live at `https://<account>.github.io/<repository>/`.
-   The hub is that address; the Learn page is `…/learn.html`; the checker is `…/SAM_Abstract_Compliance_Checker.html`.
+The Diagram Tool stays exactly where it is, at **https://aimqa.github.io/SAMQIP/**. The hub goes into a folder beside it, so it lives at **https://aimqa.github.io/SAMQIP/hub/** — same repository, nothing moved, no link anywhere goes dead.
 
-### One edit once you know the address
+1. In the `SAMQIP` repository, create a folder called `hub`.
+2. Upload everything in this bundle into that folder — including `.nojekyll`, which some file managers hide.
+3. Pages is already on for this repository, so a minute or two after the commit the hub is live at `https://aimqa.github.io/SAMQIP/hub/`. The Learn page is `…/SAMQIP/hub/learn.html` and the checker `…/SAMQIP/hub/SAM_Abstract_Compliance_Checker.html`. Every "Open the QIP Diagram Tool" link points at `https://aimqa.github.io/SAMQIP/`.
+4. Optional: add a link to the hub from the Diagram Tool's own page, so people arriving at the tool can find the kit.
 
-Link previews need an absolute image URL. In `index.html` and `learn.html` change the two `og:image` and two `twitter:image` values from `./SAM_QIP_Hub_og.png` / `./SAM_QIP_Learn_og.png` to the full address, e.g. `https://<account>.github.io/<repository>/SAM_QIP_Hub_og.png`. Nothing else depends on the address.
+Link-preview images, canonical URLs and `og:url` are already absolute for the `/hub/` address. If you would rather give the hub its own repository (for a shorter address), the only change is those six lines in `index.html` and `learn.html`.
 
 ## Updating the site
 
 - Edit the HTML directly and re-upload; there is nothing to build.
 - To update a kit file, replace it under the same name.
-- To add a completed project to the library, edit the "Completed projects from SAM members" section in `index.html` — the empty-state box comes out and a project card goes in. When the library passes about ten projects, move it to its own page.
+- The library section is the **kit-format shelf of the SAM Improvement Exchange**. To add a completed project, edit that section in `index.html` — copy the worked-example card (`article.entry`), fill it in, and remove the example and the empty-state box once real entries exist. When the shelf passes about ten projects, move it to its own page. Link to it from the Exchange page on the SAM website so the two are one front door.
 - The two pages share one stylesheet by copy (`<style>` block in each). If you change the look in one, make the same change in the other.
 - Version stamp lives in each page's footer ("Kit version 1.0 · page updated …").
 
 ## Contact rule built into the pages
 
-`quality.improvement@acutemedicine.org.uk` is used for three things only: joining the SAM QIP team, submitting a completed project for the library, and reporting a problem with the site (accessibility included). Everything else routes to local and regional teams — the Support section says so.
+`quality.improvement@acutemedicine.org.uk` is used for three things only: joining the SAM QIP team, submitting a completed project for the library, and reporting a problem with the site (accessibility included). Everything else routes to local and regional teams — the Support section says so. The address is shown in full with a Copy button rather than relying on a mail-app link, because `mailto:` buttons do nothing on machines with no mail app set up.

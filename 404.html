@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+  /* apply the saved theme before first paint, so there is no flash */
+  (function(){ try{ var t = localStorage.getItem('sam-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); }catch(e){} })();
+</script>
 <title>Page not found — SAM QIP Hub</title>
 <meta name="robots" content="noindex">
 <style>
   :root{ --paper:#faf9f7; --ink:#15151a; --ink-soft:#55555e; --accent:#036E3A; --line:#d8d6d1; }
-  @media (prefers-color-scheme: dark){ :root{ --paper:#0c0c0e; --ink:#f3f2ef; --ink-soft:#b0aea8; --accent:#7DD08F; --line:#2d2d30; } }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --paper:#0c0c0e; --ink:#f3f2ef; --ink-soft:#b0aea8; --accent:#7DD08F; --line:#2d2d30; } }
+  :root[data-theme="dark"]{ --paper:#0c0c0e; --ink:#f3f2ef; --ink-soft:#b0aea8; --accent:#7DD08F; --line:#2d2d30; }
   body{ margin:0; background:var(--paper); color:var(--ink); font-family:'Archivo','Helvetica Neue',Arial,sans-serif; line-height:1.6; }
   main{ max-width:38rem; margin:0 auto; padding:clamp(3rem,12vw,8rem) clamp(1.25rem,4vw,3rem); }
   p.eyebrow{ font-family:'IBM Plex Mono','SFMono-Regular',Consolas,monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin:0 0 .6rem; }
