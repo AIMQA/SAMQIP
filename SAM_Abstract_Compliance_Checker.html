@@ -7,7 +7,7 @@
   /* apply the saved theme before first paint, so there is no flash */
   (function(){ try{ var t = localStorage.getItem('sam-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); }catch(e){} })();
 </script>
-<title>SAM QI Abstract Compliance Checker</title>
+<title>DRAFT · SAM QI Abstract Compliance Checker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -54,6 +54,20 @@
   a{ color: inherit; }
   .wrap{ max-width: 56rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
   h1,h2,h3{ font-family: var(--font-display); font-weight: 500; text-wrap: balance; }
+  /* ============ Draft banner (remove this block, the .draft-banner element and the "DRAFT ·" title prefix once approved) ============ */
+  .draft-banner{
+    display:flex; justify-content:center; align-items:center; gap:0.5rem; flex-wrap:wrap;
+    background: #FBF2DF; color: #15151a; border-bottom:1px solid #E6C979;
+    font-family: var(--font-body); font-size:0.84rem; line-height:1.35; text-align:center;
+    padding:0.45rem clamp(1rem, 4vw, 3rem);
+  }
+  .draft-banner b{ font-family: var(--font-mono); letter-spacing:0.12em; font-weight:600; color:#7A5200; }
+  .draft-banner .dot{ width:0.55rem; height:0.55rem; border-radius:50%; background:#C98A00; flex:none; }
+  .draft-banner .short{ display:none; }
+  @media (max-width: 640px){ .draft-banner .long{ display:none; } .draft-banner .short{ display:inline; } }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .draft-banner{ background:#2b2210; color:#f3f2ef; border-color:#5a4410; } :root:not([data-theme="light"]) .draft-banner b{ color:#F0C860; } }
+  :root[data-theme="dark"] .draft-banner{ background:#2b2210; color:#f3f2ef; border-color:#5a4410; }
+  :root[data-theme="dark"] .draft-banner b{ color:#F0C860; }
   header.top{
     border-bottom: 1px solid var(--line);
     padding: 1.4rem 0;
@@ -170,6 +184,10 @@
 <body>
 
 <header class="top">
+  <div class="draft-banner" role="status">
+    <span class="dot" aria-hidden="true"></span>
+    <b>DRAFT</b> <span class="long">— this website is awaiting approval by the Society for Acute Medicine. Content may change and nothing here is yet SAM policy.</span><span class="short">— awaiting SAM approval</span>
+  </div>
   <div class="wrap">
     <a class="wordmark" href="./index.html">SAM QIP Hub <span class="tick">MDT QUALITY IMPROVEMENT</span></a>
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch between light and dark">

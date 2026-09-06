@@ -7,18 +7,18 @@
   /* apply the saved theme before first paint, so there is no flash */
   (function(){ try{ var t = localStorage.getItem('sam-theme'); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); }catch(e){} })();
 </script>
-<title>SAM QIP Hub</title>
+<title>DRAFT · SAM QIP Hub</title>
 <meta name="description" content="The Society for Acute Medicine’s home for quality improvement in acute medicine: a twelve-piece kit to run a QIP from first idea to SQUIRE write-up, the kit-format shelf of SAM’s Improvement Exchange, and where help comes from — unit, region, SAM.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://aimqa.github.io/SAMQIP/hub/">
-<link rel="canonical" href="https://aimqa.github.io/SAMQIP/hub/">
-<meta property="og:title" content="SAM QIP Hub">
+<meta property="og:url" content="https://aimqa.github.io/SAMQIP/">
+<link rel="canonical" href="https://aimqa.github.io/SAMQIP/">
+<meta property="og:title" content="DRAFT · SAM QIP Hub">
 <meta property="og:description" content="The SAM QIP kit, the kit-format shelf of SAM’s Improvement Exchange, and where help comes from. Built for the whole multidisciplinary team.">
-<meta property="og:image" content="https://aimqa.github.io/SAMQIP/hub/SAM_QIP_Hub_og.png">
+<meta property="og:image" content="https://aimqa.github.io/SAMQIP/SAM_QIP_Hub_og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://aimqa.github.io/SAMQIP/hub/SAM_QIP_Hub_og.png">
+<meta name="twitter:image" content="https://aimqa.github.io/SAMQIP/SAM_QIP_Hub_og.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23036E3A'/%3E%3Cpolyline points='6,23 12,19 17,21 22,13 26,9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,7 +75,7 @@
   /* ============ Reset ============ */
   *,*::before,*::after{ box-sizing: border-box; }
   html{ -webkit-text-size-adjust:100%; scroll-behavior: smooth; }
-  [id]{ scroll-margin-top: 4.75rem; }
+  [id]{ scroll-margin-top: 7rem; }
   body{
     margin:0;
     background: var(--paper);
@@ -118,6 +118,20 @@
     margin: 0;
   }
 
+  /* ============ Draft banner (remove this block, the .draft-banner element and the "DRAFT ·" title prefix once approved) ============ */
+  .draft-banner{
+    display:flex; justify-content:center; align-items:center; gap:0.5rem; flex-wrap:wrap;
+    background: #FBF2DF; color: #15151a; border-bottom:1px solid #E6C979;
+    font-family: var(--font-body); font-size:0.84rem; line-height:1.35; text-align:center;
+    padding:0.45rem clamp(1rem, 4vw, 3rem);
+  }
+  .draft-banner b{ font-family: var(--font-mono); letter-spacing:0.12em; font-weight:600; color:#7A5200; }
+  .draft-banner .dot{ width:0.55rem; height:0.55rem; border-radius:50%; background:#C98A00; flex:none; }
+  .draft-banner .short{ display:none; }
+  @media (max-width: 640px){ .draft-banner .long{ display:none; } .draft-banner .short{ display:inline; } }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .draft-banner{ background:#2b2210; color:#f3f2ef; border-color:#5a4410; } :root:not([data-theme="light"]) .draft-banner b{ color:#F0C860; } }
+  :root[data-theme="dark"] .draft-banner{ background:#2b2210; color:#f3f2ef; border-color:#5a4410; }
+  :root[data-theme="dark"] .draft-banner b{ color:#F0C860; }
   /* ============ Skip link ============ */
   .skip{
     position:absolute; left:-999px; top:0.6rem; z-index:100;
@@ -539,6 +553,10 @@
 <a class="skip" href="#top">Skip to content</a>
 
 <header class="site">
+  <div class="draft-banner" role="status">
+    <span class="dot" aria-hidden="true"></span>
+    <b>DRAFT</b> <span class="long">— this website is awaiting approval by the Society for Acute Medicine. Content may change and nothing here is yet SAM policy.</span><span class="short">— awaiting SAM approval</span>
+  </div>
   <div class="wrap nav-row">
     <a class="wordmark" href="#top">SAM QIP Hub <span class="tick">MDT QUALITY IMPROVEMENT</span></a>
     <div class="nav-right">
@@ -559,7 +577,7 @@
         <a href="#network">Support</a>
         <a href="#involved">Get involved</a>
         <a href="#about">About</a>
-        <a href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">Diagram Tool &#8599;</a>
+        <a href="https://aimqa.github.io/SAM-QI-diagram-tool/" target="_blank" rel="noopener">Diagram Tool &#8599;</a>
       </div>
     </details>
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch between light and dark">
@@ -582,7 +600,7 @@
         <p class="lede">The Society for Acute Medicine’s home for quality improvement in acute medicine — built around the whole multidisciplinary team, not one grade or profession. A kit to run a QIP from first idea to SQUIRE write-up, the kit-format shelf of SAM’s Improvement Exchange — completed projects another unit can copy — and a clear line on where help comes from: your unit first, your region next, SAM nationally.</p>
         <div class="cta-row">
           <a class="btn btn-solid" href="#resources">Open the kit &rarr;</a>
-          <a class="btn btn-line" href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">Open the QIP Diagram Tool &#8599;</a>
+          <a class="btn btn-line" href="https://aimqa.github.io/SAM-QI-diagram-tool/" target="_blank" rel="noopener">Open the QIP Diagram Tool &#8599;</a>
           <a class="btn btn-line" href="./learn.html">Learn the method</a>
           <a class="btn btn-line" href="#involved">Submit a finished project</a>
         </div>
@@ -665,7 +683,7 @@
           <h3>Plan — Roadmap stages 1 to 3</h3>
           <span class="hint">Pitch it, map it, draw it, aim it</span>
         </div>
-        <a class="resource-row" href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener noreferrer">
+        <a class="resource-row" href="https://aimqa.github.io/SAM-QI-diagram-tool/" target="_blank" rel="noopener noreferrer">
           <span class="code">RES-04</span>
           <div>
             <div class="title">QIP Diagram Tool</div>
@@ -989,18 +1007,18 @@
       </div>
       <div>
         <h4>Accessibility</h4>
-        <p>We aim to meet WCAG 2.2 AA: everything works with a keyboard, text can be resized to 200% without loss, colours meet contrast requirements, and the page respects your system’s dark mode and reduced-motion settings. The downloadable files are standard Office and PDF formats. If something here doesn’t work for you, email <a href="mailto:quality.improvement@acutemedicine.org.uk?subject=Accessibility%20problem%20with%20the%20SAM%20QIP%20Hub">quality.improvement@acutemedicine.org.uk</a> with “Accessibility” in the subject. The Diagram Tool has its own <a href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">accessibility statement</a>.</p>
+        <p>We aim to meet WCAG 2.2 AA: everything works with a keyboard, text can be resized to 200% without loss, colours meet contrast requirements, and the page respects your system’s dark mode and reduced-motion settings. The downloadable files are standard Office and PDF formats. If something here doesn’t work for you, email <a href="mailto:quality.improvement@acutemedicine.org.uk?subject=Accessibility%20problem%20with%20the%20SAM%20QIP%20Hub">quality.improvement@acutemedicine.org.uk</a> with “Accessibility” in the subject. The Diagram Tool has its own <a href="https://aimqa.github.io/SAM-QI-diagram-tool/" target="_blank" rel="noopener">accessibility statement</a>.</p>
         <h4>On this page</h4>
         <nav class="footer-index" aria-label="Sections">
           <a href="#resources">The kit</a><a href="#kit-start">Start</a><a href="#kit-plan">Plan</a><a href="#kit-measure">Measure &amp; test</a><a href="#kit-writeup">Write up</a>
           <a href="#library">Library</a><a href="./learn.html">Learn</a><a href="#network">Support</a><a href="#involved">Get involved</a><a href="#about">About</a>
         </nav>
         <h4>Tools</h4>
-        <p class="mono"><a href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">aimqa.github.io/SAMQIP</a> · <a href="./SAM_Abstract_Compliance_Checker.html" target="_blank" rel="noopener noreferrer">QI abstract checker</a></p>
+        <p class="mono"><a href="https://aimqa.github.io/SAM-QI-diagram-tool/" target="_blank" rel="noopener">aimqa.github.io/SAM-QI-diagram-tool</a> · <a href="./SAM_Abstract_Compliance_Checker.html" target="_blank" rel="noopener noreferrer">QI abstract checker</a></p>
       </div>
     </div>
     <div class="footer-stamp">
-      <span class="mono">Kit version 1.0 · page updated September 2026</span>
+      <span class="mono">Draft — awaiting SAM approval · Kit version 1.0 · page updated September 2026</span>
       <span class="mono">SQUIRE 2.0: Ogrinc G, et al. BMJ Qual Saf 2016;25:986–992 · <a href="#top">Back to top &uarr;</a></span>
     </div>
   </div>
