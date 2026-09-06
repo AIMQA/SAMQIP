@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn QI — SAM QIP Hub</title>
+<meta name="description" content="The quality-improvement method in five minutes — three questions, one PDSA loop, how to read a run chart, QI versus audit versus research — then a ladder of free and SAM-run training, what ARCP expects of AIM trainees, and the questions people actually ask.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Learn QI — SAM QIP Hub">
+<meta property="og:description" content="The method in five minutes, a training ladder, ARCP expectations for AIM trainees, and a FAQ.">
+<meta property="og:image" content="./SAM_QIP_Learn_og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./SAM_QIP_Learn_og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23036E3A'/%3E%3Cpolyline points='6,23 12,19 17,21 22,13 26,9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============ Tokens ============ */
+  :root{
+    --paper: #faf9f7;
+    --surface: #ffffff;
+    --surface-alt: #f1efec;
+    --ink: #15151a;
+    --ink-soft: #55555e;
+    --ink-faint: #8a8a92;
+    --line: #d8d6d1;
+    --line-strong: #a3a19b;
+    --shadow-line: rgba(21,21,26,0.06);
+    --accent: #036E3A;
+
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+    --measure: 42rem;
+    --edge: clamp(1.25rem, 4vw, 3.5rem);
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #0c0c0e;
+      --surface: #17171a;
+      --surface-alt: #131315;
+      --ink: #f3f2ef;
+      --ink-soft: #b0aea8;
+      --ink-faint: #7c7a75;
+      --line: #2d2d30;
+      --line-strong: #47474a;
+      --shadow-line: rgba(0,0,0,0.35);
+      --accent: #7DD08F;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #0c0c0e;
+    --surface: #17171a;
+    --surface-alt: #131315;
+    --ink: #f3f2ef;
+    --ink-soft: #b0aea8;
+    --ink-faint: #7c7a75;
+    --line: #2d2d30;
+    --line-strong: #47474a;
+    --shadow-line: rgba(0,0,0,0.35);
+    --accent: #7DD08F;
+  }
+
+  /* ============ Reset ============ */
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust:100%; scroll-behavior: smooth; }
+  [id]{ scroll-margin-top: 4.75rem; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color: inherit; }
+  h1,h2,h3,p,ul,ol,dl,figure{ margin:0; }
+  ul,ol{ padding:0; list-style:none; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight:500; text-wrap: balance; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .measure{ max-width: var(--measure); }
+
+  /* ============ Layout shells ============ */
+  .wrap{
+    max-width: 74rem;
+    margin: 0 auto;
+    padding-inline: var(--edge);
+  }
+  section{ padding-block: clamp(3.25rem, 7vw, 6rem); }
+  .rule{
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0;
+  }
+
+  /* ============ Skip link ============ */
+  .skip{
+    position:absolute; left:-999px; top:0.6rem; z-index:100;
+    background: var(--accent); color: var(--paper); padding:0.75rem 1rem;
+    font-size:0.9rem; font-weight:600; text-decoration:none; border-radius:4px;
+  }
+  .skip:focus{ left:0.6rem; outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  /* ============ Header ============ */
+  header.site{
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--paper);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-block: 0.9rem;
+    gap: 1.5rem;
+  }
+  .wordmark{
+    display:flex;
+    align-items:baseline;
+    gap:0.55rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration:none;
+  }
+  .wordmark .tick{
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  nav.primary{ display:flex; gap: clamp(1rem, 2vw, 1.85rem); }
+  nav.primary a{
+    font-size: 0.86rem;
+    text-decoration:none;
+    color: var(--ink-soft);
+    padding-block: 0.2rem;
+    border-bottom: 1px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  nav.primary a:hover, nav.primary a:focus-visible{ color: var(--accent); border-color: var(--accent); }
+  nav.primary a.active{ color: var(--accent); border-color: var(--accent); }
+  .nav-mobile{ display:none; position:relative; }
+  .nav-mobile summary{
+    list-style:none; cursor:pointer; font-size:0.86rem; font-weight:600; color: var(--ink);
+    border:1px solid var(--line-strong); padding:0.4rem 0.8rem; border-radius:4px; user-select:none;
+  }
+  .nav-mobile summary::-webkit-details-marker{ display:none; }
+  .nav-mobile[open] summary{ border-color: var(--accent); color: var(--accent); }
+  .nav-mobile .links{
+    position:absolute; right:0; top:calc(100% + 0.5rem); min-width: 13rem;
+    background: var(--surface); border:1px solid var(--line); box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    display:flex; flex-direction:column; padding:0.4rem 0; z-index:50;
+  }
+  .nav-mobile .links a{ padding:0.65rem 1rem; text-decoration:none; font-size:0.95rem; color: var(--ink); }
+  .nav-mobile .links a:hover, .nav-mobile .links a:focus-visible{ background: var(--surface-alt); color: var(--accent); }
+  @media (max-width: 640px){
+    nav.primary{ display:none; }
+    .nav-mobile{ display:block; }
+    .wordmark{ white-space:nowrap; padding-block:0.55rem; }
+    .wordmark .tick{ display:none; }
+  }
+
+
+  /* ============ Hero ============ */
+  .hero{
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 10vw, 7.5rem) clamp(2.5rem, 6vw, 4rem);
+    background-image:
+      linear-gradient(var(--shadow-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--shadow-line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    background-position: center top;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: end;
+  }
+  @media (max-width: 860px){
+    .hero-grid{ grid-template-columns: 1fr; }
+  }
+  .hero h1{
+    font-size: clamp(2.3rem, 5.6vw, 4rem);
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    margin-block: 0.9rem 1.1rem;
+  }
+  .hero h1 em{ font-style: italic; font-weight: 500; }
+  .hero p.lede{
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    max-width: 34rem;
+  }
+  .cta-row{ display:flex; flex-wrap:wrap; gap: 0.85rem; margin-top: 1.9rem; }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 0.72rem 1.15rem;
+    text-decoration:none;
+    border: 1px solid var(--accent);
+    transition: background .15s ease, color .15s ease, opacity .15s ease;
+  }
+  .btn-solid{ background: var(--accent); color: var(--paper); }
+  .btn-solid:hover{ opacity: 0.82; }
+  .btn-line{ background:transparent; color: var(--accent); }
+  .btn-line:hover{ background: var(--surface-alt); }
+
+  .chart-figure{
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 1.1rem 1.1rem 0.9rem;
+  }
+  .chart-figure figcaption{
+    display:flex;
+    justify-content:space-between;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--line);
+  }
+  .trace-line{ stroke: var(--accent); }
+  .trace-median{ stroke: var(--ink-faint); }
+  .trace-point{ fill: var(--paper); stroke: var(--accent); }
+
+  /* ============ Section headings ============ */
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .section-head h2{ font-size: clamp(1.65rem, 3.4vw, 2.35rem); margin-top: 0.5rem; }
+  .section-head .count{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    padding-bottom: 0.35rem;
+  }
+
+  /* ============ About ============ */
+  .about-cols{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
+  @media (max-width: 760px){ .about-cols{ grid-template-columns: 1fr; } }
+  .about-cols p + p{ margin-top: 1rem; }
+  .about-cols p{ color: var(--ink-soft); }
+  dl.stats{ display:grid; grid-template-columns: repeat(2,1fr); gap: 1.4rem 1.6rem; align-content:start; }
+  dl.stats div{ border-top: 1px solid var(--line); padding-top: 0.6rem; }
+  dl.stats dt{ font-family: var(--font-mono); font-size: 0.68rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); }
+  dl.stats dd{ font-family: var(--font-display); font-size: 1.7rem; margin-top:0.15rem; }
+
+  /* ============ Network ============ */
+  .site-list{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .site-card{
+    background: var(--surface);
+    padding: 1.15rem 1.25rem;
+    display:flex;
+    flex-direction:column;
+    gap: 0.4rem;
+  }
+  .site-card .code{ font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); letter-spacing:0.06em; }
+  .site-card .name{ font-size: 0.95rem; line-height:1.35; }
+  .network-note{ margin-top: 1.25rem; color: var(--ink-faint); font-size: 0.85rem; }
+
+  /* ============ Support tiers ============ */
+  .tiers{ display:grid; grid-template-columns: repeat(3,1fr); gap: 1.15rem; }
+  @media (max-width: 860px){ .tiers{ grid-template-columns: 1fr; } }
+  .tier{ border:1px solid var(--line); background: var(--surface); padding: 1.4rem 1.4rem 1.5rem; display:flex; flex-direction:column; gap:0.7rem; }
+  .tier .code{ font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); letter-spacing:0.06em; }
+  .tier h3{ font-size: 1.2rem; font-weight: 500; }
+  .tier p{ color: var(--ink-soft); font-size: 0.92rem; }
+  .tier .proglist{ list-style:none; padding:0; display:flex; flex-direction:column; gap:0.45rem; }
+  .tier .proglist li{ font-size:0.88rem; color: var(--ink-soft); padding-left:0.9rem; text-indent:-0.9rem; }
+  .tier .proglist li::before{ content:"·"; color: var(--accent); margin-right:0.5rem; }
+  .tier .proglist a{ font-weight:600; color: var(--ink); text-decoration:underline; text-underline-offset:2px; }
+  .tier .when{ margin-top:auto; padding-top:0.8rem; border-top:1px solid var(--line); font-size:0.84rem; color: var(--ink); }
+  .tier .when b{ font-family: var(--font-mono); font-weight:500; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); display:block; margin-bottom:0.25rem; }
+
+  /* ============ Library empty state ============ */
+  .empty{
+    border:1px dashed var(--line-strong); background: var(--surface);
+    padding: 1.5rem 1.6rem; margin-bottom: 2.25rem;
+    display:flex; justify-content:space-between; align-items:center; gap:1.5rem; flex-wrap:wrap;
+  }
+  .empty h3{ font-size:1.15rem; margin-bottom:0.35rem; }
+  .empty p{ color: var(--ink-soft); font-size:0.92rem; max-width: 36rem; }
+  .sdec{ display:grid; grid-template-columns: 1.1fr 1fr; gap:1.15rem; border:1px solid var(--accent); background: var(--surface); padding:1.5rem 1.6rem; margin-bottom:1.15rem; }
+  @media (max-width: 860px){ .sdec{ grid-template-columns: 1fr; } }
+  .sdec .tag{ font-family: var(--font-mono); font-size:0.68rem; letter-spacing:0.08em; color: var(--accent); }
+  .sdec h3{ font-size:1.5rem; margin:0.4rem 0 0.6rem; }
+  .sdec p{ color: var(--ink-soft); font-size:0.94rem; }
+  .sdec .ideas{ display:grid; grid-template-columns: 1fr 1fr; gap:1px; background: var(--line); border:1px solid var(--line); align-self:start; }
+  @media (max-width: 520px){ .sdec .ideas{ grid-template-columns: 1fr; } }
+  .sdec .idea{ background: var(--surface-alt); padding:0.9rem 1rem; font-size:0.86rem; color: var(--ink-soft); }
+  .sdec .idea b{ display:block; color: var(--ink); margin-bottom:0.2rem; }
+  .qip-card.standards{ margin-bottom:0.5rem; }
+  .qip-card.standards p{ font-size:0.95rem; line-height:1.7; }
+  .sub-head{ font-family: var(--font-mono); font-size: 0.72rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); margin: 0 0 1rem; }
+
+  /* ============ QIP library ============ */
+  .qip-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+    gap: 1.15rem;
+  }
+  .qip-card{
+    border: 1px solid var(--line);
+    padding: 1.35rem 1.35rem 1.5rem;
+    display:flex;
+    flex-direction:column;
+    gap: 0.65rem;
+    background: var(--surface);
+  }
+  .qip-card .tag{
+    align-self:flex-start;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing:0.08em;
+    color: var(--ink-faint);
+    border: 1px solid var(--line);
+    padding: 0.18rem 0.5rem;
+  }
+  .qip-card h3{ font-size: 1.15rem; font-weight:500; }
+  .qip-card p{ color: var(--ink-soft); font-size: 0.92rem; }
+
+  /* ============ Resources ============ */
+  .resource-list{ border-top: 1px solid var(--line); }
+  .resource-row{
+    display:grid;
+    grid-template-columns: 6rem 1fr 6rem;
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 1.05rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+  }
+  a.resource-row:hover{ background: var(--surface-alt); }
+  .resource-row .code{ font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-faint); }
+  .resource-row .title{ font-size: 1rem; font-weight: 600; }
+  .resource-row .desc{ color: var(--ink-soft); font-size: 0.88rem; margin-top:0.2rem; }
+  .resource-row .format{ font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); text-align:right; }
+  @media (max-width: 620px){
+    .resource-row{ grid-template-columns: 1fr; gap: 0.3rem; }
+    .resource-row .format{ text-align:left; }
+  }
+
+  .jump{ display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem; margin: -0.5rem 0 1.25rem; }
+  .jump span{ font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); margin-right:0.25rem; }
+  .jump a{ font-size:0.82rem; font-weight:600; text-decoration:none; color: var(--ink-soft); border:1px solid var(--line); padding:0.38rem 0.75rem; border-radius:999px; }
+  .jump a:hover, .jump a:focus-visible{ border-color: var(--accent); color: var(--accent); }
+  .res-group{ display:flex; justify-content:space-between; align-items:baseline; gap:1rem; flex-wrap:wrap; padding: 1.9rem 0 0.55rem; border-bottom: 2px solid var(--ink); }
+  .res-group h3{ font-family: var(--font-body); font-size:0.95rem; font-weight:700; letter-spacing:0.01em; }
+  .res-group .hint{ font-family: var(--font-mono); font-size:0.72rem; color: var(--ink-faint); }
+  .resource-list .res-group:first-child{ padding-top:0; }
+
+  /* ============ Get involved ============ */
+  .steps{ display:grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line); border:1px solid var(--line); }
+  @media (max-width: 860px){ .steps{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 520px){ .steps{ grid-template-columns: 1fr; } }
+  .step{ background: var(--surface); padding: 1.5rem 1.35rem; display:flex; flex-direction:column; gap:0.6rem; }
+  .step .n{ font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); }
+  .step h3{ font-size: 1rem; font-weight: 600; font-family: var(--font-body); }
+  .step p{ color: var(--ink-soft); font-size: 0.88rem; }
+
+  .involved-cta{
+    margin-top: 2.25rem;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap: 1.25rem;
+    border: 1px solid var(--accent);
+    padding: 1.5rem 1.75rem;
+  }
+  .involved-cta p{ max-width: 28rem; color: var(--ink-soft); font-size: 0.94rem; }
+  .involved-cta h3{ font-size: 1.2rem; }
+
+  /* ============ Footer ============ */
+  footer{ border-top: 1px solid var(--line); padding-block: 2.5rem; }
+  .footer-grid{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+  footer a{ color: var(--ink-soft); text-decoration:underline; text-underline-offset:2px; }
+  footer .mono{ font-family: var(--font-mono); font-size: 0.75rem; }
+  .footer-cols{ display:grid; grid-template-columns: 1.2fr 1fr; gap: clamp(1.5rem, 4vw, 4rem); }
+  @media (max-width: 760px){ .footer-cols{ grid-template-columns: 1fr; } }
+  .footer-cols h4{ font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); font-weight:500; margin-bottom:0.5rem; }
+  .footer-cols p{ font-size:0.84rem; color: var(--ink-soft); margin-bottom:0.8rem; }
+  .footer-cols p:last-child{ margin-bottom:0; }
+  .footer-stamp{ margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .routes{ display:grid; grid-template-columns: repeat(4,1fr); gap:1px; background: var(--line); border:1px solid var(--line); }
+  @media (max-width: 860px){ .routes{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 520px){ .routes{ grid-template-columns: 1fr; } }
+  .route{ background: var(--surface); padding:1.15rem 1.25rem; font-size:0.88rem; color: var(--ink-soft); }
+  .route b{ display:block; color: var(--ink); margin-bottom:0.3rem; font-size:0.95rem; }
+  .route a{ text-decoration:underline; text-underline-offset:2px; }
+  .footer-index{ display:flex; flex-wrap:wrap; gap:0.35rem 1.1rem; margin-bottom:0.8rem; }
+  .footer-index a{ font-size:0.84rem; text-decoration:none; color: var(--ink-soft); border-bottom:1px solid var(--line); }
+  .footer-index a:hover{ color: var(--accent); border-color: var(--accent); }
+  /* ============ Touch ergonomics ============ */
+  @media (pointer: coarse), (max-width: 640px){
+    .btn{ min-height: 44px; }
+    nav.primary a{ padding-block: 0.7rem; }
+    .wordmark{ padding-block: 0.4rem; }
+    .nav-mobile summary{ min-height: 44px; display:flex; align-items:center; }
+    .nav-mobile .links a{ padding: 0.85rem 1rem; }
+    .jump a{ min-height: 44px; display:inline-flex; align-items:center; padding-inline: 0.9rem; }
+    .routes{ display:grid; grid-template-columns: repeat(4,1fr); gap:1px; background: var(--line); border:1px solid var(--line); }
+  @media (max-width: 860px){ .routes{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 520px){ .routes{ grid-template-columns: 1fr; } }
+  .route{ background: var(--surface); padding:1.15rem 1.25rem; font-size:0.88rem; color: var(--ink-soft); }
+  .route b{ display:block; color: var(--ink); margin-bottom:0.3rem; font-size:0.95rem; }
+  .route a{ text-decoration:underline; text-underline-offset:2px; }
+  .footer-index{ gap: 0.5rem 0.75rem; }
+    .footer-index a{ display:inline-flex; align-items:center; min-height: 44px; padding-inline: 0.35rem; border-bottom:none; background: var(--surface-alt); border-radius:4px; }
+    .resource-row{ padding: 1.15rem 0; }
+    .eyebrow, .res-group .hint, .resource-row .format, .resource-row .code, .jump span, .chart-figure figcaption,
+    .tier .code, .qip-card .tag, .section-head .count, dl.stats dt, .footer-cols h4, .site-card .code, .step .n, .sub-head, .tier .when b{ font-size: 0.78rem; }
+  }
+
+  /* ============ Learn page ============ */
+  .primer{ display:grid; grid-template-columns: repeat(2,1fr); gap: 1.15rem; }
+  @media (max-width: 860px){ .primer{ grid-template-columns: 1fr; } }
+  .pcard{ border:1px solid var(--line); background: var(--surface); padding: 1.5rem 1.5rem 1.6rem; display:flex; flex-direction:column; gap:0.75rem; }
+  .pcard.wide{ grid-column: 1 / -1; }
+  .pcard .code{ font-family: var(--font-mono); font-size:0.72rem; color: var(--ink-faint); letter-spacing:0.06em; }
+  .pcard h3{ font-size:1.3rem; font-weight:500; }
+  .pcard p, .pcard li{ color: var(--ink-soft); font-size:0.94rem; }
+  .pcard ol{ list-style: decimal; padding-left: 1.3rem; display:flex; flex-direction:column; gap:0.45rem; }
+  .pcard ul{ list-style: disc; padding-left: 1.2rem; display:flex; flex-direction:column; gap:0.4rem; }
+  .pcard .kit{ margin-top:auto; padding-top:0.8rem; border-top:1px solid var(--line); font-size:0.84rem; color: var(--ink); }
+  .pcard .kit b{ font-family: var(--font-mono); font-weight:500; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); display:block; margin-bottom:0.25rem; }
+  .pcard a{ text-decoration: underline; text-underline-offset: 2px; }
+  .runchart{ border:1px solid var(--line); background: var(--surface-alt); padding:0.9rem; }
+  .runchart svg{ width:100%; height:auto; }
+  .rc-line{ stroke: var(--accent); }
+  .rc-median{ stroke: var(--ink-faint); }
+  .rc-pt{ fill: var(--paper); stroke: var(--accent); }
+  .rc-txt{ font-family: var(--font-mono); font-size: 7px; fill: var(--ink-faint); }
+  .rc-shift{ fill: var(--accent); opacity: 0.12; }
+
+  .ladder{ counter-reset: rung; border-top:1px solid var(--line); }
+  .rung{ display:grid; grid-template-columns: 4rem 1fr; gap:1.25rem; padding:1.4rem 0; border-bottom:1px solid var(--line); }
+  @media (max-width: 620px){ .rung{ grid-template-columns: 1fr; gap:0.3rem; } }
+  .rung .n{ font-family: var(--font-display); font-size:1.8rem; color: var(--accent); line-height:1; }
+  .rung h3{ font-size:1.1rem; font-weight:600; font-family: var(--font-body); margin-bottom:0.35rem; }
+  .rung p{ color: var(--ink-soft); font-size:0.93rem; }
+  .rung p + p{ margin-top:0.45rem; }
+  .rung a{ text-decoration: underline; text-underline-offset:2px; }
+  .rung .tag{ font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase; color: var(--ink-faint); margin-left:0.4rem; }
+
+  table.arcp{ width:100%; min-width: 38rem; border-collapse:collapse; font-size:0.92rem; }
+  table.arcp th, table.arcp td{ text-align:left; vertical-align:top; padding:0.85rem 0.9rem; border-bottom:1px solid var(--line); }
+  table.arcp th{ font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); font-weight:500; border-bottom:2px solid var(--ink); }
+  table.arcp td:first-child{ font-weight:700; white-space:nowrap; }
+  table.arcp td{ color: var(--ink-soft); }
+  .table-wrap{ overflow-x:auto; border:1px solid var(--line); background: var(--surface); }
+  .twocol{ display:grid; grid-template-columns: 1fr 1fr; gap:1.15rem; margin-top:1.15rem; }
+  @media (max-width: 760px){ .twocol{ grid-template-columns: 1fr; } }
+  .twocol .pcard ul li::marker{ color: var(--accent); }
+  .twocol .pcard.bad ul li::marker{ color: #A33327; }
+
+  .faq details{ border-bottom:1px solid var(--line); }
+  .faq details:first-child{ border-top:1px solid var(--line); }
+  .faq summary{ cursor:pointer; list-style:none; padding:1rem 0; font-weight:600; font-size:1rem; display:flex; justify-content:space-between; gap:1rem; align-items:center; }
+  .faq summary::-webkit-details-marker{ display:none; }
+  .faq summary::after{ content:"+"; font-family: var(--font-mono); color: var(--accent); font-size:1.2rem; flex:none; }
+  .faq details[open] summary::after{ content:"–"; }
+  .faq details p{ color: var(--ink-soft); font-size:0.94rem; padding:0 0 1.1rem; max-width: var(--measure); }
+  .faq details p + p{ margin-top:-0.5rem; }
+  .faq a{ text-decoration: underline; text-underline-offset:2px; }
+
+  .orgs{ display:grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap:1px; background: var(--line); border:1px solid var(--line); }
+  .org{ background: var(--surface); padding:1.15rem 1.25rem; display:flex; flex-direction:column; gap:0.35rem; text-decoration:none; }
+  .org:hover{ background: var(--surface-alt); }
+  .org .name{ font-weight:600; }
+  .org .what{ font-size:0.86rem; color: var(--ink-soft); }
+  @media (pointer: coarse), (max-width: 640px){
+    .faq summary{ min-height:44px; }
+    .pcard .code, .rung .tag, .rc-txt{ font-size:0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#top">Skip to content</a>
+
+<header class="site">
+  <div class="wrap nav-row">
+    <a class="wordmark" href="./index.html">SAM QIP Hub <span class="tick">MDT QUALITY IMPROVEMENT</span></a>
+    <nav class="primary" aria-label="Primary">
+      <a href="./index.html#resources">Kit</a>
+      <a href="./index.html#library">Library</a>
+      <a href="#top" class="active">Learn</a>
+      <a href="./index.html#network">Support</a>
+      <a href="./index.html#involved">Get involved</a>
+      <a href="./index.html#about">About</a>
+    </nav>
+    <details class="nav-mobile">
+      <summary aria-label="Open menu">Menu</summary>
+      <div class="links">
+        <a href="./index.html#resources">Kit</a>
+        <a href="./index.html#library">Library</a>
+        <a href="#top">Learn</a>
+        <a href="./index.html#network">Support</a>
+        <a href="./index.html#involved">Get involved</a>
+        <a href="./index.html#about">About</a>
+        <a href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">Diagram Tool &#8599;</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">SAM QIP Hub · Learn</p>
+        <h1>The method in<br>five minutes —<br><em>then as far as you like.</em></h1>
+        <p class="lede">Everything the kit assumes you already know, on one page. Read the first section before you pitch. Come back for the ladder when you want to go deeper, the ARCP section when your portfolio needs it, and the FAQ when someone on the ward asks you the question you can’t quite answer.</p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="#primer">Five-minute primer &rarr;</a>
+          <a class="btn btn-line" href="#arcp">What ARCP expects</a>
+          <a class="btn btn-line" href="./index.html#resources">Back to the kit</a>
+        </div>
+      </div>
+      <figure class="chart-figure" aria-hidden="false">
+        <div class="runchart"><svg viewBox="0 0 320 110" role="img" aria-label="Run chart: eight baseline weeks scatter around a median of about 61; after the change, eight consecutive weeks fall below the median, which is a shift">
+      <rect class="rc-shift" x="156" y="20" width="138" height="70"/>
+      <line class="rc-median" x1="14" y1="61" x2="306" y2="61" stroke-width="1" stroke-dasharray="3 3"/>
+      <text class="rc-txt" x="14" y="57">baseline median</text>
+      <line class="rc-line" x1="153" y1="22" x2="153" y2="92" stroke-width="1" stroke-dasharray="2 2"/>
+      <text class="rc-txt" x="156" y="28">change</text>
+      <polyline class="rc-line" fill="none" stroke-width="1.5" points="18,62 36,58 54,66 72,60 90,55 108,64 126,59 144,63 162,54 180,47 198,44 216,40 234,42 252,36 270,38 288,33"/>
+      <circle class="rc-pt" r="2.4" cx="18" cy="62" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="36" cy="58" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="54" cy="66" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="72" cy="60" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="90" cy="55" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="108" cy="64" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="126" cy="59" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="144" cy="63" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="162" cy="54" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="180" cy="47" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="198" cy="44" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="216" cy="40" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="234" cy="42" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="252" cy="36" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="270" cy="38" stroke-width="1.2"/><circle class="rc-pt" r="2.4" cx="288" cy="33" stroke-width="1.2"/>
+      <text class="rc-txt" x="180" y="102">8 points below the median = a shift</text>
+      <text class="rc-txt" x="14" y="102">weeks &rarr;</text>
+    </svg></div>
+        <figcaption><span>Run chart &middot; what a real signal looks like</span><span>Baseline &rarr; change &rarr; shift</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ PRIMER ============ -->
+  <section id="primer">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Five minutes</p>
+          <h2>Four things the whole method rests on</h2>
+        </div>
+        <p class="count">Model for Improvement</p>
+      </div>
+
+      <div class="primer">
+        <div class="pcard">
+          <span class="code">01 · THREE QUESTIONS</span>
+          <h3>Ask these before anything else</h3>
+          <ol>
+            <li><b>What are we trying to accomplish?</b> One aim, with a number and a date: from [X] to [Y] by [when].</li>
+            <li><b>How will we know a change is an improvement?</b> One outcome measure, one process measure, one balancing measure — and a baseline before you change anything.</li>
+            <li><b>What change can we make that will result in improvement?</b> Sort your ideas on a quick 2×2 (impact against ease) and pick <em>one</em> quick win for cycle 1.</li>
+          </ol>
+          <p>That is the Model for Improvement (Langley and colleagues, <em>The Improvement Guide</em>) — the framework behind the Roadmap, IHI, NHS QSIR and almost every course on the ladder below.</p>
+          <div class="kit"><b>In the kit</b><a href="./index.html#kit-plan">SMART aim builder</a> for question 1 · the Workbook’s Data Plan tab for question 2 · the <a href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">Diagram Tool</a>’s 2×2 for question 3.</div>
+        </div>
+
+        <div class="pcard">
+          <span class="code">02 · ONE PDSA LOOP</span>
+          <h3>Test small, then go round again</h3>
+          <ul>
+            <li><b>Plan</b> — write your prediction down <em>before</em> you launch. “Completion rises from 60% to 80% within four weeks.”</li>
+            <li><b>Do</b> — one change, one ward, a dated start. If it needs a committee, it is too big for cycle 1.</li>
+            <li><b>Study</b> — compare what happened with what you predicted, on the run chart, not from memory.</li>
+            <li><b>Act</b> — keep, tweak or drop. Cycle 2 should be smaller and sharper than cycle 1.</li>
+          </ul>
+          <p>One loop of the Roadmap is one PDSA cycle: Stages 1–3 are Plan, 4 is Do, 5 is Study, 6–7 are Act. A first QIP with two honest cycles beats one big-bang change every time.</p>
+          <div class="kit"><b>In the kit</b>The Workbook’s PDSA Log, or the <a href="./index.html#kit-measure">PDSA worksheet</a> — one or the other, not both.</div>
+        </div>
+
+        <div class="pcard">
+          <span class="code">03 · READING A RUN CHART</span>
+          <h3>Know a signal from noise</h3>
+          <ul>
+            <li>Plot every week, baseline and after, with an arrow at the change. Draw the median of the <em>baseline</em> points.</li>
+            <li><b>A shift</b> — six or more consecutive points on one side of the median — is a real change.</li>
+            <li><b>A trend</b> — five or more consecutive points all rising or all falling — is a real change.</li>
+            <li>One dip is not a signal. Neither is one good week. Wait for 6–8 post-change points before the team decides — six is also the smallest run that can show a shift.</li>
+          </ul>
+          <p>Those rules come from Perla, Provost and Murray (<em>BMJ Quality &amp; Safety</em> 2011) and need no statistics. When you want control limits as well, the Run chart / SPC sheet draws them for you.</p>
+          <div class="kit"><b>In the kit</b>The Workbook’s Data Log draws a plain run chart; <a href="./index.html#kit-measure">RES-07</a> adds the median, shift signals and moving-range limits.</div>
+        </div>
+
+        <div class="pcard">
+          <span class="code">04 · QI, AUDIT OR RESEARCH?</span>
+          <h3>Settle the label, then count — don’t name</h3>
+          <ul>
+            <li><b>Quality improvement</b> — “how do we improve how we do it here?” You change something and measure the effect locally. Register with your trust’s clinical audit or QI office. No ethics committee.</li>
+            <li><b>Clinical audit</b> — “are we meeting the standard?” Measuring against an agreed standard with no change being tested. Register with the audit team.</li>
+            <li><b>Research</b> — “what should best practice be?” New, generalisable knowledge. Needs HRA / ethics approval <em>before</em> you start — speak to the R&amp;D office.</li>
+          </ul>
+          <p>Not sure? The <a href="https://www.hra-decisiontools.org.uk/research/" target="_blank" rel="noopener">HRA decision tool</a> settles it in five clicks. Whichever label applies: no patient-identifiable data in workbooks, e-mails or on personal devices. If you genuinely need identifiers, use trust systems only and ask your IG team first.</p>
+          <div class="kit"><b>In the kit</b>The <a href="./index.html#kit-measure">Audit data template</a> is the one file built for patient-level data — which is why it stays on NHS systems.</div>
+        </div>
+
+        <div class="pcard wide">
+          <span class="code">05 · WHO SPEAKS FOR PATIENTS?</span>
+          <h3>Even one conversation counts</h3>
+          <p>Ask a patient or carer what the problem looks like from the bed — one conversation, or a PALS or friends-and-family theme, is enough for a first project, and it changes what you choose to fix. If your unit wants a proper patient-reported measure, SAM already runs one: <a href="https://www.acutemedicine.org.uk/sampler/" target="_blank" rel="noopener">SAM-PLER</a> collects patient-reported experience in acute medicine and gives you a measure you didn’t have to invent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ LADDER ============ -->
+  <section id="ladder">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Go further</p>
+          <h2>A ladder, not a syllabus</h2>
+        </div>
+        <p class="count">Free first, then SAM’s own courses</p>
+      </div>
+      <p class="network-note" style="margin-top:-0.5rem; margin-bottom:1.5rem;">Nothing here is dated; course dates and booking live on SAM’s own pages so this page never goes stale.</p>
+
+      <div class="ladder">
+        <div class="rung">
+          <span class="n">1</span>
+          <div>
+            <h3>Start with the kit <span class="tag">30 minutes · free</span></h3>
+            <p>The <a href="./index.html#kit-start">Roadmap</a> and the primer above. That is enough to pitch, plan and run a first project — most people never need more than this and the people around them.</p>
+          </div>
+        </div>
+        <div class="rung">
+          <span class="n">2</span>
+          <div>
+            <h3>Learn the method properly, at your own pace <span class="tag">free</span></h3>
+            <p>The <a href="https://learn.nes.nhs.scot/741/quality-improvement-zone" target="_blank" rel="noopener">NES Quality Improvement Zone</a> has four free learner pathways — Kickstart QI, QI Essentials, Practical QI and Managing QI — open to anyone with an NHS or NES login, and its tools library is the best free one there is. <a href="https://www.hqip.org.uk/guidance/guide-to-quality-improvement-methods/" target="_blank" rel="noopener">HQIP’s Guide to Quality Improvement Methods</a> explains ten methods, when each fits, and when it doesn’t.</p>
+            <p>The <a href="https://rcem.ac.uk/wp-content/uploads/2022/09/RCEM_Quality_Improvement_Guide_2022_v4.pdf" target="_blank" rel="noopener">RCEM Quality Improvement Guide</a> was written for emergency medicine trainees and supervisors and is still the best short practical guide in print. <a href="https://tipsqi.co.uk/" target="_blank" rel="noopener">TIPSQI</a> is trainee-led QI guidance and training for NHS doctors.</p>
+          </div>
+        </div>
+        <div class="rung">
+          <span class="n">3</span>
+          <div>
+            <h3>SAM’s own courses <span class="tag">with Aqua</span></h3>
+            <p><b>Acute Medics as Improvers</b> — fundamental QI skills for resident doctors, ACPs and PAs in acute medicine, built around Same Day Emergency Care and delivered with the Advancing Quality Alliance. <b>Acute Medics Leading Improvement</b> — the advanced programme for those leading change. Both, with current dates and booking, are on <a href="https://www.acutemedicine.org.uk/quality-improvement-2/" target="_blank" rel="noopener">SAM’s quality improvement page</a>, which also covers QI certification.</p>
+            <p>If you want a large catalogue with certificates, <a href="https://www.ihi.org/learn/courses/open-school" target="_blank" rel="noopener">IHI Open School</a> has thirty-plus self-paced courses on improvement and safety (subscription; many trusts hold a licence — ask your QI team).</p>
+          </div>
+        </div>
+        <div class="rung">
+          <span class="n">4</span>
+          <div>
+            <h3>Write it up so it travels <span class="tag">stage 6</span></h3>
+            <p><a href="https://www.squire-statement.org/" target="_blank" rel="noopener">SQUIRE 2.0</a> is the reporting standard; the kit’s <a href="./index.html#kit-writeup">Reporting Guide and Presentation Template</a> walk you through all eighteen items. Finished projects can go to the <a href="https://acutemedjournal.co.uk/" target="_blank" rel="noopener">Acute Medicine journal</a> or <a href="https://bmjopenquality.bmj.com/" target="_blank" rel="noopener">BMJ Open Quality</a>, which exists for exactly this kind of work; East London’s <a href="https://qi.elft.nhs.uk/resources/qi-library/" target="_blank" rel="noopener">QI library</a> includes a practical guide to publishing QI work. And send it to the <a href="./index.html#involved">SAM library</a>.</p>
+          </div>
+        </div>
+        <div class="rung">
+          <span class="n">5</span>
+          <div>
+            <h3>Lead <span class="tag">stage 7 and beyond</span></h3>
+            <p>Own the next cycle, then a unit QI team, then a regional one. When you want to shape the national picture, <a href="mailto:quality.improvement@acutemedicine.org.uk?subject=Joining%20the%20SAM%20QIP%20team">join the SAM QIP team</a> — that, and submitting a finished project, are the two things the SAM inbox is for.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ ARCP ============ -->
+  <section id="arcp">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">For AIM trainees</p>
+          <h2>What ARCP expects, ST4 to ST7</h2>
+        </div>
+        <p class="count">QIPAT at ST7</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="arcp">
+          <thead><tr><th>Stage</th><th>What’s required</th><th>What to keep as evidence</th></tr></thead>
+          <tbody>
+            <tr><td>ST4</td><td>Evidence of engagement with QI, audit, a Datix review, a complaints response or a Coroner’s referral — QI is one acceptable option, not the only one.</td><td>Contribute to a ward project; keep your PDSA worksheets and run-chart entries.</td></tr>
+            <tr><td>ST5</td><td>The same annual engagement requirement — a good year to move from contributing to co-leading.</td><td>PDSA worksheet or Workbook PDSA Log; Run chart / SPC sheet.</td></tr>
+            <tr><td>ST6</td><td>The same requirement — start pitching your own project ahead of ST7.</td><td>SMART aim statement; Roadmap Stages 1–3 done.</td></tr>
+            <tr><td>ST7</td><td>One full QIP: project plan and report, assessed with the Quality Improvement Project Assessment Tool (QIPAT).</td><td>Full SQUIRE 2.0 write-up; QIPAT signed off by your supervisor.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="network-note">Lifted from the kit’s <a href="./SAM_ARCP_Evidence_Checklist.pdf">ARCP evidence checklist</a>, which maps each piece of evidence to its SQUIRE item. Curriculum requirements change — always check the current JRCPTB AIM curriculum and your deanery’s guidance. Protected time for QI isn’t set out separately in the curriculum; ask your TPD how your programme handles it.</p>
+
+      <div class="twocol">
+        <div class="pcard">
+          <span class="code">WHAT ASSESSORS ACTUALLY VALUE</span>
+          <h3>The panel is looking for your engagement, not your slides</h3>
+          <ul>
+            <li>A run chart with baseline <em>and</em> post-change points — not a before-and-after bar chart.</li>
+            <li>More than one PDSA cycle, with the prediction written before each.</li>
+            <li>Honest reporting: what didn’t work, the dip in week three, what you changed.</li>
+            <li>A team — nurses, pharmacy, the ward clerk — not a solo hero.</li>
+            <li>A SQUIRE-shaped write-up and evidence you shared it: a QI meeting, a poster, the SAM conference.</li>
+            <li>A hand-over: the next cycle has an owner, even if it isn’t you.</li>
+          </ul>
+        </div>
+        <div class="pcard bad">
+          <span class="code">WHY QIPs FALL SHORT</span>
+          <h3>The same reasons, every year</h3>
+          <ul>
+            <li>No baseline — you can’t show improvement from nothing.</li>
+            <li>An audit with no change made, or a change with no re-measurement.</li>
+            <li>A proposal or a plan presented as a project.</li>
+            <li>Too big for one rotation, so it never finishes.</li>
+            <li>No diary, so nobody can explain what happened around the data.</li>
+            <li>Identifiable data in a workbook or an e-mail.</li>
+            <li>Attending QI teaching offered as evidence of doing QI.</li>
+            <li>Left to the week before ARCP, with no time for the QIPAT.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ FAQ ============ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">FAQ</p>
+          <h2>The questions people actually ask</h2>
+        </div>
+      </div>
+      <div class="faq">
+        <details>
+          <summary>Is my project audit or QI?</summary>
+          <p>If you are changing something and measuring the effect locally, it is QI. If you are only measuring practice against a standard, it is audit — and a repeat audit with no change in between is still audit. Register QI with your trust’s clinical audit or QI office; it does not need an ethics committee. Not sure? The <a href="https://www.hra-decisiontools.org.uk/research/" target="_blank" rel="noopener">HRA decision tool</a> tells you whether it is research.</p>
+        </details>
+        <details>
+          <summary>Do I need ethics approval?</summary>
+          <p>Not for QI or audit. You do need to register the project locally, and you do need to follow information-governance rules — count, don’t name; no identifiable data outside trust systems. Research needs HRA approval before you start, so settle the label first.</p>
+        </details>
+        <details>
+          <summary>Can I use SAMBA data as my baseline?</summary>
+          <p>Often, yes. <a href="https://www.acutemedicine.org.uk/samba-new/" target="_blank" rel="noopener">SAMBA</a> gives participating units a report against national averages on severity, speed of assessment and outcomes — if your unit takes part, ask your SAMBA lead for your unit’s figures before you count anything yourself. You will still need weekly local counts to run the chart forward.</p>
+        </details>
+        <details>
+          <summary>I rotate before it’s finished. Does it still count?</summary>
+          <p>Yes — if you hand it over properly. Stage 7 of the Roadmap is the hand-over: pass the data plan, the diary and the run chart to a named person with a start date for cycle 2. A properly handed-over QIP is a completed stage, not an unfinished project, and the Workbook’s Share &amp; Replicate tab is the one-page pack for it.</p>
+        </details>
+        <details>
+          <summary>How many data points do I need?</summary>
+          <p>A baseline of 10–20 cases a week for a few weeks, then 6–8 weekly points after the change before the team decides keep, tweak or drop. Twenty sets of notes is enough to start. More points beat more cases per point: the run chart needs time, not size.</p>
+        </details>
+        <details>
+          <summary>I’m a nurse, pharmacist, therapist or ACP. Is this for me?</summary>
+          <p>Yes. The kit is built for the whole multidisciplinary team, the Team Workbook expects a mixed team on its Home tab, and SAM’s Acute Medics as Improvers course is open to ACPs and PAs as well as doctors. Only the ARCP section on this page is doctor-specific.</p>
+        </details>
+        <details>
+          <summary>Where do I get help?</summary>
+          <p>Your unit’s QI team first, then your region — see <a href="./index.html#network">where help comes from</a>. The SAM inbox is for two things only: joining the SAM QIP team, or submitting a finished project for the library.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ BEYOND ============ -->
+  <section id="beyond">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Beyond the kit</p>
+          <h2>The organisations SAM points to</h2>
+        </div>
+      </div>
+      <div class="orgs">
+        <a class="org" href="https://learn.nes.nhs.scot/741/quality-improvement-zone" target="_blank" rel="noopener"><span class="name">NES Quality Improvement Zone</span><span class="what">Free learner pathways and a large tools library.</span></a>
+        <a class="org" href="https://www.hqip.org.uk/" target="_blank" rel="noopener"><span class="name">HQIP</span><span class="what">Clinical audit and QI guidance, including the Guide to QI Methods.</span></a>
+        <a class="org" href="https://www.aomrc.org.uk/" target="_blank" rel="noopener"><span class="name">Academy of Medical Royal Colleges</span><span class="what">QI in training — the cross-college position.</span></a>
+        <a class="org" href="https://www.health.org.uk/" target="_blank" rel="noopener"><span class="name">The Health Foundation</span><span class="what">Improvement research, evidence and programmes.</span></a>
+        <a class="org" href="https://www.rcp.ac.uk/improving-care/" target="_blank" rel="noopener"><span class="name">RCP Improving care</span><span class="what">Improvement programme, awards, accreditation and audits.</span></a>
+        <a class="org" href="https://aqua.nhs.uk/" target="_blank" rel="noopener"><span class="name">Aqua</span><span class="what">Advancing Quality Alliance — SAM’s partner for its QI courses.</span></a>
+        <a class="org" href="https://tipsqi.co.uk/" target="_blank" rel="noopener"><span class="name">TIPSQI</span><span class="what">Trainee-led QI guidance and training for NHS doctors.</span></a>
+        <a class="org" href="https://www.squire-statement.org/" target="_blank" rel="noopener"><span class="name">SQUIRE</span><span class="what">The reporting standard behind the kit’s write-up tools.</span></a>
+      </div>
+      <p class="network-note">All external sites open in a new tab. SAM doesn’t control their content; if a link dies, tell the SAM QIP team when you next write.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-cols">
+      <div>
+        <h4>About this page</h4>
+        <p>The learning page of the SAM QIP Hub — the <a href="https://www.acutemedicine.org.uk/" target="_blank" rel="noopener">Society for Acute Medicine</a>’s quality-improvement hub for acute medicine. Regional and unit networks are welcome to copy it.</p>
+        <h4>Sources</h4>
+        <p class="mono">Langley GJ et al., The Improvement Guide, 2nd ed. · Perla RJ, Provost LP, Murray SK. BMJ Qual Saf 2011;20:46–51 · SQUIRE 2.0: Ogrinc G et al. BMJ Qual Saf 2016;25:986–992 · JRCPTB AIM ARCP decision aid 2022</p>
+      </div>
+      <div>
+        <h4>On this page</h4>
+        <nav class="footer-index" aria-label="Sections">
+          <a href="#primer">Primer</a><a href="#ladder">Ladder</a><a href="#arcp">ARCP</a><a href="#faq">FAQ</a><a href="#beyond">Beyond the kit</a><a href="./index.html">Back to the hub</a>
+        </nav>
+        <h4>Accessibility &amp; privacy</h4>
+        <p>Built to WCAG 2.2 AA like the hub — keyboard, resizing, contrast, dark mode and reduced motion all respected. Problems: email <a href="mailto:quality.improvement@acutemedicine.org.uk?subject=Accessibility%20problem%20with%20the%20SAM%20QIP%20Hub">quality.improvement@acutemedicine.org.uk</a> with “Accessibility” in the subject. No cookies, no analytics; typefaces load from Google Fonts, which sees your IP address when they load.</p>
+      </div>
+    </div>
+    <div class="footer-stamp">
+      <span class="mono">Kit version 1.0 · page updated September 2026</span>
+      <span class="mono"><a href="#top">Back to top &uarr;</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var menu = document.querySelector('.nav-mobile');
+    if (menu){
+      menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ menu.removeAttribute('open'); }); });
+      document.addEventListener('click', function(ev){ if (!menu.contains(ev.target)) menu.removeAttribute('open'); });
+    }
+  })();
+</script>
+</body>
+</html>

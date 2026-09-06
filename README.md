@@ -1,43 +1,54 @@
-# SAM QIP Diagram Tool
+# SAM QIP Hub
 
-A single self-contained HTML file for building the diagrams a Quality Improvement Project (QIP) needs, in the style used by the Society for Acute Medicine (SAM). No install, no server, no account required — open the file in a browser and start typing.
+The Society for Acute Medicine's quality-improvement hub for acute medicine: the twelve-piece QIP kit, a library of completed projects, where help comes from, and a Learn page with the method in five minutes.
 
-## What it's for
+Plain HTML — no build step, no server code, no analytics, no cookies. Everything in this folder is the whole site.
 
-Acute medicine QIPs tend to need the same handful of diagrams, in the same order:
+## What's here
 
-1. **Pitch** — the five-sentence pitch (problem, number, aim, why it matters, the ask) for putting a QIP idea in front of a supervisor.
-2. **2×2 Ideas** — plot candidate change ideas by impact vs. ease of delivery, to pick what to test first.
-3. **Process Map** — what actually happens on the ward today, including decision points and their "otherwise" branches.
-4. **5 Whys** — dig from the problem down to a root cause.
-5. **Fishbone** — spread out every candidate cause across People / Process / Equipment / Environment / Policies / Patient factors before narrowing in.
-6. **Driver Diagram** — aim → primary drivers → secondary drivers → change ideas, ready to test in a PDSA cycle.
+| File | What it is |
+|---|---|
+| `index.html` | The hub — kit, library, support map, get involved, about. This is the front page. |
+| `learn.html` | Learn QI — five-minute primer, training ladder, ARCP expectations, FAQ, links. |
+| `SAM_Abstract_Compliance_Checker.html` | The QI abstract checker (RES-12). Opens in a new tab from the hub. |
+| `404.html` | Shown by GitHub Pages for a missing address; points back to the hub. |
+| `SAM_QIP_Hub_og.png`, `SAM_QIP_Learn_og.png` | Link-preview images (1200×630) for Teams, WhatsApp, LinkedIn, X. |
+| `SAM_QIP_Kit_Start_Here.docx` | RES-01 |
+| `SAM_QIP_Roadmap.pptx` | RES-02 |
+| `SAM_QIP_Team_Workbook.xlsx` | RES-03 |
+| `SAM_SMART_Aim_Statement_Builder.docx` | RES-05 |
+| `SAM_PDSA_Cycle_Worksheet.docx` | RES-06 |
+| `SAM_Run_Chart_SPC_Worksheet.xlsx` | RES-07 |
+| `SAM_QIP_Audit_Data_Template.xlsx` | RES-08 |
+| `SAM_SQUIRE_2_0_Reporting_Guide.pptx` | RES-09 |
+| `SAM_SQUIRE_2_0_Presentation_Template.pptx` | RES-10 |
+| `SAM_ARCP_Evidence_Checklist.pdf` | RES-11 |
+| `.nojekyll` | Tells GitHub Pages to serve the files as they are. Keep it. |
 
-Each tab is a separate diagram; a **page** bundles all six together as one project (e.g. one page per QIP, or one per PDSA cycle).
+RES-04, the QIP Diagram Tool, is a separate site (https://aimqa.github.io/SAMQIP/) and is linked, not copied.
 
-## Using it
+Every link between the pages and to the files is relative, so the whole folder must stay together and file names must not change. Rename a file and its resource row breaks.
 
-- **Load example** fills every tab with a worked VTE-assessment example — a quick way to see how a finished set of diagrams should look.
-- **Click any box and type.** Selecting a box shows shape/branch controls in the bar under the hint text.
-- **+ New page** starts another project without losing the current one; pages are listed along the top and can be renamed or deleted.
-- **Undo / Redo** (or Ctrl+Z / Ctrl+Y) covers every change, including Load example and Clear.
-- **Show guidance** (top of the diagram area) toggles inline explanations for what belongs in each part of the diagram — worth leaving on the first few times through.
+## Publish on GitHub Pages
 
-## Saving, sharing, exporting
+1. Create a repository (public, or private on a plan that allows Pages), e.g. `SAMQIPHub`.
+2. Upload everything in this folder to the root of the repository — including `.nojekyll`, which some file managers hide.
+3. In the repository: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, folder `/ (root)`. Save.
+4. After a minute or two the site is live at `https://<account>.github.io/<repository>/`.
+   The hub is that address; the Learn page is `…/learn.html`; the checker is `…/SAM_Abstract_Compliance_Checker.html`.
 
-- **It saves itself** — everything autosaves to the browser's local storage as you go, so closing the tab is safe.
-- **Save file / Open…** downloads or reloads a portable `.json` copy of all your pages — the way to move a project between computers or keep an offline backup.
-- **Share link** sends a snapshot to a colleague; **Collaborate** starts a live room so more than one person can edit the same page at once.
-- **Sign in with Google** keeps named projects following you across devices — a popup, nothing emailed. See `COLLABORATION_SETUP.md` if it isn't working.
-- **Download PNG** exports the current diagram only (not the toolbar or guidance panels) as a landscape image — the format made for dropping straight into slides or a workbook.
-- **Print / PDF** produces a one-page landscape PDF of the current diagram.
-- **Download PPTX** builds a full PowerPoint deck — one slide per diagram type (Pitch, 2×2, Process Map, 5 Whys, Fishbone, Driver Diagram), for every page in the project, each slide with a SAM-branded header. Useful for a full QIP project handover deck.
+### One edit once you know the address
 
-## Notes on this version
+Link previews need an absolute image URL. In `index.html` and `learn.html` change the two `og:image` and two `twitter:image` values from `./SAM_QIP_Hub_og.png` / `./SAM_QIP_Learn_og.png` to the full address, e.g. `https://<account>.github.io/<repository>/SAM_QIP_Hub_og.png`. Nothing else depends on the address.
 
-- Diagram shapes, borders and connector lines render in **black** (not the SAM green) so exports read cleanly in black-and-white print and in slide decks with their own colour scheme. The app's own header/toolbar keep the SAM green branding, since that part never appears in an export.
-- A process map decision can branch into an **"otherwise" path** (click a decision box → **+ Add "No" step**). With more than one branching decision on the same map, each branch now routes through its own lane and uses one of six distinct dash styles, so multiple branches stay easy to tell apart.
+## Updating the site
 
-## Files
+- Edit the HTML directly and re-upload; there is nothing to build.
+- To update a kit file, replace it under the same name.
+- To add a completed project to the library, edit the "Completed projects from SAM members" section in `index.html` — the empty-state box comes out and a project card goes in. When the library passes about ten projects, move it to its own page.
+- The two pages share one stylesheet by copy (`<style>` block in each). If you change the look in one, make the same change in the other.
+- Version stamp lives in each page's footer ("Kit version 1.0 · page updated …").
 
-- `SAM_QIP_Diagram_Tool.html` — the tool itself. Open it directly in a browser; everything (styles, logic, examples) is in this one file.
+## Contact rule built into the pages
+
+`quality.improvement@acutemedicine.org.uk` is used for three things only: joining the SAM QIP team, submitting a completed project for the library, and reporting a problem with the site (accessibility included). Everything else routes to local and regional teams — the Support section says so.

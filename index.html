@@ -1,1881 +1,913 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sample Website QIP Diagram Tool — pitch, 2×2, process maps, 5 Whys & driver diagrams</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js" defer></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAM QIP Hub</title>
+<meta name="description" content="The Society for Acute Medicine’s home for quality improvement in acute medicine: a twelve-piece kit to run a QIP from first idea to SQUIRE write-up, a library of completed projects, and where help comes from — unit, region, SAM.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SAM QIP Hub">
+<meta property="og:description" content="The SAM QIP kit, a library of completed acute medicine projects, and where help comes from. Built for the whole multidisciplinary team.">
+<meta property="og:image" content="./SAM_QIP_Hub_og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="./SAM_QIP_Hub_og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23036E3A'/%3E%3Cpolyline points='6,23 12,19 17,21 22,13 26,9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{
-  --dark:#023d22; --teal:#036E3A; --sea:#098040; --aqua:#DCEFE3; --bg:#F1F6F2;
-  --navy:#1B1B1B; --line:#D4E0D8;
-  --dline:#000; --dfill:#ECECEC; --dmute:#555; --grey:#4a5a52; --mint:#7DD08F; --ph:#627267; --edge:#78877F;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:Calibri,'Segoe UI',Arial,sans-serif;color:var(--navy);background:var(--bg)}
-header{background:var(--dark);color:#fff;padding:14px 22px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-.brand .eyebrow{font-size:10px;letter-spacing:2px;font-weight:bold;color:var(--mint)}
-.brand h1{margin:2px 0 0;font-size:20px}
-.tabs{display:flex;gap:8px;margin-left:18px;flex-wrap:wrap}
-.tab{border:1px solid var(--sea);background:transparent;color:#fff;padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
-.tab.on{background:var(--sea);font-weight:bold}
-.tab.help{border-style:dashed;margin-left:6px}
-.tab.help:hover{background:rgba(255,255,255,.12)}
-.spacer{flex:1}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:1px solid var(--sea);background:transparent;color:#fff;padding:7px 12px;border-radius:8px;cursor:pointer;font:inherit;font-size:12.5px}
-.btn:hover{background:#098040}
-.btn:disabled{opacity:.35;cursor:default}
-.btn:disabled:hover{background:transparent}
-.btn.primary{background:var(--sea);border-color:var(--sea);font-weight:bold}
-.hint{padding:9px 22px;font-size:12.5px;color:var(--grey);background:#fff;border-bottom:1px solid var(--line)}
-.hint b{color:var(--teal)}
-.wprob{background:var(--dark);color:#fff;border-radius:10px;padding:12px 16px;font-weight:bold;font-size:15px;position:relative}
-.wcard{background:#fff;border:1px solid var(--teal);border-radius:10px;padding:11px 16px;font-size:15px;color:var(--navy);position:relative;display:flex;align-items:center;gap:12px}
-.wcard .wlab{font-size:11px;font-weight:bold;letter-spacing:1.1px;color:var(--dark);white-space:nowrap}
-.wroot{background:var(--aqua);border:1px solid var(--teal);border-radius:10px;padding:11px 16px;font-size:15px;font-weight:bold;color:var(--dark);display:flex;align-items:center;gap:12px}
-.warrow{text-align:center;font-size:11px;font-style:italic;font-weight:bold;color:var(--teal);padding:5px 0}
-.wcard .ntext,.wprob .ntext{text-align:left}
-.pcard{position:absolute;display:flex;align-items:stretch;gap:0;border:1px solid var(--teal);border-radius:10px;background:#fff;overflow:hidden}
-.pcard .pnum{flex:0 0 42px;background:var(--dark);color:#fff;font-weight:bold;font-size:15px;display:flex;align-items:center;justify-content:center}
-.pcard .plab{flex:0 0 128px;background:var(--aqua);color:var(--dark);font-weight:bold;font-size:12px;display:flex;align-items:center;padding:0 12px}
-.pcard .ntext{flex:1;text-align:left;font-size:14px;justify-content:flex-start;padding:10px 14px}
-.gaxis{position:absolute;background:var(--grey)}
-.gtick{position:absolute;font-size:10px;font-weight:bold;letter-spacing:1.2px;color:var(--grey)}
-.gquad{position:absolute;font-size:10.5px;font-style:italic;color:var(--ph);pointer-events:none}
-.gquad.win{font-style:normal;font-weight:bold;color:var(--teal);background:var(--aqua);border-radius:12px;padding:3px 10px}
-.gchip{position:absolute;border:1.4px solid var(--teal);background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.12);cursor:grab;touch-action:none}
-.gchip.sel{box-shadow:0 0 0 2.5px var(--sea)}
-.gchip.drag{cursor:grabbing;box-shadow:0 6px 16px rgba(0,0,0,.22);z-index:20}
-.gchip .ntext{font-size:12.5px;text-align:center;padding:6px 9px}
-.gchip .ndel{top:-8px;right:-8px}
-.ntext:focus-visible,.branchnote:focus-visible,.nobranch:focus-visible,.gchip:focus-visible,.pchip:focus-visible,button:focus-visible,.tab:focus-visible,#board:focus-visible{outline:3px solid var(--sea);outline-offset:2px}
-.skip{position:absolute;left:-9999px;top:0;background:#fff;color:var(--dark);padding:10px 14px;font-weight:bold;z-index:100;border-radius:0 0 8px 0;text-decoration:none}
-.skip:focus{left:0}
+  /* ============ Tokens ============ */
+  :root{
+    --paper: #faf9f7;
+    --surface: #ffffff;
+    --surface-alt: #f1efec;
+    --ink: #15151a;
+    --ink-soft: #55555e;
+    --ink-faint: #8a8a92;
+    --line: #d8d6d1;
+    --line-strong: #a3a19b;
+    --shadow-line: rgba(21,21,26,0.06);
+    --accent: #036E3A;
 
-.linkbtn{border:0;background:transparent;color:var(--teal);font:inherit;padding:0;cursor:pointer;text-decoration:underline}
-.linkbtn:hover{color:var(--dark)}
-dialog#a11y,dialog#howtoDlg{border:0;border-radius:12px;padding:0;max-width:720px;width:calc(100% - 32px);color:var(--navy);background:#fff}
-dialog#a11y::backdrop,dialog#howtoDlg::backdrop{background:rgba(0,0,0,.5)}
-.a11y-body{position:relative;padding:22px 28px 18px;font-size:14px;line-height:1.55;max-height:85vh;overflow:auto}
-.a11y-body h2{margin:0 40px 10px 0;font-size:20px;color:var(--dark)}
-.a11y-body h3{margin:18px 0 6px;font-size:14.5px;color:var(--teal)}
-.a11y-body p,.a11y-body ul{margin:0 0 8px}
-.a11y-body li{margin:3px 0}
-.a11y-body a{color:var(--teal)}
-.a11y-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:20px;line-height:30px;cursor:pointer;color:var(--navy)}
-@media print{dialog#a11y,dialog#howtoDlg{display:none!important}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
-.fprob{position:absolute;display:flex;align-items:center;justify-content:center;background:var(--dark);border-radius:10px;box-sizing:border-box;padding:8px 10px}
-.fprob .ntext{color:#fff;font-weight:bold;font-size:13px;text-align:center}
-.fhead{position:absolute;display:flex;align-items:center;background:var(--aqua);border:1.4px solid var(--teal);border-radius:8px;box-sizing:border-box;padding:4px 7px}
-.fhead .ntext{flex:1;font-size:12px;font-weight:bold;color:var(--dark);text-align:left;padding:0 2px}
-.fcause{position:absolute;display:flex;align-items:center;background:#fff;border:1px solid var(--edge);border-radius:7px;box-sizing:border-box;padding:3px 7px}
-.fcause .ntext{flex:1;font-size:11.5px;color:var(--navy);text-align:left;padding:0 2px}
-.fcause:hover .ndel,.fhead:hover .ndel,.fcause:focus-within .ndel,.fhead:focus-within .ndel{display:block}
-.fadd{position:absolute;border:1px dashed var(--teal);background:transparent;color:var(--teal);border-radius:7px;font-size:11px;font-weight:bold;cursor:pointer;box-sizing:border-box;padding:2px 0}
-.fadd:hover{background:var(--aqua)}
-.waddw{display:block;margin:10px auto 0;border:1px dashed var(--teal);background:transparent;color:var(--teal);padding:7px 16px;border-radius:18px;cursor:pointer;font:inherit;font-size:13px}
-#livebar{display:none;align-items:center;gap:12px;padding:7px 22px;background:#E6F3EA;border-bottom:1px solid #A8D5B5;font-size:12px;color:var(--navy);flex-wrap:wrap}
-#livebar.on{display:flex}
-#livebar .dot{width:9px;height:9px;border-radius:50%;background:#0a8a46;animation:pulse 1.6s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-#livebar b{color:#00622A}
-#livebar .code{font-family:Consolas,monospace;font-weight:bold;letter-spacing:1px;background:#fff;border:1px solid #A8D5B5;border-radius:6px;padding:2px 8px}
-#livebar button{border:1px solid #A8D5B5;background:#fff;color:var(--navy);padding:4px 10px;border-radius:7px;cursor:pointer;font:inherit;font-size:11.5px}
-#livebar button:hover{border-color:#00622A;color:#00622A}
-@media print{#livebar{display:none!important}}
-@media (max-width:760px){#livebar{padding:7px 12px;font-size:11.5px}}
-#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--dark);color:#fff;padding:11px 20px;border-radius:22px;font-size:13px;font-weight:bold;box-shadow:0 6px 20px rgba(0,0,0,.28);opacity:0;pointer-events:none;transition:opacity .25s;z-index:60;max-width:88vw;text-align:center}
-#toast.on{opacity:1}
-@media print{#toast{display:none!important}}
-#syncbar{display:none;align-items:center;gap:12px;padding:7px 22px;background:#FFF4E0;border-bottom:1px solid #EAC373;font-size:12px;color:var(--navy);flex-wrap:wrap}
-#syncbar.on{display:flex}
-#syncbar b{color:#8A5A00}
-#syncbar button{border:1px solid #EAC373;background:#fff;color:var(--navy);padding:4px 10px;border-radius:7px;cursor:pointer;font:inherit;font-size:11.5px}
-#syncbar button:hover{border-color:#8A5A00;color:#8A5A00}
-@media print{#syncbar{display:none!important}}
-#pagebar{padding:8px 22px 0;background:var(--bg);display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.plabel{font-size:10px;font-weight:bold;letter-spacing:1.2px;color:var(--grey)}
-.pchip{display:flex;align-items:center;gap:7px;border:1px solid var(--teal);background:#fff;color:var(--teal);padding:5px 8px 5px 13px;border-radius:16px;cursor:pointer;font-size:12px;font-weight:bold}
-.pchip.on{background:var(--teal);color:#fff}
-.pchip .pname{border:0;background:transparent;color:inherit;font:inherit;padding:0;cursor:pointer;display:inline-flex;align-items:center;min-height:24px}
-.pchip .pe{width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;font-size:11px;font-weight:normal;background:rgba(0,0,0,.10);display:none;border:0;padding:0;color:inherit;cursor:pointer;font-family:inherit}
-.pchip.on .pe,.pchip:hover .pe,.pchip:focus-within .pe{display:inline-block}
-.pchip.on .pe{background:rgba(255,255,255,.25)}
-.pchip .pe:hover{background:var(--sea);color:#fff}
-.pchip .px{width:24px;height:24px;line-height:24px;text-align:center;border-radius:50%;font-size:12px;font-weight:normal;background:rgba(0,0,0,.10);border:0;padding:0;color:inherit;cursor:pointer;font-family:inherit}
-.pchip.on .px{background:rgba(255,255,255,.25)}
-.pchip .px:hover{background:#da291c;color:#fff}
-.paddbtn{border:1px dashed var(--teal);background:transparent;color:var(--teal);padding:5px 12px;border-radius:16px;cursor:pointer;font:inherit;font-size:12px}
-#nodebar{padding:8px 22px;background:#fff;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-height:44px}
-#nodebar .lbl{font-size:11px;letter-spacing:1.2px;font-weight:bold;color:var(--teal)}
-.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
-.seg button{border:0;background:#fff;padding:6px 11px;font:inherit;font-size:12px;cursor:pointer;color:var(--navy)}
-.seg button.on{background:var(--teal);color:#fff;font-weight:bold}
-.tbtn{border:1px solid var(--line);background:#fff;color:var(--navy);padding:6px 11px;border-radius:8px;cursor:pointer;font:inherit;font-size:12px}
-.tbtn:hover{border-color:var(--teal);color:var(--teal)}
-.tbtn.danger:hover{border-color:#da291c;color:#da291c}
-.tbtn.red{background:#da291c;border-color:#da291c;color:#fff;font-weight:bold}
-.btn.synced{background:#0a8a46;border-color:#0a8a46;color:#fff;font-weight:bold}
-.btn.synced:hover{background:#02582f;border-color:#02582f}
-.tbtn.red:hover{background:#b81f14;border-color:#b81f14;color:#fff}
-#wrap{padding:18px 22px;overflow:auto}
-#board{position:relative;width:1120px;background:#fff;border:1px solid var(--line);border-radius:10px;margin:0 auto}
-#lines{position:absolute;inset:0;pointer-events:none}
-.colhead{position:absolute;top:10px;font-size:11px;font-weight:bold;letter-spacing:1.4px;color:var(--teal)}
-.node{position:absolute;font-size:13px;line-height:1.3}
-.ntext{position:relative;width:100%;height:100%;display:flex;align-items:center;align-items:safe center;justify-content:center;text-align:center;padding:6px 9px;overflow:auto}
-.ntext:empty:before{content:attr(data-ph);color:var(--grey);font-style:italic}
-.node.sel .shape, .dnode.sel{box-shadow:0 0 0 2.5px var(--sea)}
-.shape{position:absolute;inset:0;border-radius:8px;background:#fff;border:1.6px solid var(--teal)}
-.node.terminator .shape{border-radius:44px;background:var(--dark);border-color:var(--dark)}
-.node.terminator .ntext{color:#fff;font-weight:bold}
-.node.decision .shape{border:0;background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23DCEFE3" stroke="%23036E3A" stroke-width="2.4"/></svg>') center/100% 100% no-repeat}
-.node.decision .ntext{padding:10px 22px;font-size:11.5px}
-.node.wait .shape{border-style:dashed;background:var(--bg)}
-.node.wait .ntext{font-style:italic}
-.nobranch{position:absolute;left:-8px;right:-8px;top:100%;margin-top:3px;font-size:10.5px;font-style:italic;color:var(--grey);text-align:center}
-.nobranch:empty:before{content:'if no: click to note…';color:var(--grey)}
-.branchhead{position:absolute;font-size:10px;font-weight:bold;letter-spacing:1.2px;color:var(--teal)}
-.branchlabel{position:absolute;display:flex;align-items:baseline;gap:5px;font-size:11px;color:var(--navy)}
-.branchlabel b{color:var(--teal);white-space:nowrap;font-size:10px;letter-spacing:.5px}
-.branchnote{border-bottom:1px dashed var(--edge);min-width:140px;padding:1px 2px}
-.branchnote:empty:before{content:attr(data-ph);color:var(--grey);font-style:italic}
-.dnode{position:absolute;background:var(--bg);border:1.4px solid var(--edge);border-radius:8px;font-size:13px;line-height:1.3}
-.dnode .ntext{align-items:center;text-align:left;padding:7px 10px}
-.dnode.aim{background:var(--dark);border-color:var(--dark)}
-.dnode.aim .ntext{color:#fff;font-weight:bold}
-.dnode.primary{background:var(--aqua);border-color:var(--teal)}
-.dnode.primary .ntext{font-weight:bold;color:var(--dark)}
-.dnode.secondary{background:#fff;border-color:var(--teal)}
-.dnode.idea{background:var(--bg)}
-.nadd,.ndel{position:absolute;width:24px;height:24px;border-radius:50%;border:0;color:#fff;font-size:14px;line-height:24px;text-align:center;cursor:pointer;padding:0;display:none}
-.nadd{background:var(--sea);right:-12px;top:calc(50% - 12px)}
-.nsib{position:absolute;width:24px;height:24px;border-radius:50%;border:0;color:#fff;font-size:14px;line-height:24px;text-align:center;cursor:pointer;padding:0;display:none;background:var(--teal);left:calc(50% - 10px);bottom:-10px}
-.ndel{background:#5B6B78;right:-8px;top:-8px;font-size:12px}
-.ndel:hover{background:#da291c}
-.node:hover .nadd,.node:hover .ndel,.dnode:hover .nadd,.dnode:hover .ndel,.dnode:hover .nsib,.wcard:hover .ndel,.node:focus-within .nadd,.node:focus-within .ndel,.dnode:focus-within .nadd,.dnode:focus-within .ndel,.dnode:focus-within .nsib,.wcard:focus-within .ndel,.gchip:focus-within .ndel{display:block}
-#drvhelp{display:none;padding:10px 22px 0}
-.dgrid{display:flex;gap:8px;flex-wrap:wrap}
-.dcard{flex:1 1 190px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:10.5px;color:var(--navy)}
-.dcard b{display:block;color:var(--teal);font-size:11px;margin-bottom:2px}
-.dcard .tst{display:block;color:var(--teal);font-style:italic;margin-top:4px}
-.dcard .exm{display:block;color:var(--grey);margin-top:3px}
-.dcard .smartlbl{display:block;color:var(--teal);font-size:8.5px;font-weight:bold;letter-spacing:1.1px;margin-top:5px}
-.dcard .smartline{display:block;color:var(--navy);font-size:9.3px;margin-top:1.5px}
-.dcard .smartline b{display:inline;color:var(--dark);font-size:inherit;margin:0}
-.dwarn{margin-top:8px;background:var(--aqua);border-radius:8px;padding:7px 10px;font-size:10.5px;color:var(--navy)}
-.dwarn b{color:var(--teal)}
-#who{display:none;padding:10px 22px 0}
-.whoin{max-width:1120px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px}
-.whohead{font-size:10px;font-weight:bold;letter-spacing:1.6px;color:var(--teal)}
-.whohead a{color:var(--grey);font-weight:normal;letter-spacing:0;float:right;font-size:10.5px}
-.wholine{font-size:11px;color:var(--navy);margin:4px 0 8px}
-.howlist{margin:0;padding:0 0 0 18px;columns:2;column-gap:22px}
-.howlist li{font-size:10.5px;color:var(--navy);margin-bottom:6px;break-inside:avoid}
-.howlist li b{color:var(--teal)}
-.whogrid{display:flex;gap:8px;flex-wrap:wrap}
-.whocard{flex:1 1 140px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:10.5px;color:var(--grey)}
-.whocard b{display:block;color:var(--teal);font-size:11px;margin-bottom:1px}
-@media print{#who{display:none!important}#drvhelp{display:none!important}#pagebar{display:none!important}}
-.legend{max-width:1120px;margin:8px auto 0;padding:0 4px;font-size:10.5px;color:var(--grey);display:flex;gap:18px;flex-wrap:wrap}
-.legend i{font-style:normal;color:var(--teal);font-weight:bold}
-footer{padding:14px 22px;font-size:11px;color:var(--teal)}
-footer span{float:right;color:var(--grey)}
-#fit{margin:0 auto}
-#board{transform-origin:0 0}
-@media (pointer:coarse){.ntext:focus,.branchnote:focus,.nobranch:focus{font-size:16px}}
-@media (hover:none),(pointer:coarse){.node .nadd,.node .ndel,.dnode .nadd,.dnode .ndel,.dnode .nsib,.wcard .ndel{display:block}
-  .pchip .pe{display:inline-block}}
-@media (max-width:760px){
-  #syncbar{padding:7px 12px;font-size:11.5px}
-  header{padding:10px 12px;gap:8px}
-  .brand h1{font-size:17px}
-  .tabs{margin-left:0;flex-wrap:wrap;row-gap:6px}
-  .tab{padding:6px 10px;font-size:11.5px}
-  .btn{padding:6px 9px;font-size:11.5px}
-  .hint{padding:8px 12px;font-size:11.5px}
-  #nodebar{padding:8px 12px}
-  #pagebar{padding:8px 12px 0}
-  .tbtn,.seg button{padding:6px 8px;font-size:11.5px}
-  #who{padding:8px 8px 0}
-  #drvhelp{padding:8px 8px 0}
-  #howto{padding:8px 8px 0}
-  .howlist{columns:1}
-  #wrap{padding:10px 8px}
-  .legend{font-size:10px;gap:10px}
-  footer{padding:12px 12px 18px;font-size:10px}
-  footer span{float:none;display:block;margin-top:3px}
-}
-@media print{
-  header,.hint,#nodebar,.legend,footer{display:none!important}
-  body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  #wrap{padding:0;overflow:visible}
-  #fit{width:auto!important;height:auto!important;margin:0}
-  #board{border:0;margin:0;transform:none!important}
-  .nadd,.ndel,.nsib{display:none!important}
-  .node.sel .shape,.dnode.sel{box-shadow:none!important}
-}
-@page{size:A4 landscape;margin:10mm}
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
 
-/* ---------- grey/white diagram output (on-screen editing stays in colour) ---------- */
-#board.mono{
-  --dark:#4A4A4A; --teal:#666666; --sea:#7A7A7A; --aqua:#ECECEC; --bg:#F4F4F4;
-  --navy:#222222; --line:#CCCCCC; --edge:#777777; --grey:#666666; --ph:#8A8A8A;
-}
-#board.mono svg path, #board.mono svg line{stroke:#000 !important}
-#board.mono svg marker path{fill:#000 !important}
-#board.mono .node.decision .shape{background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23ECECEC" stroke="%23555555" stroke-width="2.4"/></svg>') center/100% 100% no-repeat !important}
-@media print{
-  #board{
-    --dark:#4A4A4A; --teal:#666666; --sea:#7A7A7A; --aqua:#ECECEC; --bg:#F4F4F4;
-    --navy:#222222; --line:#CCCCCC; --edge:#777777; --grey:#666666; --ph:#8A8A8A;
+    --measure: 42rem;
+    --edge: clamp(1.25rem, 4vw, 3.5rem);
   }
-  #board svg path, #board svg line{stroke:#000 !important}
-  #board svg marker path{fill:#000 !important}
-  #board .node.decision .shape{background:transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 84" preserveAspectRatio="none"><polygon points="75,2 148,42 75,82 2,42" fill="%23ECECEC" stroke="%23555555" stroke-width="2.4"/></svg>') center/100% 100% no-repeat !important}
-}
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #0c0c0e;
+      --surface: #17171a;
+      --surface-alt: #131315;
+      --ink: #f3f2ef;
+      --ink-soft: #b0aea8;
+      --ink-faint: #7c7a75;
+      --line: #2d2d30;
+      --line-strong: #47474a;
+      --shadow-line: rgba(0,0,0,0.35);
+      --accent: #7DD08F;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #0c0c0e;
+    --surface: #17171a;
+    --surface-alt: #131315;
+    --ink: #f3f2ef;
+    --ink-soft: #b0aea8;
+    --ink-faint: #7c7a75;
+    --line: #2d2d30;
+    --line-strong: #47474a;
+    --shadow-line: rgba(0,0,0,0.35);
+    --accent: #7DD08F;
+  }
+
+  /* ============ Reset ============ */
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ -webkit-text-size-adjust:100%; scroll-behavior: smooth; }
+  [id]{ scroll-margin-top: 4.75rem; }
+  body{
+    margin:0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img,svg{ display:block; max-width:100%; }
+  a{ color: inherit; }
+  h1,h2,h3,p,ul,ol,dl,figure{ margin:0; }
+  ul,ol{ padding:0; list-style:none; }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); font-weight:500; text-wrap: balance; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .measure{ max-width: var(--measure); }
+
+  /* ============ Layout shells ============ */
+  .wrap{
+    max-width: 74rem;
+    margin: 0 auto;
+    padding-inline: var(--edge);
+  }
+  section{ padding-block: clamp(3.25rem, 7vw, 6rem); }
+  .rule{
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0;
+  }
+
+  /* ============ Skip link ============ */
+  .skip{
+    position:absolute; left:-999px; top:0.6rem; z-index:100;
+    background: var(--accent); color: var(--paper); padding:0.75rem 1rem;
+    font-size:0.9rem; font-weight:600; text-decoration:none; border-radius:4px;
+  }
+  .skip:focus{ left:0.6rem; outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  /* ============ Header ============ */
+  header.site{
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--paper);
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-block: 0.9rem;
+    gap: 1.5rem;
+  }
+  .wordmark{
+    display:flex;
+    align-items:baseline;
+    gap:0.55rem;
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration:none;
+  }
+  .wordmark .tick{
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    font-weight: 400;
+  }
+  nav.primary{ display:flex; gap: clamp(1rem, 2vw, 1.85rem); }
+  nav.primary a{
+    font-size: 0.86rem;
+    text-decoration:none;
+    color: var(--ink-soft);
+    padding-block: 0.2rem;
+    border-bottom: 1px solid transparent;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  nav.primary a:hover, nav.primary a:focus-visible{ color: var(--accent); border-color: var(--accent); }
+  nav.primary a.active{ color: var(--accent); border-color: var(--accent); }
+  .nav-mobile{ display:none; position:relative; }
+  .nav-mobile summary{
+    list-style:none; cursor:pointer; font-size:0.86rem; font-weight:600; color: var(--ink);
+    border:1px solid var(--line-strong); padding:0.4rem 0.8rem; border-radius:4px; user-select:none;
+  }
+  .nav-mobile summary::-webkit-details-marker{ display:none; }
+  .nav-mobile[open] summary{ border-color: var(--accent); color: var(--accent); }
+  .nav-mobile .links{
+    position:absolute; right:0; top:calc(100% + 0.5rem); min-width: 13rem;
+    background: var(--surface); border:1px solid var(--line); box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    display:flex; flex-direction:column; padding:0.4rem 0; z-index:50;
+  }
+  .nav-mobile .links a{ padding:0.65rem 1rem; text-decoration:none; font-size:0.95rem; color: var(--ink); }
+  .nav-mobile .links a:hover, .nav-mobile .links a:focus-visible{ background: var(--surface-alt); color: var(--accent); }
+  @media (max-width: 640px){
+    nav.primary{ display:none; }
+    .nav-mobile{ display:block; }
+    .wordmark{ white-space:nowrap; padding-block:0.55rem; }
+    .wordmark .tick{ display:none; }
+  }
+
+
+  /* ============ Hero ============ */
+  .hero{
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(3.5rem, 10vw, 7.5rem) clamp(2.5rem, 6vw, 4rem);
+    background-image:
+      linear-gradient(var(--shadow-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--shadow-line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    background-position: center top;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: end;
+  }
+  @media (max-width: 860px){
+    .hero-grid{ grid-template-columns: 1fr; }
+  }
+  .hero h1{
+    font-size: clamp(2.3rem, 5.6vw, 4rem);
+    line-height: 1.06;
+    letter-spacing: -0.01em;
+    margin-block: 0.9rem 1.1rem;
+  }
+  .hero h1 em{ font-style: italic; font-weight: 500; }
+  .hero p.lede{
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    max-width: 34rem;
+  }
+  .cta-row{ display:flex; flex-wrap:wrap; gap: 0.85rem; margin-top: 1.9rem; }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 0.72rem 1.15rem;
+    text-decoration:none;
+    border: 1px solid var(--accent);
+    transition: background .15s ease, color .15s ease, opacity .15s ease;
+  }
+  .btn-solid{ background: var(--accent); color: var(--paper); }
+  .btn-solid:hover{ opacity: 0.82; }
+  .btn-line{ background:transparent; color: var(--accent); }
+  .btn-line:hover{ background: var(--surface-alt); }
+
+  .chart-figure{
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 1.1rem 1.1rem 0.9rem;
+  }
+  .chart-figure figcaption{
+    display:flex;
+    justify-content:space-between;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px dashed var(--line);
+  }
+  .trace-line{ stroke: var(--accent); }
+  .trace-median{ stroke: var(--ink-faint); }
+  .trace-point{ fill: var(--paper); stroke: var(--accent); }
+
+  /* ============ Section headings ============ */
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .section-head h2{ font-size: clamp(1.65rem, 3.4vw, 2.35rem); margin-top: 0.5rem; }
+  .section-head .count{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    padding-bottom: 0.35rem;
+  }
+
+  /* ============ About ============ */
+  .about-cols{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
+  @media (max-width: 760px){ .about-cols{ grid-template-columns: 1fr; } }
+  .about-cols p + p{ margin-top: 1rem; }
+  .about-cols p{ color: var(--ink-soft); }
+  dl.stats{ display:grid; grid-template-columns: repeat(2,1fr); gap: 1.4rem 1.6rem; align-content:start; }
+  dl.stats div{ border-top: 1px solid var(--line); padding-top: 0.6rem; }
+  dl.stats dt{ font-family: var(--font-mono); font-size: 0.68rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); }
+  dl.stats dd{ font-family: var(--font-display); font-size: 1.7rem; margin-top:0.15rem; }
+
+  /* ============ Network ============ */
+  .site-list{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .site-card{
+    background: var(--surface);
+    padding: 1.15rem 1.25rem;
+    display:flex;
+    flex-direction:column;
+    gap: 0.4rem;
+  }
+  .site-card .code{ font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); letter-spacing:0.06em; }
+  .site-card .name{ font-size: 0.95rem; line-height:1.35; }
+  .network-note{ margin-top: 1.25rem; color: var(--ink-faint); font-size: 0.85rem; }
+
+  /* ============ Support tiers ============ */
+  .tiers{ display:grid; grid-template-columns: repeat(3,1fr); gap: 1.15rem; }
+  @media (max-width: 860px){ .tiers{ grid-template-columns: 1fr; } }
+  .tier{ border:1px solid var(--line); background: var(--surface); padding: 1.4rem 1.4rem 1.5rem; display:flex; flex-direction:column; gap:0.7rem; }
+  .tier .code{ font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); letter-spacing:0.06em; }
+  .tier h3{ font-size: 1.2rem; font-weight: 500; }
+  .tier p{ color: var(--ink-soft); font-size: 0.92rem; }
+  .tier .proglist{ list-style:none; padding:0; display:flex; flex-direction:column; gap:0.45rem; }
+  .tier .proglist li{ font-size:0.88rem; color: var(--ink-soft); padding-left:0.9rem; text-indent:-0.9rem; }
+  .tier .proglist li::before{ content:"·"; color: var(--accent); margin-right:0.5rem; }
+  .tier .proglist a{ font-weight:600; color: var(--ink); text-decoration:underline; text-underline-offset:2px; }
+  .tier .when{ margin-top:auto; padding-top:0.8rem; border-top:1px solid var(--line); font-size:0.84rem; color: var(--ink); }
+  .tier .when b{ font-family: var(--font-mono); font-weight:500; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); display:block; margin-bottom:0.25rem; }
+
+  /* ============ Library empty state ============ */
+  .empty{
+    border:1px dashed var(--line-strong); background: var(--surface);
+    padding: 1.5rem 1.6rem; margin-bottom: 2.25rem;
+    display:flex; justify-content:space-between; align-items:center; gap:1.5rem; flex-wrap:wrap;
+  }
+  .empty h3{ font-size:1.15rem; margin-bottom:0.35rem; }
+  .empty p{ color: var(--ink-soft); font-size:0.92rem; max-width: 36rem; }
+  .sdec{ display:grid; grid-template-columns: 1.1fr 1fr; gap:1.15rem; border:1px solid var(--accent); background: var(--surface); padding:1.5rem 1.6rem; margin-bottom:1.15rem; }
+  @media (max-width: 860px){ .sdec{ grid-template-columns: 1fr; } }
+  .sdec .tag{ font-family: var(--font-mono); font-size:0.68rem; letter-spacing:0.08em; color: var(--accent); }
+  .sdec h3{ font-size:1.5rem; margin:0.4rem 0 0.6rem; }
+  .sdec p{ color: var(--ink-soft); font-size:0.94rem; }
+  .sdec .ideas{ display:grid; grid-template-columns: 1fr 1fr; gap:1px; background: var(--line); border:1px solid var(--line); align-self:start; }
+  @media (max-width: 520px){ .sdec .ideas{ grid-template-columns: 1fr; } }
+  .sdec .idea{ background: var(--surface-alt); padding:0.9rem 1rem; font-size:0.86rem; color: var(--ink-soft); }
+  .sdec .idea b{ display:block; color: var(--ink); margin-bottom:0.2rem; }
+  .qip-card.standards{ margin-bottom:0.5rem; }
+  .qip-card.standards p{ font-size:0.95rem; line-height:1.7; }
+  .sub-head{ font-family: var(--font-mono); font-size: 0.72rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); margin: 0 0 1rem; }
+
+  /* ============ QIP library ============ */
+  .qip-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+    gap: 1.15rem;
+  }
+  .qip-card{
+    border: 1px solid var(--line);
+    padding: 1.35rem 1.35rem 1.5rem;
+    display:flex;
+    flex-direction:column;
+    gap: 0.65rem;
+    background: var(--surface);
+  }
+  .qip-card .tag{
+    align-self:flex-start;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing:0.08em;
+    color: var(--ink-faint);
+    border: 1px solid var(--line);
+    padding: 0.18rem 0.5rem;
+  }
+  .qip-card h3{ font-size: 1.15rem; font-weight:500; }
+  .qip-card p{ color: var(--ink-soft); font-size: 0.92rem; }
+
+  /* ============ Resources ============ */
+  .resource-list{ border-top: 1px solid var(--line); }
+  .resource-row{
+    display:grid;
+    grid-template-columns: 6rem 1fr 6rem;
+    gap: 1.25rem;
+    align-items: baseline;
+    padding: 1.05rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+  }
+  a.resource-row:hover{ background: var(--surface-alt); }
+  .resource-row .code{ font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-faint); }
+  .resource-row .title{ font-size: 1rem; font-weight: 600; }
+  .resource-row .desc{ color: var(--ink-soft); font-size: 0.88rem; margin-top:0.2rem; }
+  .resource-row .format{ font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); text-align:right; }
+  @media (max-width: 620px){
+    .resource-row{ grid-template-columns: 1fr; gap: 0.3rem; }
+    .resource-row .format{ text-align:left; }
+  }
+
+  .jump{ display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem; margin: -0.5rem 0 1.25rem; }
+  .jump span{ font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); margin-right:0.25rem; }
+  .jump a{ font-size:0.82rem; font-weight:600; text-decoration:none; color: var(--ink-soft); border:1px solid var(--line); padding:0.38rem 0.75rem; border-radius:999px; }
+  .jump a:hover, .jump a:focus-visible{ border-color: var(--accent); color: var(--accent); }
+  .res-group{ display:flex; justify-content:space-between; align-items:baseline; gap:1rem; flex-wrap:wrap; padding: 1.9rem 0 0.55rem; border-bottom: 2px solid var(--ink); }
+  .res-group h3{ font-family: var(--font-body); font-size:0.95rem; font-weight:700; letter-spacing:0.01em; }
+  .res-group .hint{ font-family: var(--font-mono); font-size:0.72rem; color: var(--ink-faint); }
+  .resource-list .res-group:first-child{ padding-top:0; }
+
+  /* ============ Get involved ============ */
+  .steps{ display:grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--line); border:1px solid var(--line); }
+  @media (max-width: 860px){ .steps{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 520px){ .steps{ grid-template-columns: 1fr; } }
+  .step{ background: var(--surface); padding: 1.5rem 1.35rem; display:flex; flex-direction:column; gap:0.6rem; }
+  .step .n{ font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); }
+  .step h3{ font-size: 1rem; font-weight: 600; font-family: var(--font-body); }
+  .step p{ color: var(--ink-soft); font-size: 0.88rem; }
+
+  .involved-cta{
+    margin-top: 2.25rem;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap: 1.25rem;
+    border: 1px solid var(--accent);
+    padding: 1.5rem 1.75rem;
+  }
+  .involved-cta p{ max-width: 28rem; color: var(--ink-soft); font-size: 0.94rem; }
+  .involved-cta h3{ font-size: 1.2rem; }
+
+  /* ============ Footer ============ */
+  footer{ border-top: 1px solid var(--line); padding-block: 2.5rem; }
+  .footer-grid{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+  }
+  footer a{ color: var(--ink-soft); text-decoration:underline; text-underline-offset:2px; }
+  footer .mono{ font-family: var(--font-mono); font-size: 0.75rem; }
+  .footer-cols{ display:grid; grid-template-columns: 1.2fr 1fr; gap: clamp(1.5rem, 4vw, 4rem); }
+  @media (max-width: 760px){ .footer-cols{ grid-template-columns: 1fr; } }
+  .footer-cols h4{ font-family: var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--ink-faint); font-weight:500; margin-bottom:0.5rem; }
+  .footer-cols p{ font-size:0.84rem; color: var(--ink-soft); margin-bottom:0.8rem; }
+  .footer-cols p:last-child{ margin-bottom:0; }
+  .footer-stamp{ margin-top:2rem; padding-top:1rem; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .routes{ display:grid; grid-template-columns: repeat(4,1fr); gap:1px; background: var(--line); border:1px solid var(--line); }
+  @media (max-width: 860px){ .routes{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 520px){ .routes{ grid-template-columns: 1fr; } }
+  .route{ background: var(--surface); padding:1.15rem 1.25rem; font-size:0.88rem; color: var(--ink-soft); }
+  .route b{ display:block; color: var(--ink); margin-bottom:0.3rem; font-size:0.95rem; }
+  .route a{ text-decoration:underline; text-underline-offset:2px; }
+  .footer-index{ display:flex; flex-wrap:wrap; gap:0.35rem 1.1rem; margin-bottom:0.8rem; }
+  .footer-index a{ font-size:0.84rem; text-decoration:none; color: var(--ink-soft); border-bottom:1px solid var(--line); }
+  .footer-index a:hover{ color: var(--accent); border-color: var(--accent); }
+  /* ============ Touch ergonomics ============ */
+  @media (pointer: coarse), (max-width: 640px){
+    .btn{ min-height: 44px; }
+    nav.primary a{ padding-block: 0.7rem; }
+    .wordmark{ padding-block: 0.4rem; }
+    .nav-mobile summary{ min-height: 44px; display:flex; align-items:center; }
+    .nav-mobile .links a{ padding: 0.85rem 1rem; }
+    .jump a{ min-height: 44px; display:inline-flex; align-items:center; padding-inline: 0.9rem; }
+    .routes{ display:grid; grid-template-columns: repeat(4,1fr); gap:1px; background: var(--line); border:1px solid var(--line); }
+  @media (max-width: 860px){ .routes{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 520px){ .routes{ grid-template-columns: 1fr; } }
+  .route{ background: var(--surface); padding:1.15rem 1.25rem; font-size:0.88rem; color: var(--ink-soft); }
+  .route b{ display:block; color: var(--ink); margin-bottom:0.3rem; font-size:0.95rem; }
+  .route a{ text-decoration:underline; text-underline-offset:2px; }
+  .footer-index{ gap: 0.5rem 0.75rem; }
+    .footer-index a{ display:inline-flex; align-items:center; min-height: 44px; padding-inline: 0.35rem; border-bottom:none; background: var(--surface-alt); border-radius:4px; }
+    .resource-row{ padding: 1.15rem 0; }
+    .eyebrow, .res-group .hint, .resource-row .format, .resource-row .code, .jump span, .chart-figure figcaption,
+    .tier .code, .qip-card .tag, .section-head .count, dl.stats dt, .footer-cols h4, .site-card .code, .step .n, .sub-head, .tier .when b{ font-size: 0.78rem; }
+  }
 </style>
 </head>
 <body>
-<a href="#board" class="skip">Skip to diagram</a>
-<header>
-  <div class="brand">
-    <div class="eyebrow">SAMPLE WEBSITE &middot; QUALITY IMPROVEMENT</div>
-    <h1>QIP Diagram Tool</h1>
-  </div>
-  <div class="tabs" role="navigation" aria-label="Diagram type and help">
-    <button class="tab" id="tabB" onclick="setMode('pitch')">Pitch</button>
-    <button class="tab" id="tabG" onclick="setMode('grid')">2×2 Ideas</button>
-    <button class="tab on" id="tabP" onclick="setMode('process')">Process Map</button>
-    <button class="tab" id="tabW" onclick="setMode('whys')">5 Whys</button>
-    <button class="tab" id="tabF" onclick="setMode('fish')">Fishbone</button>
-    <button class="tab" id="tabD" onclick="setMode('driver')">Driver Diagram</button>
-    <button class="tab help" id="tabHelp" onclick="openHowTo()" aria-haspopup="dialog">? How to use</button>
-  </div>
-  <div class="spacer"></div>
-  <div class="actions">
-    <button class="btn" id="undobtn" onclick="doUndo()" disabled title="Undo (Ctrl+Z)">↶ Undo</button>
-    <button class="btn" id="redobtn" onclick="doRedo()" disabled title="Redo (Ctrl+Y)">↷ Redo</button>
-    <button class="btn" onclick="loadExample()">Load example</button>
-    <button class="btn" onclick="clearMode()">Clear</button>
-    <button class="btn" onclick="openFile()">Open…</button>
-    <button class="btn" onclick="saveFile()">Save file</button>
-    <button class="btn" onclick="shareLink()">Share link</button>
-    <button class="btn" id="collabbtn" onclick="toggleCollab()">Collaborate</button>
-    <button class="btn" id="syncbtn" onclick="signInWithGoogle()">Sign in with Google</button>
-    <button class="btn" id="fitbtn" onclick="toggleFit()" style="display:none">Zoom 100%</button>
-    <button class="btn" onclick="doPrint()">Print / PDF</button>
-    <button class="btn primary" id="pptxbtn" onclick="exportPPTX()">Download PPTX</button>
-    <button class="btn primary" onclick="exportPNG()">Download PNG</button>
-    <input type="file" id="filein" accept=".json" style="display:none">
+
+<a class="skip" href="#top">Skip to content</a>
+
+<header class="site">
+  <div class="wrap nav-row">
+    <a class="wordmark" href="#top">SAM QIP Hub <span class="tick">MDT QUALITY IMPROVEMENT</span></a>
+    <nav class="primary" aria-label="Primary">
+      <a href="#resources">Kit</a>
+      <a href="#library">Library</a>
+      <a href="./learn.html">Learn</a>
+      <a href="#network">Support</a>
+      <a href="#involved">Get involved</a>
+      <a href="#about">About</a>
+    </nav>
+    <details class="nav-mobile">
+      <summary aria-label="Open menu">Menu</summary>
+      <div class="links">
+        <a href="#resources">Kit</a>
+        <a href="#library">Library</a>
+        <a href="./learn.html">Learn</a>
+        <a href="#network">Support</a>
+        <a href="#involved">Get involved</a>
+        <a href="#about">About</a>
+        <a href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">Diagram Tool &#8599;</a>
+      </div>
+    </details>
   </div>
 </header>
 
-<div id="toast" role="status" aria-live="polite"></div>
-<div id="syncbar" role="status"></div>
-<div id="livebar" role="status"></div>
-<main id="main">
-<div id="pagebar" role="navigation" aria-label="Pages"></div>
-<div class="hint" id="hint"></div>
-<div id="nodebar"></div>
-<div id="drvhelp"></div>
-<div id="who"></div>
-<div id="wrap"><div id="fit"><div id="board" tabindex="-1" role="region" aria-label="Diagram"><svg id="lines" aria-hidden="true" focusable="false"></svg><div id="nodes"></div></div></div></div>
-<div class="legend" id="legend"></div>
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Society for Acute Medicine · Acute Internal Medicine</p>
+        <h1>A shared chart for<br>quality improvement<br><em>you can reuse.</em></h1>
+        <p class="lede">The Society for Acute Medicine’s home for quality improvement in acute medicine — built around the whole multidisciplinary team, not one grade or profession. A kit to run a QIP from first idea to SQUIRE write-up, a library of completed projects from SAM members, and a clear line on where help comes from: your unit first, your region next, SAM nationally.</p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="#resources">Open the kit &rarr;</a>
+          <a class="btn btn-line" href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">Open the QIP Diagram Tool &#8599;</a>
+          <a class="btn btn-line" href="./learn.html">Learn the method</a>
+          <a class="btn btn-line" href="#involved">Submit a finished project</a>
+        </div>
+      </div>
+
+      <figure class="chart-figure" aria-hidden="false">
+        <svg viewBox="0 0 320 150" role="img" aria-label="Illustrative run chart showing project measures improving above a baseline median over successive PDSA cycles">
+          <line x1="0" y1="112" x2="320" y2="98" class="trace-median" stroke-width="1" stroke-dasharray="3 4"/>
+          <polyline class="trace-line" fill="none" stroke-width="1.75"
+            points="0,128 26,124 52,131 78,118 104,109 130,112 156,95 182,86 208,90 234,68 260,58 286,44 312,36"/>
+          <g>
+            <circle class="trace-point" r="3" cx="0" cy="128" stroke-width="1.5"/>
+            <circle class="trace-point" r="3" cx="78" cy="118" stroke-width="1.5"/>
+            <circle class="trace-point" r="3" cx="156" cy="95" stroke-width="1.5"/>
+            <circle class="trace-point" r="3" cx="234" cy="68" stroke-width="1.5"/>
+            <circle class="trace-point" r="3.5" cx="312" cy="36" stroke-width="1.75"/>
+          </g>
+        </svg>
+        <figcaption><span>Run chart &middot; illustrative</span><span>Baseline &rarr; PDSA 4</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ RESOURCES ============ -->
+  <section id="resources">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">The kit</p>
+          <h2>Twelve pieces, grouped by where you are in the Roadmap</h2>
+        </div>
+        <p class="count">12 pieces</p>
+      </div>
+      <nav class="jump" aria-label="Jump to a part of the kit"><span>Jump to</span><a href="#kit-start">Start</a><a href="#kit-plan">Plan</a><a href="#kit-measure">Measure and test</a><a href="#kit-writeup">Write up and share</a></nav>
+      <p class="network-note" style="margin-top:0; margin-bottom:1.5rem;">The Team Workbook (RES-03) bundles project tracking, a PDSA log and an 18-item SQUIRE check into one spreadsheet. Its PDSA Log duplicates RES-06 and its SQUIRE Check duplicates the self-check built into RES-10 — pick one home for each, not both, so you’re not filling in the same thing twice. Its Data Log is not a duplicate of the Audit Data Template (RES-08): Data Log holds your de-identified weekly counts for the run chart, while the Audit Data Template holds identifiable patient-level data and stays on NHS systems only. The Data Log’s built-in chart is a plain run chart; RES-07 is the one to use when you need the median, shift signals and control limits.</p>
+
+      <div class="resource-list">
+        <div class="res-group" id="kit-start">
+          <h3>Start — open these on day one</h3>
+          <span class="hint">Read this first, keep this open, and one shared workbook for the project</span>
+        </div>
+        <a class="resource-row" href="./SAM_QIP_Kit_Start_Here.docx">
+          <span class="code">RES-01</span>
+          <div>
+            <div class="title">QIP Kit — Start Here</div>
+            <div class="desc">Which file to open, at every stage — one page, read this first.</div>
+          </div>
+          <span class="format">.docx</span>
+        </a>
+        <a class="resource-row" href="./SAM_QIP_Roadmap.pptx">
+          <span class="code">RES-02</span>
+          <div>
+            <div class="title">QIP Roadmap</div>
+            <div class="desc">Seven stages from first idea to finished write-up, and round again — the spine of the kit. 23 slides.</div>
+          </div>
+          <span class="format">.pptx</span>
+        </a>
+        <a class="resource-row" href="./SAM_QIP_Team_Workbook.xlsx">
+          <span class="code">RES-03</span>
+          <div>
+            <div class="title">QIP Team Workbook</div>
+            <div class="desc">One spreadsheet, eleven tabs — pitch, process map, causes, data plan, data log, PDSA log, diary, SQUIRE check and a hand-over pack. Where the project actually lives, day to day. One shared copy per project, not one each.</div>
+          </div>
+          <span class="format">.xlsx</span>
+        </a>
+        <div class="res-group" id="kit-plan">
+          <h3>Plan — Roadmap stages 1 to 3</h3>
+          <span class="hint">Pitch it, map it, draw it, aim it</span>
+        </div>
+        <a class="resource-row" href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener noreferrer">
+          <span class="code">RES-04</span>
+          <div>
+            <div class="title">QIP Diagram Tool</div>
+            <div class="desc">Pitch, 2×2, process map, 5 Whys, fishbone and driver diagram — six tabs, in your browser, exporting straight into slides.</div>
+          </div>
+          <span class="format">↗ web</span>
+        </a>
+        <a class="resource-row" href="./SAM_SMART_Aim_Statement_Builder.docx">
+          <span class="code">RES-05</span>
+          <div>
+            <div class="title">SMART aim statement builder</div>
+            <div class="desc">Turns a vague problem into a measurable, time-bound aim, before you collect any data. Worked example plus a five-point self-check. Matches Roadmap Stage 1.</div>
+          </div>
+          <span class="format">.docx</span>
+        </a>
+        <div class="res-group" id="kit-measure">
+          <h3>Measure and test — stages 2, 4 and 5</h3>
+          <span class="hint">Baseline, cycles and the run chart</span>
+        </div>
+        <a class="resource-row" href="./SAM_PDSA_Cycle_Worksheet.docx">
+          <span class="code">RES-06</span>
+          <div>
+            <div class="title">PDSA cycle worksheet</div>
+            <div class="desc">One page per cycle — plan, prediction, what happened, what’s next. Matches Roadmap Stages 4–7. Use this or the Workbook’s PDSA Log, not both.</div>
+          </div>
+          <span class="format">.docx</span>
+        </a>
+        <a class="resource-row" href="./SAM_Run_Chart_SPC_Worksheet.xlsx">
+          <span class="code">RES-07</span>
+          <div>
+            <div class="title">Run chart / SPC spreadsheet</div>
+            <div class="desc">Drop in your weekly numbers and the chart draws itself — with the median, shift signals and moving-range control limits the Workbook’s plain chart doesn’t have. Matches Roadmap Stages 2 and 5.</div>
+          </div>
+          <span class="format">.xlsx</span>
+        </a>
+        <a class="resource-row" href="./SAM_QIP_Audit_Data_Template.xlsx">
+          <span class="code">RES-08</span>
+          <div>
+            <div class="title">Audit data template</div>
+            <div class="desc">Patient-level before/after data — demographics, length of stay, mortality, readmission. Holds identifiable data: NHS systems only, never the Diagram Tool. Read its Read-me-first tab before you collect anything.</div>
+          </div>
+          <span class="format">.xlsx</span>
+        </a>
+        <div class="res-group" id="kit-writeup">
+          <h3>Write up and share — stages 6 and 7</h3>
+          <span class="hint">SQUIRE, ARCP, and the SAM conference</span>
+        </div>
+        <a class="resource-row" href="./SAM_SQUIRE_2_0_Reporting_Guide.pptx">
+          <span class="code">RES-09</span>
+          <div>
+            <div class="title">SQUIRE 2.0 Reporting Guide</div>
+            <div class="desc">All 18 SQUIRE items in plain English, with what’s “enough” at every step of a first QIP write-up. 19 slides.</div>
+          </div>
+          <span class="format">.pptx</span>
+        </a>
+        <a class="resource-row" href="./SAM_SQUIRE_2_0_Presentation_Template.pptx">
+          <span class="code">RES-10</span>
+          <div>
+            <div class="title">SQUIRE 2.0 Presentation Template</div>
+            <div class="desc">Fill-in slides mapped to all 18 SQUIRE items, plus an 18-item self-check before you present. Optional — 28 slides.</div>
+          </div>
+          <span class="format">.pptx</span>
+        </a>
+        <a class="resource-row" href="./SAM_ARCP_Evidence_Checklist.pdf">
+          <span class="code">RES-11</span>
+          <div>
+            <div class="title">ARCP evidence checklist</div>
+            <div class="desc">What to have ready at each stage, ST4–ST7, mapped to SQUIRE 2.0 and QIPAT.</div>
+          </div>
+          <span class="format">.pdf</span>
+        </a>
+        <a class="resource-row" href="./SAM_Abstract_Compliance_Checker.html" target="_blank" rel="noopener noreferrer">
+          <span class="code">RES-12</span>
+          <div>
+            <div class="title">QI abstract compliance checker</div>
+            <div class="desc">SAM’s Quality Improvement category — required structure, word limit and common rejection reasons — with a live word-and-structure check against your draft. No dates, so it holds up every year.</div>
+          </div>
+          <span class="format">↗ tool</span>
+        </a>
+      </div>
+      <p class="network-note">Ten pieces download directly; the QIP Diagram Tool and the QI abstract checker each open in a new tab. Nothing here collects patient-identifiable data except the Audit Data Template — which is why it stays on NHS systems.</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ QIP LIBRARY ============ -->
+  <section id="library">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">QIP library</p>
+          <h2>Completed projects from SAM members</h2>
+        </div>
+        <p class="count">Open for submissions</p>
+      </div>
+
+      <div class="empty">
+        <div>
+          <h3>Nothing listed yet — the first projects go up as they arrive.</h3>
+          <p>Completed projects only: at least one full PDSA cycle, post-change data in hand, the 18-item SQUIRE check done. Each entry will carry the problem, the aim, the change, the run chart and who to ask — so another unit can pick it up.</p>
+          <p><b>What to send:</b> the Team Workbook’s Share &amp; Replicate tab, your run chart, and a 300-word abstract written in the <a href="./SAM_Abstract_Compliance_Checker.html" target="_blank" rel="noopener noreferrer">QI abstract checker</a>. That’s the whole pack.</p>
+        </div>
+        <a class="btn btn-solid" href="#involved">Submit a finished project &rarr;</a>
+      </div>
+
+      <p class="sub-head">Where to start — SAM-QI’s priority first</p>
+      <div class="sdec">
+        <div>
+          <span class="tag">PRIORITY TOPIC</span>
+          <h3>Same Day Emergency Care</h3>
+          <p>SAM’s QI committee ran a four-round Delphi to decide where acute medicine QI effort should go, and the answer was SDEC (Kennedy et al., <em>Acute Medicine</em> 2022). A second, multi-professional Delphi then ranked SDEC quality metrics (Subbe et al., <em>Clinical Medicine</em> 2024): the system measures came out on top — above all, the proportion of patients who get same-day care, in and out of SDEC units. If you work in or near SDEC, your baseline measure already has a name.</p>
+        </div>
+        <div class="ideas">
+          <div class="idea"><b>Who gets same-day care?</b>The share of eligible patients reaching SDEC rather than a bed — and the conversion rate back to admission.</div>
+          <div class="idea"><b>Time to decision</b>Arrival to senior decision in SDEC, and the hours SDEC is actually open against the hours it is meant to be.</div>
+          <div class="idea"><b>One pathway, done properly</b>Iron-deficiency anaemia, DVT/PE, cellulitis, low-risk chest pain — pick one and measure work-up completion before discharge.</div>
+          <div class="idea"><b>Referral in</b>How quickly GP, ED and 111 referrals reach SDEC — and what happens on the “no” route.</div>
+        </div>
+      </div>
+      <div class="qip-card standards">
+        <span class="tag">WARD STANDARDS THAT ALWAYS NEED WORK</span>
+        <p>NEWS2 escalation on the take · VTE assessment within 14 hours · the AKI bundle and time to senior review · 4AT for over-65s · Sepsis Six timing · discharge-summary turnaround and content · medicines reconciliation within 24 hours · treatment-escalation plans documented within 24 hours.</p>
+      </div>
+      <p class="network-note">Suggested themes, not live projects — pick the one that bugs you most on your own ward, then count something. Twenty sets of notes is enough to start.</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ NETWORK / SITES ============ -->
+  <section id="network">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">SAM support network</p>
+          <h2>Where help comes from</h2>
+        </div>
+        <p class="count">Unit &rarr; region &rarr; SAM</p>
+      </div>
+
+      <div class="tiers">
+        <div class="tier">
+          <span class="code">TIER 01 · WEEKLY</span>
+          <h3>Your unit’s QI team</h3>
+          <p>A short QI huddle on the AMU or SDEC every week: a consultant lead, at least one nurse, pharmacist or therapist, and whoever is running a project. Pitch here. Register here, with your trust’s clinical audit or QI office. Bring the run chart here when there’s something to look at.</p>
+          <p>Don’t have one? The Roadmap and the Team Workbook are designed so that three people and a whiteboard can start one this month.</p>
+          <div class="when"><b>Come here for</b>Ideas, the pitch, registration, supervision, the mid-project “is this working?” — and the decision to keep, tweak or drop.</div>
+        </div>
+        <div class="tier">
+          <span class="code">TIER 02 · REGIONAL</span>
+          <h3>Your regional network</h3>
+          <p>Acute medicine training programmes and regional QI networks: somewhere to present once your unit has seen the chart, to find someone who has run something similar, and to see what neighbouring units are doing about the same problem. Ask your training programme director or regional QI lead who runs it where you are.</p>
+          <p>Regional and unit networks are welcome to copy this page and the kit for their own use.</p>
+          <div class="when"><b>Come here for</b>A second opinion, a bigger audience, a template someone has already adapted, and the regional meeting or poster slot.</div>
+        </div>
+        <div class="tier">
+          <span class="code">TIER 03 · NATIONAL</span>
+          <h3>SAM</h3>
+          <p>The kit on this page and the <a href="./learn.html">Learn page</a>. The library of completed projects. The Quality Improvement category at the SAM conference — run your draft through the <a href="./SAM_Abstract_Compliance_Checker.html" target="_blank" rel="noopener noreferrer">QI abstract checker</a> first. And a set of programmes a project can plug straight into:</p>
+          <ul class="proglist">
+            <li><a href="https://www.acutemedicine.org.uk/samba-new/" target="_blank" rel="noopener">SAMBA</a> — the national benchmarking audit; if your unit takes part, your baseline numbers may already exist.</li>
+            <li><a href="https://www.acutemedicine.org.uk/sampler/" target="_blank" rel="noopener">SAM-PLER</a> — patient-reported experience in acute medicine; the ready-made way to hear from patients.</li>
+            <li><a href="https://www.acutemedicine.org.uk/quality-improvement-2/" target="_blank" rel="noopener">SAM SitRep</a> — rapid national snapshots of pressure on acute medical services.</li>
+            <li><a href="https://www.acutemedicine.org.uk/quality-improvement-2/" target="_blank" rel="noopener">SAM Improvement Exchange</a> — SAM’s route for sharing QI work nationally.</li>
+            <li><a href="https://www.acutemedicine.org.uk/quality-improvement-2/" target="_blank" rel="noopener">Acute Medics as Improvers</a> and <a href="https://www.acutemedicine.org.uk/quality-improvement-2/" target="_blank" rel="noopener">Acute Medics Leading Improvement</a> — SAM’s QI courses with Aqua, plus QI certification.</li>
+          </ul>
+          <p>The SAM inbox is not a helpdesk, and that’s deliberate: local help is faster and knows your ward.</p>
+          <div class="when"><b>Email SAM only to</b>Join the SAM QIP team, submit a completed project for inclusion on this website, or report a problem with the site itself (accessibility included). Everything else goes to Tier 01 or 02.</div>
+        </div>
+      </div>
+      <p class="network-note">The Start Here document (RES-01) carries the same three tiers. The Roadmap’s last slide says it in one line: questions go to your local QIP team.</p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ GET INVOLVED ============ -->
+  <section id="involved">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Get involved</p>
+          <h2>Start local. Finish it. Then send it in.</h2>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <span class="n">01</span>
+          <h3>Start on your unit</h3>
+          <p>Find a problem that bugs you, count something — twenty sets of notes is enough — and pitch it at your unit’s next QI meeting. Register it with your trust’s audit or QI office. Your local QI lead is your first port of call, start to finish.</p>
+        </div>
+        <div class="step">
+          <span class="n">02</span>
+          <h3>Get help nearby</h3>
+          <p>Stuck, or unsure whether the data is telling you anything? Ask your unit’s QI team, then your regional network. That is where support lives — see <a href="#network">where help comes from</a>. The SAM inbox isn’t a helpdesk.</p>
+        </div>
+        <div class="step">
+          <span class="n">03</span>
+          <h3>Run it with the kit</h3>
+          <p>Roadmap open, Workbook shared, one run chart. Use the kit as it stands so your data and write-up come out in a shape the library can take without rework.</p>
+        </div>
+        <div class="step">
+          <span class="n">04</span>
+          <h3>Submit when it’s finished</h3>
+          <p>Completed projects only: at least one full PDSA cycle, post-change data, the 18-item SQUIRE check done. Send it to the SAM QIP team and, if it fits, it goes into the library with your name on it.</p>
+        </div>
+      </div>
+
+      <div class="involved-cta">
+        <div>
+          <h3>Two reasons to email the SAM QIP team</h3>
+          <p>To join the team, or to submit a completed project for this website. Everything else — ideas, registration, advice mid-project — goes to your local or regional team, who can help faster.</p>
+        </div>
+        <div class="cta-row" style="margin-top:0;">
+          <a class="btn btn-solid" href="mailto:quality.improvement@acutemedicine.org.uk?subject=Completed%20QIP%20for%20the%20SAM%20website">Submit a completed project</a>
+          <a class="btn btn-line" href="mailto:quality.improvement@acutemedicine.org.uk?subject=Joining%20the%20SAM%20QIP%20team">Join the SAM QIP team</a>
+        </div>
+      </div>
+      <p class="network-note mono">quality.improvement@acutemedicine.org.uk</p>
+
+      <p class="sub-head" style="margin-top:2.5rem;">Where a finished project can go</p>
+      <div class="routes">
+        <div class="route"><b>This library</b>Send the pack above and it goes up with your name on it, for the next unit to pick up.</div>
+        <div class="route"><b>The SAM conference</b>The Quality Improvement category — 300 words, seven headings. The <a href="./SAM_Abstract_Compliance_Checker.html" target="_blank" rel="noopener noreferrer">checker</a> keeps you inside both.</div>
+        <div class="route"><b>A journal</b>The <a href="https://acutemedjournal.co.uk/" target="_blank" rel="noopener">Acute Medicine journal</a> or <a href="https://bmjopenquality.bmj.com/" target="_blank" rel="noopener">BMJ Open Quality</a>, written to SQUIRE — your write-up is already most of the way there.</div>
+        <div class="route"><b>Your portfolio and beyond</b>QIPAT sign-off for ARCP, SAM’s <a href="https://www.acutemedicine.org.uk/quality-improvement-2/" target="_blank" rel="noopener">QI certification</a>, and the SAM Improvement Exchange.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">About the hub</p>
+          <h2>Built for the whole multidisciplinary team</h2>
+        </div>
+      </div>
+
+      <div class="about-cols">
+        <div class="measure">
+          <p>SAM members work across every part of acute care — doctors, nurses, pharmacists, therapists and the wider MDT — and a QIP that only lives with one profession tends to stall the moment that person moves on. This hub exists to keep projects owned by the whole team: a shared way of running them, a shared record of what’s been tried and what worked, and a clear answer to “who do I ask?”, whatever your role.</p>
+          <p>Four things live here. The <a href="#resources">kit</a> — twelve pieces, from a one-page Start Here to a SQUIRE self-check, with the seven-stage Roadmap as its spine. The <a href="#library">library</a> — completed projects submitted by SAM members, so the next unit doesn’t start from scratch. The <a href="./learn.html">Learn page</a> — the method in five minutes, a training ladder, and what ARCP expects. And the <a href="#network">support map</a> — because most help should come from your own unit and region, and the SAM inbox is reserved for two things: joining the SAM QIP team, and submitting a finished project.</p>
+        </div>
+        <dl class="stats">
+          <div>
+            <dt>Pieces in the kit</dt>
+            <dd>12</dd>
+          </div>
+          <div>
+            <dt>Roadmap stages</dt>
+            <dd>7</dd>
+          </div>
+          <div>
+            <dt>SQUIRE 2.0 items</dt>
+            <dd>18</dd>
+          </div>
+          <div>
+            <dt>QI abstract word limit</dt>
+            <dd>300</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
 </main>
 
-<dialog id="howtoDlg" aria-labelledby="howtoTitle">
-  <div class="a11y-body">
-    <button class="a11y-close" onclick="closeHowTo()" aria-label="Close">&times;</button>
-    <h2 id="howtoTitle">How to use this tool</h2>
-    <p>A quick tour. Each diagram type also has its own short guidance above the drawing area &mdash; the <b>Hide guidance</b> button turns that on and off.</p>
-    <ul class="howlist" id="howtoList"></ul>
-    <p style="color:var(--grey);font-size:13px">Keyboard shortcuts are listed in the Accessibility statement, linked in the footer.</p>
-    <p><button class="tbtn" onclick="closeHowTo()">Close</button></p>
+<footer>
+  <div class="wrap">
+    <div class="footer-cols">
+      <div>
+        <h4>About this page</h4>
+        <p>SAM QIP Hub — the <a href="https://www.acutemedicine.org.uk/" target="_blank" rel="noopener">Society for Acute Medicine</a>’s quality-improvement hub for acute medicine, built for the whole multidisciplinary team. Regional and unit networks are welcome to copy the page and the kit for their own use.</p>
+        <h4>Privacy</h4>
+        <p>This page sets no cookies and runs no analytics. The typefaces load from Google Fonts, which sees your IP address when they load; nothing else leaves your browser. Files you download are yours to keep. Nothing in the kit asks for patient-identifiable data except the Audit Data Template, which is designed to stay on NHS systems.</p>
+      </div>
+      <div>
+        <h4>Accessibility</h4>
+        <p>We aim to meet WCAG 2.2 AA: everything works with a keyboard, text can be resized to 200% without loss, colours meet contrast requirements, and the page respects your system’s dark mode and reduced-motion settings. The downloadable files are standard Office and PDF formats. If something here doesn’t work for you, email <a href="mailto:quality.improvement@acutemedicine.org.uk?subject=Accessibility%20problem%20with%20the%20SAM%20QIP%20Hub">quality.improvement@acutemedicine.org.uk</a> with “Accessibility” in the subject. The Diagram Tool has its own <a href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">accessibility statement</a>.</p>
+        <h4>On this page</h4>
+        <nav class="footer-index" aria-label="Sections">
+          <a href="#resources">The kit</a><a href="#kit-start">Start</a><a href="#kit-plan">Plan</a><a href="#kit-measure">Measure &amp; test</a><a href="#kit-writeup">Write up</a>
+          <a href="#library">Library</a><a href="./learn.html">Learn</a><a href="#network">Support</a><a href="#involved">Get involved</a><a href="#about">About</a>
+        </nav>
+        <h4>Tools</h4>
+        <p class="mono"><a href="https://aimqa.github.io/SAMQIP/" target="_blank" rel="noopener">aimqa.github.io/SAMQIP</a> · <a href="./SAM_Abstract_Compliance_Checker.html" target="_blank" rel="noopener noreferrer">QI abstract checker</a></p>
+      </div>
+    </div>
+    <div class="footer-stamp">
+      <span class="mono">Kit version 1.0 · page updated September 2026</span>
+      <span class="mono">SQUIRE 2.0: Ogrinc G, et al. BMJ Qual Saf 2016;25:986–992 · <a href="#top">Back to top &uarr;</a></span>
+    </div>
   </div>
-</dialog>
-<dialog id="a11y" aria-labelledby="a11yTitle">
-  <div class="a11y-body">
-    <button class="a11y-close" onclick="closeA11y()" aria-label="Close accessibility statement">&times;</button>
-    <h2 id="a11yTitle">Accessibility statement for the QIP Diagram Tool</h2>
-    <p>This website is run by Sample Website | Quality Improvement. We want as many people as possible to be able to use it. For example, you should be able to:</p>
-    <ul>
-      <li>use the whole tool with a keyboard alone</li>
-      <li>zoom in up to 400% without the controls disappearing off the screen</li>
-      <li>navigate it using a screen reader &mdash; every box has a name, and diagrams read left to right, top to bottom</li>
-      <li>change colours, contrast levels and fonts using your browser or device settings</li>
-      <li>turn off animation using your device&rsquo;s reduce-motion setting</li>
-    </ul>
-    <h3>Keyboard shortcuts</h3>
-    <ul>
-      <li><b>Tab / Shift+Tab</b> &mdash; move between boxes and buttons; the first Tab offers a &ldquo;Skip to diagram&rdquo; link</li>
-      <li><b>Alt+M</b> &mdash; jump from the selected box to its actions bar (add, delete, reorder, change shape); <b>Esc</b> returns</li>
-      <li><b>Alt + arrow keys</b> &mdash; move the selected idea on the 2&times;2 grid (hold Shift for bigger steps), or use the &ldquo;Move to&rdquo; buttons</li>
-      <li><b>Ctrl+Z / Ctrl+Y</b> &mdash; undo and redo</li>
-    </ul>
-    <h3>How accessible this website is</h3>
-    <p>This website is fully compliant with the <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">Web Content Accessibility Guidelines version 2.2</a> AA standard.</p>
-    <h3>Content that&rsquo;s not within the scope of the accessibility regulations</h3>
-    <ul>
-      <li><b>Diagrams you export</b> as PNG images or PowerPoint slides are pictures of your diagram, generated on your device at the moment you export. The text inside them is not machine-readable. Keep a link to this tool, or the Team Workbook, alongside anything you share so the content stays accessible.</li>
-      <li><b>The Google sign-in window</b> (used only for optional cross-device sync) is provided by Google and is outside our control.</li>
-    </ul>
-    <h3>Feedback and contact information</h3>
-    <p>If you find a problem that is not listed here, or think we are not meeting accessibility requirements, contact the Sample Website QI team at <a href="mailto:aimqip4@gmail.com">aimqip4@gmail.com</a>. We aim to respond within 10 working days.</p>
-    <h3>Enforcement procedure</h3>
-    <p>The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the &ldquo;accessibility regulations&rdquo;). If you&rsquo;re not happy with how we respond to your complaint, <a href="https://www.equalityadvisoryservice.com/" target="_blank" rel="noopener">contact the Equality Advisory and Support Service (EASS)</a>.</p>
-    <h3>Technical information about this website&rsquo;s accessibility</h3>
-    <p>Sample Website | Quality Improvement is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.</p>
-    <h3>Preparation of this accessibility statement</h3>
-    <p>This statement was prepared on 5 September 2026. It was last reviewed on 5 September 2026.</p>
-    <p>This website was last tested on 5 September 2026. The test was carried out by the Sample Website QI team using automated testing (axe-core 4.10 against the WCAG 2.2 AA rule set) on every diagram type, together with manual keyboard-only testing, colour-contrast measurement, target-size and reflow checks, and a text-spacing override test. It has not yet been tested with assistive-technology users; if you use a screen reader or other assistive technology, we would particularly welcome your feedback.</p>
-    <p><button class="tbtn" onclick="closeA11y()">Close</button></p>
-  </div>
-</dialog>
-<footer>Sample Website&nbsp; | &nbsp;Quality Improvement&nbsp; | &nbsp;<button class="linkbtn" onclick="openA11y()">Accessibility statement (WCAG 2.2 AA)</button></footer>
+</footer>
 
 <script>
-"use strict";
-/* ---------- state ---------- */
-let uid = 1; const nid = () => "n" + (uid++);
-const state = {
-  mode: "process",
-  process: [],
-  driver: { aim: "", primaries: [] },
-  sel: null
-};
-function blankProcess(){ return [
-  { id: nid(), type: "terminator", text: "Start" },
-  { id: nid(), type: "step", text: "" },
-  { id: nid(), type: "step", text: "" },
-  { id: nid(), type: "terminator", text: "End" }
-];}
-function blankDriver(){ return { aim: "", primaries: [
-  { id: nid(), text: "", secondaries: [ { id: nid(), text: "", ideas: [ { id: nid(), text: "" } ] } ] }
-]};}
-function blankWhys(){ return { problem: "", whys: ["", "", ""] }; }
-const FISH_CATS = ["People", "Process", "Equipment", "Environment", "Policies", "Patient factors"];
-function blankFish(){ return { problem: "", bones: FISH_CATS.map(n => ({ id: nid(), name: n, causes: [] })) }; }
-const PITCH_LABELS = ["The problem", "The number", "The aim", "Why it matters", "The ask"];
-const PITCH_PH = [
-  "What\u2019s going wrong, for which patients \u2014 as you\u2019ve seen it on the ward\u2026",
-  "One honest local figure: \u201C12 of 20 charts last week\u201D\u2026",
-  "From [X] to [Y] by [date]\u2026",
-  "The WHO quality domain it targets \u2014 and what it means for patients\u2026",
-  "A named supervisor \u2014 and a \u2018yes, go ahead\u2019 to collect baseline data\u2026"
-];
-function blankPitch(){ return ["", "", "", "", ""]; }
-function blankGrid(){ return []; }
-state.pages = [{ id: nid(), name: "Page 1", process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid(), fish: blankFish() }];
-state.cur = 0;
-Object.defineProperty(state, "process", { get(){ return state.pages[state.cur].process; }, set(v){ state.pages[state.cur].process = v; } });
-Object.defineProperty(state, "driver", { get(){ return state.pages[state.cur].driver; }, set(v){ state.pages[state.cur].driver = v; } });
-Object.defineProperty(state, "whys", {
-  get(){ const pg = state.pages[state.cur]; if (!pg.whys) pg.whys = blankWhys(); return pg.whys; },
-  set(v){ state.pages[state.cur].whys = v; }
-});
-Object.defineProperty(state, "pitch", {
-  get(){ const pg = state.pages[state.cur]; if (!pg.pitch) pg.pitch = blankPitch(); return pg.pitch; },
-  set(v){ state.pages[state.cur].pitch = v; }
-});
-Object.defineProperty(state, "grid", {
-  get(){ const pg = state.pages[state.cur]; if (!pg.grid) pg.grid = blankGrid(); return pg.grid; },
-  set(v){ state.pages[state.cur].grid = v; }
-});
-Object.defineProperty(state, "fish", {
-  get(){ const pg = state.pages[state.cur]; if (!pg.fish) pg.fish = blankFish(); return pg.fish; },
-  set(v){ state.pages[state.cur].fish = v; }
-});
-function uniqueName(base){
-  const names = state.pages.map(p => p.name);
-  if (!names.includes(base)) return base;
-  let i = 2; while (names.includes(base + " " + i)) i++;
-  return base + " " + i;
-}
-function renderPages(){
-  const bar = $("pagebar"); bar.innerHTML = "";
-  const lab = document.createElement("span"); lab.className = "plabel"; lab.textContent = "PAGES"; bar.appendChild(lab);
-  state.pages.forEach((p, i) => {
-    const chip = document.createElement("div");
-    chip.className = "pchip" + (i === state.cur ? " on" : "");
-    chip.title = "Click to open \u00B7 \u270E to rename";
-    const nm = document.createElement("button"); nm.className = "pname"; nm.textContent = p.name;
-    nm.setAttribute("aria-label", "Open page " + p.name);
-    if (i === state.cur) nm.setAttribute("aria-current", "page");
-    nm.onclick = ev => { ev.stopPropagation(); if (state.cur !== i){ state.cur = i; state.sel = null; render(); } };
-    chip.appendChild(nm);
-    const ed = document.createElement("button"); ed.className = "pe"; ed.textContent = "\u270E"; ed.title = "Rename this page"; ed.setAttribute("aria-label", "Rename page " + p.name);
-    ed.onclick = ev => { ev.stopPropagation(); renamePage(i); };
-    chip.appendChild(ed);
-    const x = document.createElement("button"); x.className = "px"; x.textContent = "\u00D7"; x.title = "Delete page"; x.setAttribute("aria-label", "Delete page " + p.name);
-    x.onclick = ev => { ev.stopPropagation(); delPage(i); };
-    chip.appendChild(x);
-    chip.onclick = () => { if (state.cur !== i){ state.cur = i; state.sel = null; render(); } };
-    chip.ondblclick = ev => { ev.stopPropagation(); renamePage(i); };
-    bar.appendChild(chip);
-  });
-  const add = document.createElement("button"); add.className = "paddbtn"; add.textContent = "+ New page";
-  add.onclick = addPage; bar.appendChild(add);
-}
-function addPage(){
-  const fallback = uniqueName("Page " + (state.pages.length + 1));
-  const typed = prompt("Name this page \u2014 usually your QIP or the cycle it covers:", fallback);
-  if (typed === null) return;                       // cancelled \u2014 don\u2019t create a stray page
-  beginChange();
-  const name = uniqueName((typed || "").trim() || fallback);
-  state.pages.push({ id: nid(), name: name, process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid(), fish: blankFish() });
-  state.cur = state.pages.length - 1; state.sel = null; render();
-}
-function delPage(i){
-  if (state.pages.length === 1){ alert("This is the only page \u2014 use Clear instead."); return; }
-  if (!confirm("Delete page \u201C" + state.pages[i].name + "\u201D and both its diagrams?")) return;
-  beginChange();
-  state.pages.splice(i, 1);
-  if (i < state.cur) state.cur--;
-  if (state.cur >= state.pages.length) state.cur = state.pages.length - 1;
-  state.sel = null; render();
-}
-function renamePage(i){
-  const v = prompt("Name this page \u2014 usually your QIP or the cycle it covers:", state.pages[i].name);
-  if (v === null) return;
-  const t = v.trim(); if (!t || t === state.pages[i].name) return;
-  const others = state.pages.filter((_, k) => k !== i).map(pg => pg.name);
-  let name = t, n = 2;
-  while (others.indexOf(name) >= 0) name = t + " " + (n++);
-  beginChange(); state.pages[i].name = name; render();
-}
-
-/* ---------- history (undo / redo) ---------- */
-const undoStack = [], redoStack = [];
-function snap(){ return JSON.stringify({ pages: state.pages, cur: state.cur }); }
-function pushRaw(s){ if (undoStack[undoStack.length - 1] !== s){ undoStack.push(s); if (undoStack.length > 100) undoStack.shift(); } }
-function beginChange(){ pushRaw(snap()); redoStack.length = 0; updateHistBtns(); }
-function afterChange(){ if (typeof pushLive === "function") pushLive(); if (typeof pushCloudLibrary === "function") pushCloudLibrary(false); saveLocal(); }
-
-/* ---------- local persistence (per browser) \u2014 keeps named projects separate and durable ---------- */
-const LS_KEY = "aimqip.v1";
-let lsWarned = false;
-function saveLocal(){
-  if (collab.on) return;   // a live room's pages are not your personal saved set
-  try {
-    localStorage.setItem(LS_KEY, JSON.stringify({ pages: state.pages, cur: state.cur }));
-  } catch (e) {
-    if (!lsWarned){ lsWarned = true; showToast("Couldn\u2019t save locally (browser storage full) \u2014 use Save file to keep a copy", 5000); }
-  }
-}
-function loadLocal(){
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (!raw) return false;
-    const j = JSON.parse(raw);
-    if (!Array.isArray(j.pages) || !j.pages.length) return false;
-    state.pages = j.pages;
-    state.cur = Math.min(j.cur || 0, j.pages.length - 1);
-    return true;
-  } catch (e){ return false; }
-}
-function blankPageSet(){ state.pages = [{ id: nid(), name: "Page 1", process: blankProcess(), driver: blankDriver(), whys: blankWhys(), pitch: blankPitch(), grid: blankGrid(), fish: blankFish() }]; state.cur = 0; }
-function applySnap(s){ const j = JSON.parse(s); state.pages = j.pages; state.cur = Math.min(j.cur || 0, j.pages.length - 1); state.sel = null; render(); }
-function doUndo(){ if (!undoStack.length) return; redoStack.push(snap()); applySnap(undoStack.pop()); updateHistBtns(); }
-function doRedo(){ if (!redoStack.length) return; undoStack.push(snap()); applySnap(redoStack.pop()); updateHistBtns(); }
-function updateHistBtns(){ $("undobtn").disabled = !undoStack.length; $("redobtn").disabled = !redoStack.length; }
-document.addEventListener("keydown", e => {
-  const ae = document.activeElement;
-  if (e.altKey && !e.ctrlKey && !e.metaKey && e.key.toLowerCase() === "m" && ae && ae.closest("#board")){
-    const first = document.querySelector("#nodebar button");
-    if (first){ e.preventDefault(); first.focus(); }
-    return;
-  }
-  if (e.key === "Escape" && ae && ae.closest("#nodebar")){
-    const back = document.querySelector("#board .sel .ntext") || document.querySelector("#board .sel [contenteditable]") || $("board");
-    e.preventDefault(); back.focus();
-    return;
-  }
-  if (!(e.ctrlKey || e.metaKey)) return;
-  if (ae && ae.isContentEditable) return;
-  const k = e.key.toLowerCase();
-  if (k === "z" && !e.shiftKey){ e.preventDefault(); doUndo(); }
-  else if (k === "y" || (k === "z" && e.shiftKey)){ e.preventDefault(); doRedo(); }
-});
-
-/* ---------- examples (VTE — matches the workbook & decks) ---------- */
-function loadExample(){
-  beginChange();
-  const procEx = [
-      { id: nid(), type: "terminator", text: "Patient arrives on AMU" },
-      { id: nid(), type: "step", text: "Clerked by admitting doctor" },
-      { id: nid(), type: "step", text: "Drug chart written" },
-      { id: nid(), type: "decision", text: "VTE section completed?", no: "chart flagged at board round", branch: [
-        { id: nid(), type: "step", text: "Nurse flags it to the prescriber at board round" },
-        { id: nid(), type: "terminator", text: "Addressed same day" }
-      ] },
-      { id: nid(), type: "step", text: "Pharmacist screens chart" },
-      { id: nid(), type: "wait", text: "Wait for drug round" },
-      { id: nid(), type: "step", text: "First doses given" },
-      { id: nid(), type: "terminator", text: "Patient on ward routine" }
-  ];
-  const drvEx = { aim: "Increase completed VTE assessments on AMU from 60% to 90% by Mar 2027",
-      primaries: [
-        { id: nid(), text: "Prescriber awareness", secondaries: [
-          { id: nid(), text: "Doctors know it\u2019s expected at clerking", ideas: [
-            { id: nid(), text: "Teaching slot at induction" },
-            { id: nid(), text: "Poster in doctors\u2019 office" } ] } ] },
-        { id: nid(), text: "Easy to do in the moment", secondaries: [
-          { id: nid(), text: "Prompt at the point of prescribing", ideas: [
-            { id: nid(), text: "VTE prompt on the clerking proforma" } ] },
-          { id: nid(), text: "Chart design supports it", ideas: [
-            { id: nid(), text: "Pre-printed VTE box on the chart" } ] } ] },
-        { id: nid(), text: "Feedback & ownership", secondaries: [
-          { id: nid(), text: "Team sees its own data", ideas: [
-            { id: nid(), text: "Weekly run chart at board round" } ] } ] }
-      ] };
-  const whysEx = { problem: "VTE assessments get missed at clerking", whys: [
-    "Doctors skip the section when it\u2019s busy",
-    "Nothing prompts it while the chart is being written",
-    "The clerking proforma predates the VTE requirement"
-  ] };
-  const pitchEx = [
-    "VTE assessment is one of the commonest things missed at clerking on AMU \u2014 and missing it exposes patients to a preventable clot.",
-    "Last month only 12 of 20 drug charts we checked had a VTE risk assessment completed within 14 hours of the decision to admit.",
-    "We aim to increase completed VTE assessments on AMU from 60% to 90% by March 2027.",
-    "That\u2019s safer care: every missed assessment is a patient who could have been protected and wasn\u2019t.",
-    "Dr [supervisor] has agreed to supervise \u2014 we\u2019re asking for the go-ahead to collect four weeks of baseline data."
-  ];
-  const gridEx = [
-    { id: nid(), text: "VTE prompt on the clerking proforma", x: 0.26, y: 0.20 },
-    { id: nid(), text: "Pre-printed VTE box on the chart", x: 0.70, y: 0.24 },
-    { id: nid(), text: "Weekly run chart at board round", x: 0.38, y: 0.44 },
-    { id: nid(), text: "Teaching slot at induction", x: 0.30, y: 0.74 },
-    { id: nid(), text: "Screensaver reminder on ward computers", x: 0.14, y: 0.86 }
-  ];
-  const fishEx = { problem: "VTE assessment missed at clerking on AMU", bones: [
-    { id: nid(), name: "People", causes: [
-      { id: nid(), text: "New F1s not shown the VTE box at induction" },
-      { id: nid(), text: "Locums unfamiliar with our proforma" } ] },
-    { id: nid(), name: "Process", causes: [
-      { id: nid(), text: "Nothing prompts it while the chart is written" },
-      { id: nid(), text: "No check before the post-take round" } ] },
-    { id: nid(), name: "Equipment", causes: [
-      { id: nid(), text: "Proforma predates the VTE requirement" } ] },
-    { id: nid(), name: "Environment", causes: [
-      { id: nid(), text: "Clerking done in a noisy bay, frequent interruptions" },
-      { id: nid(), text: "Worst at weekends when the take is busiest" } ] },
-    { id: nid(), name: "Policies", causes: [
-      { id: nid(), text: "Nobody knows the 14-hour standard" } ] },
-    { id: nid(), name: "Patient factors", causes: [
-      { id: nid(), text: "Weight not recorded, so dose left blank" } ] }
-  ]};
-  state.pages.push({ id: nid(), name: uniqueName("Example \u2014 VTE"), process: procEx, driver: drvEx, whys: whysEx, pitch: pitchEx, grid: gridEx, fish: fishEx });
-  state.cur = state.pages.length - 1;
-  state.sel = null; render();
-}
-function clearMode(){
-  if (!confirm("Clear the current diagram?")) return;
-  beginChange();
-  if (state.mode === "process") state.process = blankProcess();
-  else if (state.mode === "whys") state.whys = blankWhys();
-  else if (state.mode === "pitch") state.pitch = blankPitch();
-  else if (state.mode === "grid") state.grid = blankGrid();
-  else if (state.mode === "fish") state.fish = blankFish();
-  else state.driver = blankDriver();
-  state.sel = null; render();
-}
-
-/* ---------- shared ---------- */
-const $ = id => document.getElementById(id);
-function setMode(m){ state.mode = m; state.sel = null; render(); }
-function esc(t){ const d = document.createElement("div"); d.textContent = t || ""; return d.innerHTML; }
-function focusEnd(el){
-  if (!el) return;
-  el.focus();
-  const r = document.createRange(); r.selectNodeContents(el); r.collapse(false);
-  const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-}
-function editable(cls, txt, ph, oninput){
-  const d = document.createElement("div");
-  d.className = cls; d.contentEditable = "true"; d.spellcheck = false;
-  d.setAttribute("data-ph", ph); d.innerText = txt || "";
-  d.setAttribute("role", "textbox"); d.setAttribute("aria-multiline", "true");
-  d.setAttribute("aria-label", (ph || "text").replace(/\u2026$/, "").replace(/^click to /i, "").trim());
-  let base = null;
-  d.addEventListener("focus", () => { base = snap(); });
-  d.addEventListener("blur", () => { base = null; afterChange(); });
-  d.addEventListener("input", () => {
-    if (base !== null){ pushRaw(base); redoStack.length = 0; base = null; updateHistBtns(); }
-    oninput(d.innerText);
-  });
-  return d;
-}
-
-/* ---------- PROCESS MAP ---------- */
-const PW = 150, PH = 84, GX = 46, GY = 78, COLS = 5, PAD = 26;
-function pPos(i){
-  const row = Math.floor(i / COLS); let col = i % COLS;
-  if (row % 2 === 1) col = COLS - 1 - col;
-  return { x: PAD + col * (PW + GX), y: PAD + row * (PH + GY), row: row, col: col };
-}
-const BRANCH_DASH = ["5,3", "2,3", "9,3,2,3", "10,4", "1,4", "12,3,3,3,3,3"];
-function renderProcess(board, svg, nodes){
-  const list = state.process;
-  const rows = Math.max(1, Math.ceil(list.length / COLS));
-  const mainH = rows * (PH + GY) - GY + PAD * 2;
-  const branches = [];
-  list.forEach((n, i) => { if (n.type === "decision" && n.branch && n.branch.length) branches.push({ decision: n, idx: i }); });
-  const BROWH = PH + 42, BGAP = 30;
-  const branchH = branches.length ? (24 + branches.length * (BROWH + BGAP)) : 0;
-  board.style.height = (mainH + branchH) + "px";
-  list.forEach((n, i) => {
-    const p = pPos(i);
-    const el = document.createElement("div");
-    el.className = "node " + n.type + (state.sel === n.id ? " sel" : "");
-    el.style.cssText = "left:" + p.x + "px;top:" + p.y + "px;width:" + PW + "px;height:" + PH + "px";
-    el.innerHTML = '<div class="shape"></div>';
-    const ned = editable("ntext", n.text, "click to type\u2026", v => { n.text = v; });
-    ned.setAttribute("aria-label", ({ terminator: "Start or end", step: "Step", decision: "Decision", wait: "Wait" }[n.type] || "Step") + " " + (i + 1) + " of " + list.length);
-    el.appendChild(ned);
-    if (n.type === "decision" && !(n.branch && n.branch.length)){
-      const nb = editable("nobranch", n.no, "", v => { n.no = v; });
-      nb.setAttribute("aria-label", "If no, what happens");
-      el.appendChild(nb);
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('nav.primary a[href^="#"]'));
+    var byId = {};
+    links.forEach(function(a){ byId[a.getAttribute('href').slice(1)] = a; });
+    if ('IntersectionObserver' in window){
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (!e.isIntersecting) return;
+          links.forEach(function(a){ a.classList.remove('active'); });
+          var a = byId[e.target.id]; if (a) a.classList.add('active');
+        });
+      }, { rootMargin: '-35% 0px -55% 0px' });
+      Array.prototype.forEach.call(document.querySelectorAll('main section[id]'), function(sec){ obs.observe(sec); });
     }
-    el.addEventListener("mousedown", e => { if (state.sel !== n.id){ e.preventDefault(); state.sel = n.id; render(); } });
-    el.addEventListener("focusin", () => { if (state.sel !== n.id){ state.sel = n.id; render(); } });
-    nodes.appendChild(el);
-    if (state.sel === n.id) focusEnd(el.querySelector(".ntext"));
-  });
-  // arrows
-  let d = "";
-  for (let i = 0; i < list.length - 1; i++){
-    const a = pPos(i), b = pPos(i + 1);
-    if (a.row === b.row){
-      const y = a.y + PH / 2;
-      if (b.x > a.x) d += arrow(a.x + PW, y, b.x - 3, y, svg);
-      else d += arrow(a.x, y, b.x + PW + 3, y, svg);
-    } else {
-      const x = a.x + PW / 2;
-      d += arrow(x, a.y + PH, x, b.y - 3, svg);
+    var menu = document.querySelector('.nav-mobile');
+    if (menu){
+      menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ menu.removeAttribute('open'); }); });
+      document.addEventListener('click', function(ev){ if (!menu.contains(ev.target)) menu.removeAttribute('open'); });
     }
-  }
-  // branch spurs \u2014 one row per branching decision, below the main grid
-  branches.forEach((br, bi) => {
-    const rowY = mainH + 24 + bi * (BROWH + BGAP);
-    const labY = rowY, boxY = rowY + 36;
-    const lw = document.createElement("div"); lw.className = "branchlabel";
-    lw.style.cssText = "left:" + PAD + "px;top:" + labY + "px;width:" + (PW * 3) + "px";
-    const tag = document.createElement("b"); tag.textContent = "OTHERWISE \u2014";
-    lw.appendChild(tag);
-    lw.appendChild(editable("branchnote", br.decision.no, "click to note what happens\u2026", v => { br.decision.no = v; }));
-    nodes.appendChild(lw);
-    let bx = PAD;
-    br.decision.branch.forEach((bn, k) => {
-      const el = document.createElement("div");
-      el.className = "node " + bn.type + (state.sel === bn.id ? " sel" : "");
-      el.style.cssText = "left:" + bx + "px;top:" + boxY + "px;width:" + PW + "px;height:" + PH + "px";
-      el.innerHTML = '<div class="shape"></div>';
-      const bed = editable("ntext", bn.text, "click to type\u2026", v => { bn.text = v; });
-      bed.setAttribute("aria-label", "Otherwise route, step " + (k + 1));
-      el.appendChild(bed);
-      el.addEventListener("mousedown", e => { if (state.sel !== bn.id){ e.preventDefault(); state.sel = bn.id; render(); } });
-      el.addEventListener("focusin", () => { if (state.sel !== bn.id){ state.sel = bn.id; render(); } });
-      nodes.appendChild(el);
-      if (state.sel === bn.id) focusEnd(el.querySelector(".ntext"));
-      if (k < br.decision.branch.length - 1) d += arrow(bx + PW, boxY + PH / 2, bx + PW + GX - 3, boxY + PH / 2, svg);
-      bx += PW + GX;
-    });
-    // route via a right-hand gutter so the dashed line never crosses main-grid boxes, whatever row the decision sits in
-    const dPos = pPos(br.idx);
-    const cx = dPos.x + PW / 2, startX = PAD + PW / 2;
-    // each branch gets its own lane (offset by bi) so multiple "otherwise" routes never overlap one another
-    const gutterX = PAD + COLS * (PW + GX) - GX + 40 + bi * 18;
-    const dropY = dPos.y + PH + 14 + bi * 10, runY = boxY - 12;
-    d += '<path d="M' + cx + ',' + (dPos.y + PH) +
-      ' L' + cx + ',' + dropY +
-      ' L' + gutterX + ',' + dropY +
-      ' L' + gutterX + ',' + runY +
-      ' L' + startX + ',' + runY +
-      ' L' + startX + ',' + (boxY - 3) +
-      '" fill="none" stroke="#000000" stroke-width="2" stroke-dasharray="' + BRANCH_DASH[bi % BRANCH_DASH.length] + '" marker-end="url(#arr)"/>';
-  });
-  svg.innerHTML = markerDefs() + d;
-  $("who").style.display = "none";
-  $("drvhelp").style.display = "none";
-  $("hint").innerHTML = "<b>Process map:</b> click a box to select it and type straight in (keyboard: Tab to a box, Alt+M for its actions bar). Use the bar below to change its shape, add the next step, or reorder. On a decision, use <b>+ Add \u201CNo\u201D step</b> to map that path too \u2014 not just note it. Map what <i>actually</i> happens \u2014 walk the route with the people who do the work.";
-  $("legend").innerHTML = "<span><i>Pill</i> start / end</span><span><i>Box</i> step</span><span><i>Diamond</i> decision \u2014 can branch below</span><span><i>Dashed</i> wait / delay</span>";
-  renderProcessBar();
-}
-function arrow(x1, y1, x2, y2){
-  return '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#000000" stroke-width="2" marker-end="url(#arr)"/>';
-}
-function markerDefs(){
-  return '<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#000000"/></marker></defs>';
-}
-function renderProcessBar(){
-  const bar = $("nodebar"); bar.innerHTML = "";
-  const mk = (txt, fn, cls) => { const b = document.createElement("button"); b.className = cls || "tbtn"; b.textContent = txt; b.onclick = () => { beginChange(); fn(); }; bar.appendChild(b); };
-  const i = state.process.findIndex(n => n.id === state.sel);
-  if (i >= 0){
-    const n = state.process[i];
-    const l = document.createElement("span"); l.className = "lbl"; l.textContent = "SELECTED SHAPE:"; bar.appendChild(l);
-    const seg = document.createElement("div"); seg.className = "seg";
-    [["terminator", "Start / End"], ["step", "Step"], ["decision", "Decision"], ["wait", "Wait"]].forEach(t => {
-      const b = document.createElement("button"); b.textContent = t[1];
-      if (n.type === t[0]) b.className = "on";
-      b.onclick = () => { beginChange(); n.type = t[0]; render(); };
-      seg.appendChild(b);
-    });
-    bar.appendChild(seg);
-    mk("+ Add step after", () => { const nn = { id: nid(), type: "step", text: "" }; state.process.splice(i + 1, 0, nn); state.sel = nn.id; render(); });
-    if (n.type === "decision") mk("+ Add \u201CNo\u201D step", () => { if (!n.branch) n.branch = []; const nn = { id: nid(), type: "step", text: "" }; n.branch.push(nn); state.sel = nn.id; render(); });
-    mk("\u25C0 Move earlier", () => { if (i > 0){ const t = state.process[i - 1]; state.process[i - 1] = n; state.process[i] = t; render(); } });
-    mk("Move later \u25B6", () => { if (i < state.process.length - 1){ const t = state.process[i + 1]; state.process[i + 1] = n; state.process[i] = t; render(); } });
-    mk("Delete", () => { state.process.splice(i, 1); state.sel = null; render(); $("board").focus(); showToast("Box deleted", 2000); }, "tbtn danger");
-    return;
-  }
-  for (const dn of state.process){
-    if (dn.type !== "decision" || !dn.branch) continue;
-    const bi = dn.branch.findIndex(bn => bn.id === state.sel);
-    if (bi < 0) continue;
-    const bn = dn.branch[bi];
-    const l = document.createElement("span"); l.className = "lbl"; l.textContent = "\u201CNO\u201D PATH SHAPE:"; bar.appendChild(l);
-    const seg = document.createElement("div"); seg.className = "seg";
-    [["step", "Step"], ["wait", "Wait"], ["terminator", "End here"]].forEach(t => {
-      const b = document.createElement("button"); b.textContent = t[1];
-      if (bn.type === t[0]) b.className = "on";
-      b.onclick = () => { beginChange(); bn.type = t[0]; render(); };
-      seg.appendChild(b);
-    });
-    bar.appendChild(seg);
-    mk("+ Add step after", () => { const nn = { id: nid(), type: "step", text: "" }; dn.branch.splice(bi + 1, 0, nn); state.sel = nn.id; render(); });
-    mk("\u25C0 Move earlier", () => { if (bi > 0){ const t = dn.branch[bi - 1]; dn.branch[bi - 1] = bn; dn.branch[bi] = t; render(); } });
-    mk("Move later \u25B6", () => { if (bi < dn.branch.length - 1){ const t = dn.branch[bi + 1]; dn.branch[bi + 1] = bn; dn.branch[bi] = t; render(); } });
-    mk("Remove from branch", () => { dn.branch.splice(bi, 1); state.sel = null; render(); }, "tbtn danger");
-    return;
-  }
-  const l = document.createElement("span"); l.className = "lbl"; l.textContent = "NOTHING SELECTED \u2014"; bar.appendChild(l);
-  mk("+ Add step at end", () => { const nn = { id: nid(), type: "step", text: "" }; state.process.push(nn); state.sel = nn.id; render(); });
-}
-
-/* ---------- DRIVER DIAGRAM ---------- */
-const DCOL = [
-  { x: 24, w: 190, head: "AIM" },
-  { x: 254, w: 205, head: "PRIMARY DRIVERS" },
-  { x: 499, w: 225, head: "SECONDARY DRIVERS" },
-  { x: 764, w: 330, head: "CHANGE IDEAS" }
-];
-const DH = 74, DSLOT = 92, DTOP = 44;
-function renderDriver(board, svg, nodes){
-  const dv = state.driver;
-  // leaf slots
-  let slot = 0;
-  dv.primaries.forEach(p => {
-    p._y0 = slot;
-    p.secondaries.forEach(sc => {
-      sc._y0 = slot;
-      const leaves = Math.max(1, sc.ideas.length);
-      sc.ideas.forEach((idea, k) => { idea._slot = slot + k; });
-      slot += leaves;
-      sc._y1 = slot - 1;
-    });
-    if (!p.secondaries.length){ slot += 1; }
-    p._y1 = slot - 1;
-  });
-  const totalSlots = Math.max(4, slot);
-  board.style.height = (DTOP + totalSlots * DSLOT + 20) + "px";
-  DCOL.forEach(c => {
-    const h = document.createElement("div"); h.className = "colhead";
-    h.style.left = c.x + "px"; h.textContent = c.head; nodes.appendChild(h);
-  });
-  const yFor = s => DTOP + s * DSLOT;
-  const mid = (a, b) => yFor((a + b) / 2);
-  function newIdea(){ return { id: nid(), text: "" }; }
-  function newSec(){ return { id: nid(), text: "", ideas: [newIdea()] }; }
-  function newPri(){ return { id: nid(), text: "", secondaries: [newSec()] }; }
-  function card(cls, col, y, txt, ph, oninput, adds, del, sib){
-    const c = DCOL[col];
-    const el = document.createElement("div");
-    el.className = "dnode " + cls + (state.sel === oninput.id ? " sel" : "");
-    el.style.cssText = "left:" + c.x + "px;top:" + y + "px;width:" + c.w + "px;height:" + DH + "px";
-    el.appendChild(editable("ntext", txt, ph, oninput.fn));
-    if (adds){ const b = document.createElement("button"); b.className = "nadd"; b.textContent = "+"; b.title = adds.title;
-      b.onclick = e => { e.stopPropagation(); beginChange(); adds.fn(); }; el.appendChild(b); }
-    if (sib){ const b = document.createElement("button"); b.className = "nsib"; b.textContent = "+"; b.title = sib.title;
-      b.onclick = e => { e.stopPropagation(); beginChange(); sib.fn(); }; el.appendChild(b); }
-    if (del){ const b = document.createElement("button"); b.className = "ndel"; b.textContent = "\u00D7"; b.title = "Delete";
-      b.onclick = e => { e.stopPropagation(); if (confirm("Delete this and everything under it?")){ beginChange(); del(); } }; el.appendChild(b); }
-    nodes.appendChild(el);
-    return { x: c.x, y: y, w: c.w };
-  }
-  let d = "";
-  const aimY = dv.primaries.length ? mid(dv.primaries[0]._y0, dv.primaries[dv.primaries.length - 1]._y1) : yFor(0);
-  const aimPos = card("aim", 0, aimY, dv.aim, "Your SMART aim\u2026", { fn: v => { dv.aim = v; } },
-    { title: "Add a primary driver", fn: () => { dv.primaries.push(newPri()); render(); } }, null);
-  dv.primaries.forEach(p => {
-    const py = mid(p._y0, p._y1);
-    const pp = card("primary", 1, py, p.text, "Primary driver\u2026", { fn: v => { p.text = v; } },
-      { title: "Add a secondary driver to this one", fn: () => { p.secondaries.push(newSec()); render(); } },
-      () => { dv.primaries = dv.primaries.filter(x => x !== p); render(); },
-      { title: "Add another primary driver below this one", fn: () => { dv.primaries.splice(dv.primaries.indexOf(p) + 1, 0, newPri()); render(); } });
-    d += elbow(aimPos, pp);
-    p.secondaries.forEach(sc => {
-      const sy = mid(sc._y0, sc._y1);
-      const sp = card("secondary", 2, sy, sc.text, "Secondary driver\u2026", { fn: v => { sc.text = v; } },
-        { title: "Add a change idea to this one", fn: () => { sc.ideas.push(newIdea()); render(); } },
-        () => { p.secondaries = p.secondaries.filter(x => x !== sc); render(); },
-        { title: "Add another secondary driver below this one", fn: () => { p.secondaries.splice(p.secondaries.indexOf(sc) + 1, 0, newSec()); render(); } });
-      d += elbow(pp, sp);
-      sc.ideas.forEach(idea => {
-        const iy = yFor(idea._slot);
-        const ip = card("idea", 3, iy, idea.text, "Change idea\u2026", { fn: v => { idea.text = v; } }, null,
-          () => { sc.ideas = sc.ideas.filter(x => x !== idea); render(); },
-          { title: "Add another change idea below this one", fn: () => { sc.ideas.splice(sc.ideas.indexOf(idea) + 1, 0, newIdea()); render(); } });
-        d += elbow(sp, ip);
-      });
-    });
-  });
-  svg.innerHTML = d;
-  $("hint").innerHTML = "<b>Driver diagram:</b> type in the boxes; tap or hover a box for its controls \u2014 <b>+ on the right</b> adds the next level along, <b>+ underneath</b> adds another box at the same level, <b>\u00D7</b> deletes. Read it left to right: to achieve the <b>aim</b>, these <b>drivers</b> must change \u2014 and these <b>change ideas</b> might do it. Pick ONE idea for cycle 1.";
-  $("legend").innerHTML = "<span><i>Tip</i>&nbsp; a 15-minute whiteboard version with your team comes first \u2014 this makes it presentable.</span>";
-  const bar = $("nodebar"); bar.innerHTML = "";
-  const l = document.createElement("span"); l.className = "lbl"; l.textContent = "+ RIGHT = NEXT LEVEL ALONG   \u00B7   + BELOW = ANOTHER AT THIS LEVEL   \u00B7   \u00D7 = DELETE"; bar.appendChild(l);
-  renderDrvHelp();
-  renderWho();
-}
-const DRV = [
-  ["Your aim", "What you\u2019re trying to achieve \u2014 with a number and a date.",
-   [["S", "what, for whom?"], ["M", "a number + a method?"], ["A", "doable this rotation?"], ["R", "ties to your change idea?"], ["T", "a check-by date?"]],
-   "\u201CIncrease completed VTE assessments on AMU from 60% to 90% by Mar 2027.\u201D"],
-  ["Primary drivers", "The 2\u20135 big things that must be true for the aim to happen. Write them as conditions, not actions \u2014 the headings of your theory.",
-   "If all of these were true, would we hit the aim?",
-   "\u201CIt\u2019s easy to do in the moment.\u201D  Common ones: people know what\u2019s expected \u00B7 it\u2019s easy to do \u00B7 the team sees its own data \u00B7 someone owns it."],
-  ["Secondary drivers", "The specific parts of the system that would make that primary driver true \u2014 the bits you can actually get at on your ward.",
-   "If we changed this, would the driver to its left improve?",
-   "\u201CPrompt at the point of prescribing\u201D \u00B7 \u201CChart design supports it.\u201D"],
-  ["Change ideas", "The concrete thing you\u2019ll test in one PDSA cycle. Name the artefact or action.",
-   "Could we start this on Monday?",
-   "\u201CVTE prompt on the clerking proforma.\u201D"]
-];
-function renderDrvHelp(){
-  const w = $("drvhelp");
-  if (!state.help){ w.style.display = "none"; return; }
-  w.style.display = "block";
-  w.innerHTML = '<div class="whoin"><div class="whohead">WHAT GOES IN EACH COLUMN</div>' +
-    '<div class="wholine">Read your diagram as one sentence: <b>we\u2019ll achieve the aim because these primary drivers change \u2014 and each one will change because of these secondary drivers, which we\u2019ll test with these change ideas.</b></div>' +
-    '<div class="dgrid">' + DRV.map(d => {
-      const test = Array.isArray(d[2])
-        ? '<span class="smartlbl">IS IT SMART?</span>' + d[2].map(sm => '<span class="smartline"><b>' + sm[0] + '</b> \u2014 ' + sm[1] + '</span>').join('')
-        : '<span class="tst">Test: ' + d[2] + '</span>';
-      return '<div class="dcard"><b>' + d[0] + '</b>' + d[1] + test + '<span class="exm">e.g. ' + d[3] + '</span></div>';
-    }).join('') +
-    '</div>' +
-    '<div class="dwarn"><b>Three things that catch people out:</b> &nbsp;1. If it names a poster, checklist or proforma, it\u2019s a change idea \u2014 not a driver. &nbsp;2. If nobody could disagree with it, it\u2019s too vague to be a driver. &nbsp;3. More than five primary drivers usually means some are really secondary ones.</div></div>';
-}
-function renderWhys(board, svg, nodes){
-  const w = state.whys;
-  const X = 260, W = 600;
-  let y = 26;
-  board.style.height = (y + 120 + w.whys.length * 108 + 130) + "px";
-  const place = (el, h) => { el.style.cssText = "position:absolute;left:" + X + "px;top:" + y + "px;width:" + W + "px;box-sizing:border-box"; nodes.appendChild(el); y += h; };
-
-  const head = document.createElement("div");
-  head.className = "colhead"; head.style.left = X + "px"; head.textContent = "THE PROBLEM";
-  head.style.top = "6px"; nodes.appendChild(head);
-
-  const pb = document.createElement("div"); pb.className = "wprob";
-  pb.appendChild(editable("ntext", w.problem, "What\u2019s going wrong?", v => { w.problem = v; }));
-  place(pb, 70);
-
-  w.whys.forEach((t, i) => {
-    const ar = document.createElement("div"); ar.className = "warrow"; ar.textContent = "\u2193  why?";
-    ar.style.cssText = "position:absolute;left:" + X + "px;top:" + y + "px;width:" + W + "px";
-    nodes.appendChild(ar); y += 26;
-
-    const c = document.createElement("div"); c.className = "wcard" + (i === w.whys.length - 1 ? " last" : "");
-    const lab = document.createElement("span"); lab.className = "wlab"; lab.textContent = "WHY " + (i + 1); c.appendChild(lab);
-    const ed = editable("ntext", t, "Because\u2026", v => { w.whys[i] = v; });
-    ed.setAttribute("aria-label", "Why " + (i + 1));
-    ed.style.flex = "1"; c.appendChild(ed);
-    if (w.whys.length > 1){
-      const d = document.createElement("button"); d.className = "ndel"; d.textContent = "\u00D7"; d.title = "Delete this why";
-      d.onclick = e => { e.stopPropagation(); beginChange(); w.whys.splice(i, 1); render(); };
-      c.appendChild(d);
-    }
-    place(c, 62);
-  });
-
-  const ar2 = document.createElement("div"); ar2.className = "warrow"; ar2.textContent = "\u2193  so\u2026";
-  ar2.style.cssText = "position:absolute;left:" + X + "px;top:" + y + "px;width:" + W + "px";
-  nodes.appendChild(ar2); y += 26;
-
-  const root = document.createElement("div"); root.className = "wroot";
-  const rl = document.createElement("span"); rl.className = "wlab"; rl.textContent = "ROOT CAUSE"; root.appendChild(rl);
-  const rt = document.createElement("span");
-  const last = (w.whys[w.whys.length - 1] || "").trim();
-  rt.textContent = last ? last : "\u2014 your last \u2018why\u2019 appears here";
-  rt.style.color = last ? "" : "var(--ph)";
-  root.appendChild(rt);
-  place(root, 66);
-
-  if (w.whys.length < 7){
-    const add = document.createElement("button"); add.className = "waddw"; add.textContent = "+ Add another why";
-    add.style.cssText += ";position:absolute;left:" + X + "px;top:" + (y + 6) + "px;width:" + W + "px";
-    add.onclick = () => { beginChange(); w.whys.push(""); render(); };
-    nodes.appendChild(add);
-  }
-
-  svg.innerHTML = "";
-  $("who").style.display = "none";
-  $("drvhelp").style.display = "none";
-  $("hint").innerHTML = "<b>5 Whys:</b> name the problem, then keep asking <b>why</b> until you reach something you can redesign \u2014 a process, a form, a step. If your last \u2018why\u2019 names a <i>person</i>, ask why once more. The root cause becomes a secondary driver on your driver diagram. Never use it on its own \u2014 it forces one path to one cause, so pair it with the fishbone.";
-  $("legend").innerHTML = "<span><i>Tip</i>&nbsp; three to five whys is typical \u2014 ten minutes at the whiteboard with the team beats an hour alone.</span>";
-  const bar = $("nodebar"); bar.innerHTML = "";
-  const l = document.createElement("span"); l.className = "lbl"; l.textContent = "CLICK A BOX AND TYPE   \u00B7   \u00D7 = DELETE A WHY"; bar.appendChild(l);
-}
-function renderFish(board, svg, nodes){
-  const f = state.fish;
-  if (!f.bones || !f.bones.length) f.bones = blankFish().bones;
-  const COLW = 232, GAPX = 40, LX = 46, HEADH = 30, ADDH = 22, TOPY = 34, CPL = 34;
-  const top = f.bones.slice(0, 3), bot = f.bones.slice(3, 6);
-  // a cause box grows with its text, so rows never overlap
-  const causeH = t => 10 + 15 * Math.max(1, Math.ceil(((t || "").length || 1) / CPL));
-  const stackH = b => (b.causes || []).reduce((a, c) => a + causeH(c.text) + 4, 0);
-  const blockH = b => HEADH + 4 + stackH(b) + ADDH + 8;
-  const rowH = arr => Math.max.apply(null, arr.map(blockH));
-  const topH = rowH(top), botH = rowH(bot);
-  const spineY = TOPY + topH + 46;
-  board.style.height = (spineY + 46 + botH + 26) + "px";
-  const colX = i => LX + i * (COLW + GAPX);
-  const centre = i => colX(i) + COLW / 2;
-  const SPINE_END = colX(2) + COLW + 34;
-
-  const head = document.createElement("div");
-  head.className = "colhead"; head.style.left = LX + "px"; head.style.top = "8px";
-  head.textContent = "WHAT COULD BE CAUSING IT";
-  nodes.appendChild(head);
-
-  let d = "";
-  // spine + arrowhead into the problem box
-  d += '<path d="M' + LX + ',' + spineY + ' L' + (SPINE_END - 3) + ',' + spineY +
-       '" fill="none" stroke="#000000" stroke-width="2.4" marker-end="url(#arr)"/>';
-
-  const drawBlock = (bone, i, isTop) => {
-    const x = colX(i), cx = centre(i);
-    const blockTop = isTop ? TOPY : spineY + 46;
-    // the bone: a diagonal from the block to the spine. Every bone in a row starts at the
-    // same height so they stay parallel, whatever number of causes each one carries.
-    const attach = Math.min(cx + 66, SPINE_END - 24);
-    const edgeY = isTop ? TOPY + topH - 4 : blockTop - 6;
-    d += '<path d="M' + cx + ',' + edgeY + ' L' + attach + ',' + spineY +
-         '" fill="none" stroke="#000000" stroke-width="1.8"/>';
-
-    const hd = document.createElement("div");
-    hd.className = "fhead";
-    hd.style.cssText = "left:" + x + "px;top:" + blockTop + "px;width:" + COLW + "px;height:" + HEADH + "px";
-    hd.appendChild(editable("ntext", bone.name, "category\u2026", v => { bone.name = v; }));
-    nodes.appendChild(hd);
-
-    let cy = blockTop + HEADH + 4;
-    (bone.causes || []).forEach((c, k) => {
-      const h = causeH(c.text);
-      const el = document.createElement("div");
-      el.className = "fcause" + (state.sel === c.id ? " sel" : "");
-      el.style.cssText = "left:" + (x + 14) + "px;top:" + cy + "px;width:" + (COLW - 14) + "px;min-height:" + h + "px";
-      cy += h + 4;
-      const ed = editable("ntext", c.text, "cause\u2026", v => { c.text = v; });
-      el.appendChild(ed);
-      const del = document.createElement("button");
-      del.className = "ndel"; del.textContent = "\u00D7"; del.title = "Delete this cause";
-      del.onclick = e => { e.stopPropagation(); beginChange(); bone.causes = bone.causes.filter(z => z !== c); state.sel = null; render(); };
-      el.appendChild(del);
-      el.addEventListener("mousedown", e => { if (state.sel !== c.id){ e.preventDefault(); state.sel = c.id; render(); } });
-      el.addEventListener("focusin", () => { if (state.sel !== c.id){ state.sel = c.id; render(); } });
-      nodes.appendChild(el);
-      if (state.sel === c.id) focusEnd(ed);
-    });
-
-    const addY = cy;
-    const add = document.createElement("button");
-    add.className = "fadd";
-    add.style.cssText = "left:" + (x + 14) + "px;top:" + addY + "px;width:" + (COLW - 14) + "px;height:" + ADDH + "px";
-    add.textContent = "+ cause";
-    add.onclick = () => {
-      beginChange();
-      if (!bone.causes) bone.causes = [];
-      const c = { id: nid(), text: "" };
-      bone.causes.push(c); state.sel = c.id; render();
-    };
-    nodes.appendChild(add);
-  };
-  top.forEach((b, i) => drawBlock(b, i, true));
-  bot.forEach((b, i) => drawBlock(b, i, false));
-
-  const pb = document.createElement("div");
-  pb.className = "fprob";
-  pb.style.cssText = "left:" + (SPINE_END + 6) + "px;top:" + (spineY - 42) + "px;width:186px;height:84px";
-  pb.appendChild(editable("ntext", f.problem, "the problem\u2026", v => { f.problem = v; }));
-  nodes.appendChild(pb);
-
-  svg.innerHTML = markerDefs() + d;
-  $("who").style.display = "none";
-  $("drvhelp").style.display = "none";
-  $("hint").innerHTML = "<b>Fishbone:</b> the problem goes in the head on the right; every likely cause goes on a bone. Spread <i>wide</i> first \u2014 the point is to get all the candidate causes out of people\u2019s heads before you argue about which matters. Then pick one and take it deep with the 5 Whys.";
-  $("legend").innerHTML = "<span><i>Tip</i>&nbsp; rename a category if it doesn\u2019t fit your problem \u2014 six is a prompt, not a rule. Leave a bone empty rather than inventing a cause for it.</span>";
-
-  const bar = $("nodebar"); bar.innerHTML = "";
-  const l = document.createElement("span"); l.className = "lbl";
-  l.textContent = "CLICK TO TYPE   \u00B7   + CAUSE ADDS A BONE ITEM   \u00B7   \u00D7 = DELETE"; bar.appendChild(l);
-  const send = document.createElement("button"); send.className = "tbtn";
-  send.textContent = "\u21D2 Send causes to driver diagram";
-  send.title = "Turn each category into a primary driver and each cause into a secondary driver";
-  send.onclick = () => {
-    const filled = f.bones.filter(b => (b.causes || []).some(c => (c.text || "").trim()));
-    if (!filled.length){ alert("No causes written down yet \u2014 add a few to the bones first."); return; }
-    const made = filled.map(b => ({
-      id: nid(), text: (b.name || "").trim(),
-      secondaries: b.causes.filter(c => (c.text || "").trim()).map(c => ({
-        id: nid(), text: c.text.trim(), ideas: [ { id: nid(), text: "" } ]
-      }))
-    }));
-    const dd = state.driver;
-    const untouched = dd.primaries.length === 1 &&
-      !(dd.primaries[0].text || "").trim() &&
-      dd.primaries[0].secondaries.length === 1 &&
-      !(dd.primaries[0].secondaries[0].text || "").trim();
-    beginChange();
-    dd.primaries = untouched ? made : dd.primaries.concat(made);
-    state.mode = "driver"; state.sel = null; render();
-    const nS = made.reduce((a, b) => a + b.secondaries.length, 0);
-    showToast(nS + (nS === 1 ? " cause" : " causes") + " added as secondary drivers \u2014 now add a change idea to each", 5000);
-  };
-  bar.appendChild(send);
-}
-function renderPitch(board, svg, nodes){
-  const P = state.pitch;
-  const X = 110, W = 900, CH = 74, GAPY = 16, TOP = 44;
-  board.style.height = (TOP + 5 * (CH + GAPY) + 40) + "px";
-  const head = document.createElement("div");
-  head.className = "colhead"; head.style.left = X + "px"; head.style.top = "14px";
-  head.textContent = "THE FIVE-SENTENCE PITCH";
-  nodes.appendChild(head);
-  PITCH_LABELS.forEach((lab, i) => {
-    const y = TOP + i * (CH + GAPY);
-    const card = document.createElement("div");
-    card.className = "pcard" + (state.sel === "pitch" + i ? " sel" : "");
-    card.style.cssText = "left:" + X + "px;top:" + y + "px;width:" + W + "px;height:" + CH + "px";
-    const num = document.createElement("div"); num.className = "pnum"; num.textContent = (i + 1);
-    const lb = document.createElement("div"); lb.className = "plab"; lb.textContent = lab;
-    card.appendChild(num); card.appendChild(lb);
-    const ed = editable("ntext", P[i], PITCH_PH[i], v => { P[i] = v; });
-    ed.setAttribute("aria-label", "Sentence " + (i + 1) + ": " + PITCH_LABELS[i]);
-    card.appendChild(ed);
-    card.addEventListener("mousedown", e => { if (state.sel !== "pitch" + i){ e.preventDefault(); state.sel = "pitch" + i; render(); } });
-    card.addEventListener("focusin", () => { if (state.sel !== "pitch" + i){ state.sel = "pitch" + i; render(); } });
-    nodes.appendChild(card);
-    if (state.sel === "pitch" + i) focusEnd(ed);
-  });
-  svg.innerHTML = "";
-  $("who").style.display = "none";
-  $("drvhelp").style.display = "none";
-  $("hint").innerHTML = "<b>Five-sentence pitch:</b> click a line and type. Keep each to one sentence \u2014 problem, one honest local number, the aim, why it matters, and what you\u2019re asking for. The longer answers stay in your back pocket for the questions afterwards.";
-  $("legend").innerHTML = "<span><i>Tip</i>&nbsp; if you can\u2019t say it in five sentences, the aim is probably too big for one cycle.</span>";
-  const bar = $("nodebar"); bar.innerHTML = "";
-  const l = document.createElement("span"); l.className = "lbl"; l.textContent = "CLICK A LINE AND TYPE"; bar.appendChild(l);
-  if (state.help){
-    const w = $("drvhelp"); w.style.display = "block";
-    w.innerHTML = '<div class="whoin"><div class="whohead">IN YOUR BACK POCKET \u2014 THE FOUR QUESTIONS THE ROOM WILL ASK</div>' +
-      '<div class="wholine">Have a one-line answer to each, in your head \u2014 not in the script.</div>' +
-      '<div class="dgrid">' +
-      [["\u201CWhat is it?\u201D", "The problem and your aim \u2014 sentences 1\u20133."],
-       ["\u201CHow does it work?\u201D", "The change you\u2019d test first, and why that one."],
-       ["\u201CCan you back it up?\u201D", "Your local number, and how you\u2019ll measure it."],
-       ["\u201CCan you do it?\u201D", "Who\u2019s supervising, who\u2019s said yes, and by when."]]
-        .map(d => '<div class="dcard"><b>' + d[0] + '</b>' + d[1] + '</div>').join('') +
-      '</div></div>';
-  }
-}
-function gridGeom(){ return { LX: 150, TY: 56, W: 830, H: 520, CW: 168, CH: 46 }; }
-function quadrantName(it){
-  const top = it.y < 0.5, left = it.x < 0.5;
-  return top ? (left ? "quick wins" : "big bets") : (left ? "low effort, low yield" : "park these");
-}
-function renderGrid(board, svg, nodes){
-  const g = gridGeom();
-  board.style.height = (g.TY + g.H + 70) + "px";
-  const mkAxis = (css) => { const d = document.createElement("div"); d.className = "gaxis"; d.style.cssText = css; nodes.appendChild(d); };
-  mkAxis("left:" + g.LX + "px;top:" + g.TY + "px;width:2px;height:" + g.H + "px");
-  mkAxis("left:" + g.LX + "px;top:" + (g.TY + g.H) + "px;width:" + g.W + "px;height:2px");
-  const midX = g.LX + g.W / 2, midY = g.TY + g.H / 2;
-  const dash = document.createElement("div"); dash.className = "gaxis";
-  dash.style.cssText = "left:" + midX + "px;top:" + g.TY + "px;width:1px;height:" + g.H + "px;opacity:.35";
-  nodes.appendChild(dash);
-  const dash2 = document.createElement("div"); dash2.className = "gaxis";
-  dash2.style.cssText = "left:" + g.LX + "px;top:" + midY + "px;width:" + g.W + "px;height:1px;opacity:.35";
-  nodes.appendChild(dash2);
-  const t1 = document.createElement("div"); t1.className = "gtick";
-  t1.style.cssText = "left:6px;top:" + (g.TY + g.H / 2 - 10) + "px;width:130px;text-align:right";
-  t1.textContent = "IMPACT \u2191"; nodes.appendChild(t1);
-  const t2 = document.createElement("div"); t2.className = "gtick";
-  t2.style.cssText = "left:" + g.LX + "px;top:" + (g.TY + g.H + 12) + "px;width:" + g.W + "px;text-align:center";
-  t2.textContent = "EFFORT \u2192"; nodes.appendChild(t2);
-  const quads = [
-    ["win", "QUICK WINS \u2014 START HERE", g.LX + 14, g.TY + 12],
-    ["", "big bets \u2014 later cycles", midX + 16, g.TY + 14],
-    ["", "park these", midX + 16, g.TY + g.H - 26],
-    ["", "low effort, but low yield", g.LX + 14, g.TY + g.H - 26]
-  ];
-  quads.forEach(q => {
-    const el = document.createElement("div"); el.className = "gquad " + q[0];
-    el.style.cssText = "left:" + q[2] + "px;top:" + q[3] + "px";
-    el.textContent = q[1]; nodes.appendChild(el);
-  });
-  const scale = () => { const r = board.getBoundingClientRect(); return r.width / 1120 || 1; };
-  state.grid.forEach(item => {
-    const cx = g.LX + item.x * g.W, cy = g.TY + item.y * g.H;
-    const el = document.createElement("div");
-    el.className = "gchip" + (state.sel === item.id ? " sel" : "");
-    el.style.cssText = "left:" + (cx - g.CW / 2) + "px;top:" + (cy - g.CH / 2) + "px;width:" + g.CW + "px;min-height:" + g.CH + "px";
-    const ed = editable("ntext", item.text, "idea\u2026", v => { item.text = v; });
-    ed.setAttribute("aria-label", "Idea, in " + quadrantName(item));
-    el.appendChild(ed);
-    const del = document.createElement("button"); del.className = "ndel"; del.textContent = "\u00D7"; del.title = "Delete idea";
-    del.onclick = e => { e.stopPropagation(); beginChange(); state.grid = state.grid.filter(z => z !== item); state.sel = null; render(); };
-    el.appendChild(del);
-    let pending = false, dragging = false, sx = 0, sy = 0, ox = 0, oy = 0, pid = null;
-    const wasSel = () => state.sel === item.id;
-    el.addEventListener("focusin", () => { if (!wasSel()){ state.sel = item.id; render(); } });
-    el.addEventListener("keydown", e => {
-      if (!e.altKey) return;
-      const step = e.shiftKey ? 0.15 : 0.05;
-      const dxy = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
-      if (!dxy) return;
-      e.preventDefault(); beginChange();
-      item.x = Math.max(0, Math.min(1, item.x + dxy[0]));
-      item.y = Math.max(0, Math.min(1, item.y + dxy[1]));
-      state.sel = item.id; render();
-      showToast("Moved to " + quadrantName(item), 2500);
-    });
-    el.addEventListener("pointerdown", e => {
-      if (e.target.closest(".ndel")) return;
-      pending = true; dragging = false; pid = e.pointerId;
-      sx = e.clientX; sy = e.clientY; ox = item.x; oy = item.y;
-      // only block the caret when the chip isn\u2019t already being edited \u2014 otherwise let the click through
-      if (!wasSel() || !e.target.closest(".ntext")) e.preventDefault();
-    });
-    el.addEventListener("pointermove", e => {
-      if (!pending) return;
-      if (!dragging){
-        if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) < 4) return;   // a click, not a drag \u2014 yet
-        dragging = true;
-        beginChange();                                   // snapshot the position BEFORE we move it
-        if (document.activeElement && document.activeElement.isContentEditable) document.activeElement.blur();
-        try { el.setPointerCapture(pid); } catch (err) {}
-        el.classList.add("drag");
-      }
-      const k = scale();
-      item.x = Math.max(0.02, Math.min(0.98, ox + (e.clientX - sx) / k / g.W));
-      item.y = Math.max(0.02, Math.min(0.98, oy + (e.clientY - sy) / k / g.H));
-      el.style.left = (g.LX + item.x * g.W - g.CW / 2) + "px";
-      el.style.top = (g.TY + item.y * g.H - g.CH / 2) + "px";
-    });
-    const endDrag = () => {
-      if (!pending) return;
-      pending = false;
-      if (dragging){
-        dragging = false; el.classList.remove("drag");
-        afterChange();                                   // persist / sync the new position
-      } else if (!wasSel()){ state.sel = item.id; render(); }
-    };
-    el.addEventListener("pointerup", endDrag);
-    el.addEventListener("pointercancel", endDrag);
-    nodes.appendChild(el);
-    if (state.sel === item.id) focusEnd(ed);
-  });
-  svg.innerHTML = "";
-  $("who").style.display = "none";
-  $("drvhelp").style.display = "none";
-  $("hint").innerHTML = "<b>2\u00D72 ideas:</b> drag each idea to where it sits \u2014 higher = more impact on your aim, further left = less effort for <i>you</i> this rotation. No scores needed; where it sits relative to the others is enough. Pick <b>one</b> from the top-left for cycle 1. Keyboard: Alt + arrow keys nudge the selected idea (Shift for bigger steps), or use the Move to buttons.";
-  $("legend").innerHTML = "<span><i>Tip</i>&nbsp; two minutes per idea with the team beats an hour of scoring alone.</span>";
-  const bar = $("nodebar"); bar.innerHTML = "";
-  const l = document.createElement("span"); l.className = "lbl"; l.textContent = "DRAG TO POSITION   \u00B7   CLICK TO TYPE   \u00B7   \u00D7 = DELETE"; bar.appendChild(l);
-  const selItem = state.grid.find(i => i.id === state.sel);
-  if (selItem){
-    const ml = document.createElement("span"); ml.className = "lbl"; ml.textContent = "MOVE TO"; bar.appendChild(ml);
-    [["Quick wins", 0.25, 0.22], ["Big bets", 0.75, 0.22], ["Low yield", 0.25, 0.78], ["Park", 0.75, 0.78]].forEach(q => {
-      const mb = document.createElement("button"); mb.className = "tbtn"; mb.textContent = q[0];
-      mb.setAttribute("aria-label", "Move selected idea to " + q[0].toLowerCase());
-      mb.onclick = () => { beginChange(); selItem.x = q[1]; selItem.y = q[2]; render(); showToast("Moved to " + quadrantName(selItem), 2500); };
-      bar.appendChild(mb);
-    });
-  }
-  const add = document.createElement("button"); add.className = "tbtn"; add.textContent = "+ Add idea";
-  add.onclick = () => {
-    beginChange();
-    const n = state.grid.length;
-    const item = { id: nid(), text: "", x: 0.16 + (n % 3) * 0.06, y: 0.5 + ((n % 5) - 2) * 0.07 };
-    state.grid.push(item); state.sel = item.id; render();
-  };
-  bar.appendChild(add);
-  const pull = document.createElement("button"); pull.className = "tbtn";
-  pull.textContent = "\u21D0 Pull ideas from driver diagram";
-  pull.title = "Copy every change idea from this page\u2019s driver diagram onto the grid";
-  pull.onclick = () => {
-    const texts = [];
-    (state.driver.primaries || []).forEach(pr => (pr.secondaries || []).forEach(sc => (sc.ideas || []).forEach(id => {
-      const t = (id.text || "").trim(); if (t) texts.push(t);
-    })));
-    if (!texts.length){ alert("No change ideas on this page\u2019s driver diagram yet \u2014 add some there first, or use \u201C+ Add idea\u201D."); return; }
-    const have = state.grid.map(z => (z.text || "").trim());
-    const fresh = texts.filter(t => have.indexOf(t) < 0);
-    if (!fresh.length){ alert("All of the driver diagram\u2019s change ideas are already on this grid."); return; }
-    beginChange();
-    fresh.forEach((t, k) => state.grid.push({ id: nid(), text: t, x: 0.16, y: 0.14 + k * 0.10 }));
-    state.sel = null; render();
-    showToast(fresh.length + (fresh.length === 1 ? " idea added \u2014 now drag it into place" : " ideas added \u2014 now drag them into place"), 4000);
-  };
-  bar.appendChild(pull);
-}
-const WHO = [
-  ["Effective", "is the right, evidence-based care happening?"],
-  ["Safe", "could harm or error be designed out?"],
-  ["People-centred", "does care follow the patient\u2019s needs and preferences?"],
-  ["Timely", "where are the waits and harmful delays?"],
-  ["Equitable", "is quality the same whoever the patient is?"],
-  ["Integrated", "does care join up across the pathway?"],
-  ["Efficient", "is effort or resource being wasted?"]
-];
-function renderWho(){
-  const w = $("who");
-  if (!state.help){ w.style.display = "none"; return; }
-  w.style.display = "block";
-  w.innerHTML = '<div class="whoin"><div class="whohead">WHO QUALITY LENS \u2014 SEVEN MARKS OF A QUALITY HEALTH SERVICE' +
-    '<a href="https://www.who.int/health-topics/quality-of-care" target="_blank" rel="noopener">Source: WHO \u2014 Quality of care</a></div>' +
-    '<div class="wholine">Test your diagram against these: a strong <b>aim</b> targets at least one \u2014 and each <b>driver</b> should say what must change on your ward to deliver it.</div>' +
-    '<div class="whogrid">' + WHO.map(d => '<div class="whocard"><b>' + d[0] + '</b>' + d[1] + '</div>').join('') + '</div></div>';
-}
-function elbow(a, b){
-  const x1 = a.x + a.w, y1 = a.y + DH / 2, x2 = b.x, y2 = b.y + DH / 2, xm = (x1 + x2) / 2;
-  return '<path d="M' + x1 + ',' + y1 + ' L' + xm + ',' + y1 + ' L' + xm + ',' + y2 + ' L' + (x2 - 2) + ',' + y2 + '" fill="none" stroke="#000000" stroke-width="1.8"/>';
-}
-
-/* ---------- render root ---------- */
-function render(){
-  $("tabP").className = "tab" + (state.mode === "process" ? " on" : "");
-  $("tabD").className = "tab" + (state.mode === "driver" ? " on" : "");
-  $("tabW").className = "tab" + (state.mode === "whys" ? " on" : "");
-  $("tabB").className = "tab" + (state.mode === "pitch" ? " on" : "");
-  $("tabG").className = "tab" + (state.mode === "grid" ? " on" : "");
-  $("tabF").className = "tab" + (state.mode === "fish" ? " on" : "");
-  ["tabB", "tabG", "tabP", "tabW", "tabF", "tabD"].forEach(id => {
-    const t = $(id); if (t.classList.contains("on")) t.setAttribute("aria-current", "true"); else t.removeAttribute("aria-current");
-  });
-  const board = $("board"), svg = $("lines"), nodes = $("nodes");
-  nodes.innerHTML = "";
-  svg.innerHTML = markerDefs();
-  if (state.mode === "process") renderProcess(board, svg, nodes);
-  else if (state.mode === "whys") renderWhys(board, svg, nodes);
-  else if (state.mode === "pitch") renderPitch(board, svg, nodes);
-  else if (state.mode === "grid") renderGrid(board, svg, nodes);
-  else if (state.mode === "fish") renderFish(board, svg, nodes);
-  else renderDriver(board, svg, nodes);
-  svg.setAttribute("width", 1120); svg.setAttribute("height", parseInt(board.style.height, 10) || 400);
-  // "Hide guidance" now means the same thing on every tab: the hint line, the legend and any help cards
-  $("hint").style.display = state.help ? "" : "none";
-  $("legend").style.display = state.help ? "" : "none";
-  appendGuidanceToggle($("nodebar"));
-  board.setAttribute("aria-label", (typeof MODE_LABEL !== "undefined" && MODE_LABEL[state.mode] ? MODE_LABEL[state.mode] : "Diagram") + " \u2014 reads left to right, top to bottom");
-  document.querySelectorAll("#board button:not([aria-label]),#nodebar button:not([aria-label])").forEach(b => {
-    const t = b.textContent.trim();
-    const name = b.title || (t === "\u00D7" ? "Delete" : t === "+" ? "Add" : "");
-    if (name) b.setAttribute("aria-label", name);
-  });
-  renderPages();
-  applyScale();
-  afterChange();
-}
-function appendGuidanceToggle(bar){
-  const t = document.createElement("button"); t.id = "guidebtn"; t.className = "tbtn" + (state.help ? " red" : "");
-  t.textContent = state.help ? "Hide guidance" : "Show guidance";
-  t.onclick = () => { state.help = !state.help; render(); };
-  bar.appendChild(t);
-}
-const HOWTO = [
-  ["Six tabs, left to right", "Stage 1: Pitch (five sentences) \u00B7 2\u00D72 Ideas (what to test first). Stage 2: Process Map (what happens) \u2192 5 Whys (why) \u2192 Fishbone (every likely cause) \u2192 Driver Diagram (what to change)."],
-  ["Pages = projects", "Each page is a separate project with its own diagrams. Tap \u270E on the page tab to name it."],
-  ["+ New page", "Start another project, or a fresh page for cycle 2, without losing this one."],
-  ["It saves itself", "Everything autosaves in this browser as you go \u2014 close the tab and it\u2019s still here next time."],
-  ["Save file / Open\u2026 / Sign in with Google", "Download a portable copy, open one elsewhere, or sign in with Google to have your named projects follow you automatically."],
-  ["Your email address stays yours", "Signing in with Google only gives your projects a private space in the cloud. This tool never sees your password, never writes your email address to this device or its database, and never sends you email. Your diagrams are saved under an anonymous account ID, not your address. Sign out at any time \u2014 your work stays on this device. (Google\u2019s Firebase service holds the sign-in record itself, as with any \u201CSign in with Google\u201D button; this tool keeps no copy.)"],
-  ["Share link / Collaborate", "Send a snapshot to a colleague, or start a live room and edit the same page together in real time."],
-  ["Download PNG / Print / PPTX", "PNG exports the current diagram as an image, Print makes a one-page PDF, and Download PPTX builds a full slide deck \u2014 one slide per diagram, for every page in the project."],
-  ["Undo / Redo, top left", "Every change is one click to reverse, including Load example and Clear."]
-];
-if (state.fit === undefined) state.fit = true;
-if (state.help === undefined) state.help = true;
-function applyScale(){
-  const board = $("board"), fit = $("fit"), wrap = $("wrap"), btn = $("fitbtn");
-  const bw = 1120, bh = parseInt(board.style.height, 10) || 400;
-  const cs = getComputedStyle(wrap);
-  const avail = wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-  const needsFit = avail < bw;
-  const k = (state.fit && needsFit) ? Math.max(0.28, avail / bw) : 1;
-  board.style.transform = k === 1 ? "" : "scale(" + k + ")";
-  fit.style.width = (bw * k) + "px";
-  fit.style.height = (bh * k) + "px";
-  btn.style.display = needsFit ? "inline-block" : "none";
-  btn.textContent = (state.fit && needsFit) ? "Zoom 100%" : "Fit width";
-}
-function toggleFit(){ state.fit = !state.fit; applyScale(); }
-window.addEventListener("resize", applyScale);
-document.addEventListener("mousedown", e => {
-  if (!e.target.closest(".node") && !e.target.closest("#nodebar") && state.mode === "process" && state.sel){
-    state.sel = null; render();
-  }
-});
-
-/* ---------- save / open / export ---------- */
-function saveFile(){
-  const blob = new Blob([JSON.stringify({ pages: state.pages, cur: state.cur }, null, 2)], { type: "application/json" });
-  const a = document.createElement("a");
-  const nm = (state.pages.length > 1 ? "qip-projects" : (state.pages[0].name || "qip-project"))
-    .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-  a.href = URL.createObjectURL(blob); a.download = (nm || "qip-projects") + ".json"; a.click();
-  URL.revokeObjectURL(a.href);
-}
-function openFile(){ $("filein").click(); }
-$("filein").addEventListener("change", e => {
-  const f = e.target.files[0]; if (!f) return;
-  const r = new FileReader();
-  r.onload = () => {
-    try {
-      const j = JSON.parse(r.result);
-      beginChange();
-      if (Array.isArray(j.pages) && j.pages.length){
-        state.pages = j.pages;
-        state.cur = Math.min(j.cur || 0, j.pages.length - 1);
-      } else {
-        state.pages.push({ id: nid(), name: uniqueName("Imported"), process: j.process || blankProcess(), driver: j.driver || blankDriver() });
-        state.cur = state.pages.length - 1;
-      }
-      state.sel = null; render();
-    } catch (err){ alert("That file could not be read \u2014 it needs to be a qip-diagrams.json saved from this tool."); }
-  };
-  r.readAsText(f); e.target.value = "";
-});
-/* ---------- landscape output helpers ---------- */
-const LAND = 16 / 9;                       // matches the AIM QIP slide decks
-function toLandscape(cv){
-  const M = 48;                            // white margin (at scale 2)
-  let W = cv.width + M * 2, H = cv.height + M * 2;
-  if (W / H < LAND) W = Math.round(H * LAND); else H = Math.round(W / LAND);
-  const c = document.createElement("canvas");
-  c.width = W; c.height = H;
-  const g = c.getContext("2d");
-  g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H);
-  g.drawImage(cv, Math.round((W - cv.width) / 2), Math.round((H - cv.height) / 2));
-  return c;
-}
-/* Scale the board to fit one A4 landscape page (10mm margins @96dpi). */
-function printFit(){
-  const board = $("board");
-  const bw = 1120, bh = parseInt(board.style.height, 10) || 400;
-  const pw = (297 - 20) / 25.4 * 96, ph = (210 - 20) / 25.4 * 96;
-  board.style.zoom = Math.min(pw / bw, ph / bh, 1);
-}
-function printReset(){ $("board").style.zoom = ""; }
-window.addEventListener("beforeprint", printFit);
-window.addEventListener("afterprint", printReset);
-function doPrint(){
-  const prevFit = state.fit, prevSel = state.sel;
-  state.sel = null; state.fit = false; render();
-  printFit();
-  window.print();
-  setTimeout(() => { printReset(); state.fit = prevFit; state.sel = prevSel; render(); }, 800);
-}
-
-const MODE_FILE = { process: "process-map", whys: "five-whys", driver: "driver-diagram", pitch: "five-sentence-pitch", grid: "2x2-ideas", fish: "fishbone" };
-const MODE_LABEL = { pitch: "Five-Sentence Pitch", grid: "2\u00d72 Ideas", process: "Process Map", whys: "5 Whys", fish: "Fishbone", driver: "Driver Diagram" };
-const MODE_ORDER = ["pitch", "grid", "process", "whys", "fish", "driver"];
-
-function exportPNG(){
-  if (typeof html2canvas === "undefined"){
-    alert("PNG export needs an internet connection the first time the page loads. Use Print / PDF instead, or reload when online.");
-    return;
-  }
-  state.sel = null;
-  const prevFit = state.fit;
-  state.fit = false; render();
-  const boardEl = $("board");
-  boardEl.classList.add("mono");
-  html2canvas(boardEl, { backgroundColor: "#ffffff", scale: 2 }).then(cv => {
-    const pgnm = state.pages[state.cur].name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-    const mname = MODE_FILE[state.mode] || "diagram";
-    const name = (pgnm ? pgnm + "-" : "") + mname + ".png";
-    const out = toLandscape(cv);
-    out.toBlob(blob => {
-      if (!blob){ alert("PNG export failed on this device \u2014 try Print / PDF instead."); return; }
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = name; a.rel = "noopener";
-      if ("download" in a){ document.body.appendChild(a); a.click(); a.remove(); }
-      else { window.open(url, "_blank"); }
-      setTimeout(() => URL.revokeObjectURL(url), 60000);
-    }, "image/png");
-  }).catch(() => { alert("PNG export failed \u2014 try Print / PDF instead."); })
-    .finally(() => { boardEl.classList.remove("mono"); state.fit = prevFit; applyScale(); });
-}
-
-
-/* ---------- "How to use" dialog: the generic tour, on demand from the lozenge ---------- */
-let howtoOpener = null;
-function openHowTo(){
-  howtoOpener = document.activeElement;
-  const d = $("howtoDlg");
-  $("howtoList").innerHTML = HOWTO.map(h => '<li><b>' + h[0] + '</b> \u2014 ' + h[1] + '</li>').join('');
-  d.showModal();
-  const h = d.querySelector("h2"); h.setAttribute("tabindex", "-1"); h.focus();
-}
-function closeHowTo(){ const d = $("howtoDlg"); if (d.open) d.close(); }
-document.addEventListener("DOMContentLoaded", () => {
-  const d = $("howtoDlg"); if (!d) return;
-  d.addEventListener("close", () => { if (howtoOpener && howtoOpener.focus) howtoOpener.focus(); });
-  d.addEventListener("click", e => { if (e.target === d) d.close(); });
-});
-/* ---------- accessibility statement dialog (focus returns to the opener on close) ---------- */
-let a11yOpener = null;
-function openA11y(){
-  a11yOpener = document.activeElement;
-  const d = $("a11y"); d.showModal();
-  d.querySelector("h2").setAttribute("tabindex", "-1"); d.querySelector("h2").focus();
-}
-function closeA11y(){ const d = $("a11y"); if (d.open) d.close(); }
-document.addEventListener("DOMContentLoaded", () => {
-  const d = $("a11y"); if (!d) return;
-  d.addEventListener("close", () => { if (a11yOpener && a11yOpener.focus) a11yOpener.focus(); });
-  d.addEventListener("click", e => { if (e.target === d) d.close(); });   // click on the backdrop closes
-});
-
-/* ---------- PPTX export — one slide per diagram, for every page in the project ---------- */
-function pptxCtor(){
-  if (typeof PptxGenJS !== "undefined") return PptxGenJS;
-  if (typeof window !== "undefined" && window.pptxgen) return window.pptxgen;
-  return undefined;
-}
-async function exportPPTX(){
-  const PPTX = pptxCtor();
-  if (typeof html2canvas === "undefined" || !PPTX){
-    alert("PPTX export needs an internet connection the first time the page loads. Try again when online, or use Download PNG / Print instead.");
-    return;
-  }
-  const btn = $("pptxbtn");
-  const prevPage = state.cur, prevMode = state.mode, prevSel = state.sel, prevFit = state.fit;
-  state.sel = null; state.fit = false;
-  btn.disabled = true; btn.textContent = "Building\u2026";
-  showToast("Building your slide deck \u2014 " + (state.pages.length * MODE_ORDER.length) + " slides, this can take a minute\u2026", 60000);
-  try {
-    const pptx = new PPTX();
-    pptx.defineLayout({ name: "AIMQIP", width: 13.333, height: 7.5 });
-    pptx.layout = "AIMQIP";
-    const SLIDE_W = 13.333, SLIDE_H = 7.5;
-    const HEAD_H = 0.86;
-    const MARGIN = 0.35;
-    const boxX = MARGIN, boxY = HEAD_H + 0.2, boxW = SLIDE_W - MARGIN * 2, boxH = SLIDE_H - boxY - 0.3;
-    for (let pi = 0; pi < state.pages.length; pi++){
-      state.cur = pi;
-      for (const mode of MODE_ORDER){
-        state.mode = mode;
-        render();
-        await new Promise(r => setTimeout(r, 40));
-        const boardEl = $("board");
-        boardEl.classList.add("mono");
-        const cv = await html2canvas(boardEl, { backgroundColor: "#ffffff", scale: 2 });
-        boardEl.classList.remove("mono");
-        const dataUrl = cv.toDataURL("image/png");
-        const ratio = cv.width / cv.height;
-        let imgW = boxW, imgH = boxW / ratio;
-        if (imgH > boxH){ imgH = boxH; imgW = boxH * ratio; }
-        const imgX = boxX + (boxW - imgW) / 2, imgY = boxY + (boxH - imgH) / 2;
-        const slide = pptx.addSlide();
-        slide.background = { color: "FFFFFF" };
-        slide.addShape("rect", { x: 0, y: 0, w: SLIDE_W, h: HEAD_H, fill: { color: "023D22" }, line: { type: "none" } });
-        slide.addText(state.pages[pi].name.toUpperCase(), { x: MARGIN, y: 0.12, w: SLIDE_W - MARGIN * 2, h: 0.28, fontSize: 11, bold: true, color: "7DD08F", fontFace: "Calibri", charSpacing: 2 });
-        slide.addText(MODE_LABEL[mode], { x: MARGIN, y: 0.38, w: SLIDE_W - MARGIN * 2, h: 0.44, fontSize: 22, bold: true, color: "FFFFFF", fontFace: "Calibri" });
-        slide.addImage({ data: dataUrl, x: imgX, y: imgY, w: imgW, h: imgH });
-        slide.addText("Sample Website  |  Quality Improvement", { x: MARGIN, y: SLIDE_H - 0.3, w: SLIDE_W - MARGIN * 2, h: 0.25, fontSize: 9, color: "036E3A", fontFace: "Calibri" });
-      }
-    }
-    const fname = (state.pages.length > 1 ? "qip-projects" : (state.pages[0].name || "qip-project"))
-      .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
-    await pptx.writeFile({ fileName: (fname || "qip-diagrams") + ".pptx" });
-    showToast("PPTX downloaded \u2014 " + (state.pages.length * MODE_ORDER.length) + " slides", 4000);
-  } catch (err){
-    alert("PPTX export failed \u2014 try Download PNG or Print / PDF instead.");
-  } finally {
-    state.cur = prevPage; state.mode = prevMode; state.sel = prevSel; state.fit = prevFit;
-    render();
-    btn.disabled = false; btn.textContent = "Download PPTX";
-  }
-}
-
-
-/* ---------- share by link (works on a static host \u2014 no server needed) ---------- */
-function b64e(s){ return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
-function b64d(s){ return decodeURIComponent(escape(atob(s.replace(/-/g, "+").replace(/_/g, "/")))); }
-function buildShareUrl(){
-  if (collab.on) return location.origin + location.pathname + "?mode=" + state.mode + "&room=" + collab.room;
-  const payload = b64e(JSON.stringify({ pages: state.pages, cur: state.cur }));
-  return location.origin + location.pathname + "?mode=" + state.mode + "#d=" + payload;
-}
-function showToast(msg, ms){
-  const t = $("toast"); t.textContent = msg; t.className = "on";
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => { t.className = ""; }, ms || 3500);
-}
-function copyText(txt, ok){
-  if (navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(txt).then(ok).catch(() => fallbackCopy(txt, ok));
-  } else fallbackCopy(txt, ok);
-}
-function fallbackCopy(txt, ok){
-  const ta = document.createElement("textarea");
-  ta.value = txt; ta.setAttribute("readonly", "");
-  ta.style.cssText = "position:fixed;top:0;left:-9999px";
-  document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, txt.length);
-  let done = false;
-  try { done = document.execCommand("copy"); } catch (e) {}
-  ta.remove();
-  if (done) ok(); else window.prompt("Copy this link and paste it to your colleague:", txt);
-}
-function shareLink(){
-  const url = buildShareUrl();
-  if (url.length > 12000){
-    alert("These pages are too big for a link. Use \u201CSave file\u201D and send the .json instead \u2014 your colleague opens it with \u201COpen\u2026\u201D.");
-    return;
-  }
-  copyText(url, () => showToast("Link copied \u2014 paste it into Teams, e-mail or your workbook", 4500));
-}
-/* Read a shared diagram out of the URL. replace = fresh load; otherwise merge as extra pages. */
-function loadShared(replace){
-  const m = (location.hash || "").match(/^#d=(.+)$/);
-  if (!m) return false;
-  try {
-    const j = JSON.parse(b64d(m[1]));
-    if (!Array.isArray(j.pages) || !j.pages.length) return false;
-    if (replace){
-      state.pages = j.pages;
-      state.cur = Math.min(j.cur || 0, j.pages.length - 1);
-    } else {
-      beginChange();
-      j.pages.forEach(pg => {
-        pg.id = nid();
-        const base = (pg.name || "Shared").replace(/ \(shared\)$/, "");
-        pg.name = uniqueName(base + " (shared)");
-        state.pages.push(pg);
-      });
-      state.cur = state.pages.length - 1;
-    }
-    state.sel = null;
-    return true;
-  } catch (e){ return false; }
-}
-window.addEventListener("hashchange", () => {
-  if (loadShared(false)){ render(); showToast("Shared pages added \u2014 your own pages are untouched", 4500); }
-});
-
-/* =========================================================================
-   LIVE COLLABORATION & CROSS-DEVICE SYNC (both optional) \u2014 Firebase
-   -------------------------------------------------------------------------
-   SETUP (about 5\u201310 minutes, free on Firebase\u2019s Spark plan \u2014 no card needed):
-     1. console.firebase.google.com \u2192 Add project (analytics not needed).
-     2. Build \u2192 Realtime Database \u2192 Create database \u2192 pick a region
-        (europe-west1) \u2192 start in LOCKED mode.
-     3. Rules tab \u2192 paste the contents of firebase-rules.json \u2192 Publish.
-     4. Build \u2192 Authentication \u2192 Get started \u2192 Sign-in method \u2192 enable
-        \u201CEmail/Password\u201D \u2192 turn on the \u201CEmail link (passwordless sign-in)\u201D
-        toggle within it. (Only needed for cross-device sync, not for rooms.)
-     5. Project settings \u2192 Your apps \u2192 Web app (</>) \u2192 register \u2192 copy the
-        apiKey and databaseURL out of the config it shows you.
-     6. Paste them below, save, push to GitHub. That\u2019s it.
-   Leave FB_CONFIG blank and everything else in the tool still works \u2014 the
-   Collaborate and \u201CSign in with Google\u201D buttons simply explain they haven\u2019t
-   been set up yet.
-   NOTE: these keys are meant to be public; the rules are what protect data.
-   Never put patient-identifiable data in a shared room or synced project.
-   ========================================================================= */
-const FB_CONFIG = {
-  apiKey: "AIzaSyCmhue-4pHOxLalW8zEy96dmEklhxLARQE",
-  authDomain: "aim-qip-qehb.firebaseapp.com",
-  databaseURL: "https://aim-qip-qehb-default-rtdb.europe-west1.firebasedatabase.app"
-};
-const FB_SDK = "https://www.gstatic.com/firebasejs/12.17.0/";
-const collab = { on: false, room: null, ref: null, presRef: null, meRef: null, me: null, applying: false, timer: null, people: 1 };
-const sync = { on: false, uid: null, email: null, ref: null, applying: false, timer: null, primed: false };
-
-function fbReady(){ return !!(FB_CONFIG.apiKey && FB_CONFIG.databaseURL); }
-function loadScript(url){
-  return new Promise((res, rej) => {
-    const s = document.createElement("script");
-    s.src = url; s.onload = res; s.onerror = () => rej(new Error("load failed: " + url));
-    document.head.appendChild(s);
-  });
-}
-let fbLoading = null;
-function loadFirebase(){
-  if (window.firebase && firebase.database && firebase.auth) return Promise.resolve();
-  if (!fbLoading){
-    fbLoading = loadScript(FB_SDK + "firebase-app-compat.js")
-      .then(() => Promise.all([loadScript(FB_SDK + "firebase-database-compat.js"), loadScript(FB_SDK + "firebase-auth-compat.js")]))
-      .then(() => { if (!firebase.apps.length) firebase.initializeApp(FB_CONFIG); });
-  }
-  return fbLoading;
-}
-function roomCode(){
-  const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";   // no I/O/0/1
-  let s = ""; for (let i = 0; i < 6; i++) s += A[Math.floor(Math.random() * A.length)];
-  return s;
-}
-function renderLive(){
-  const bar = $("livebar");
-  if (!collab.on){ bar.className = ""; bar.innerHTML = ""; $("collabbtn").textContent = "Collaborate"; return; }
-  bar.className = "on";
-  bar.innerHTML = '<span class="dot"></span><b>Live</b>' +
-    '<span>Room <span class="code">' + collab.room + '</span></span>' +
-    '<span>' + collab.people + (collab.people === 1 ? " person" : " people") + " editing</span>" +
-    '<button onclick="shareLink()">Copy invite link</button>' +
-    '<button onclick="leaveRoom()">Leave</button>' +
-    '<span style="color:var(--grey)">Everyone in this room edits the same pages \u2014 no patient-identifiable data.</span>';
-  $("collabbtn").textContent = "Leave room";
-}
-function pushLive(){
-  if (!collab.on || collab.applying || !collab.primed) return;
-  clearTimeout(collab.timer);
-  collab.timer = setTimeout(() => {
-    collab.ref.child("doc").set({ pages: state.pages, by: collab.me, t: Date.now() }).catch(() => {});
-  }, 350);
-}
-function typingNow(){ return document.activeElement && document.activeElement.isContentEditable; }
-let pendingDoc = null;
-function applyDoc(d){
-  if (!d || !Array.isArray(d.pages) || d.by === collab.me) return;
-  if (typingNow()){ pendingDoc = d; return; }            // don\u2019t yank text from under someone
-  collab.applying = true;
-  state.pages = d.pages;
-  if (state.cur >= state.pages.length) state.cur = state.pages.length - 1;
-  state.sel = null; render();
-  collab.applying = false;
-}
-document.addEventListener("focusout", () => {
-  setTimeout(() => { if (pendingDoc && !typingNow()){ const d = pendingDoc; pendingDoc = null; applyDoc(d); } }, 60);
-});
-function joinRoom(code, seed){
-  return loadFirebase().then(() => {
-    collab.room = code;
-    collab.me = Math.random().toString(36).slice(2, 10);
-    collab.ref = firebase.database().ref("rooms/" + code);
-    collab.on = true;
-    collab.primed = !!seed;
-    if (seed) collab.ref.child("doc").set({ pages: state.pages, by: collab.me, t: Date.now() });
-    collab.ref.child("doc").on("value", s => { applyDoc(s.val()); collab.primed = true; });
-    collab.presRef = collab.ref.child("presence");
-    collab.meRef = collab.presRef.child(collab.me);
-    collab.meRef.set(Date.now());
-    collab.meRef.onDisconnect().remove();
-    collab.presRef.on("value", s => { collab.people = s.numChildren() || 1; renderLive(); });
-    const u = new URL(location.href); u.searchParams.set("room", code); u.hash = "";
-    history.replaceState(null, "", u.toString());
-    renderLive();
-  });
-}
-function leaveRoom(){
-  if (!collab.on) return;
-  try { collab.ref.child("doc").off(); collab.presRef.off(); collab.meRef.remove(); } catch (e) {}
-  collab.on = false; collab.room = null;
-  const u = new URL(location.href); u.searchParams.delete("room"); history.replaceState(null, "", u.toString());
-  if (!loadLocal()) blankPageSet();   // restore your own saved projects, not the room's
-  state.sel = null; render();
-  renderLive();
-  showToast("Left the room \u2014 back to your own saved projects", 4000);
-}
-function toggleCollab(){
-  if (collab.on){ leaveRoom(); return; }
-  if (!fbReady()){
-    alert("Live collaboration isn\u2019t switched on for this copy of the tool yet.\n\n" +
-          "It needs a free Firebase project (Spark plan \u2014 no payment card): create one, paste the apiKey and databaseURL into FB_CONFIG near the bottom of this file, and publish the rules in firebase-rules.json.\n\n" +
-          "Until then, use \u201CShare link\u201D to send your diagrams to colleagues.");
-    return;
-  }
-  const code = roomCode();
-  joinRoom(code, true)
-    .then(() => { copyText(buildShareUrl(), () => {}); showToast("Live room " + code + " started \u2014 invite link copied", 5000); })
-    .catch(() => alert("Couldn\u2019t reach Firebase. Check your connection, or use \u201CShare link\u201D instead."));
-}
-
-/* ---------- cross-device sync (optional) \u2014 sign in with an emailed link, your named projects follow you ---------- */
-function renderSync(){
-  const b = $("syncbtn");
-  const bar = $("syncbar");
-  if (sync.on){
-    b.textContent = "Synced \u2014 " + sync.email + "  \u00D7";
-    b.className = "btn synced";
-    b.title = "Click to sign out. Your projects stay on this device \u2014 signing out just stops the cloud copy.";
-    bar.className = "on";
-    bar.innerHTML = "<b>Synced</b>" +
-      "<span>" + sync.email + "</span>" +
-      "<span style=\"color:var(--grey)\">Signed in with your Google account \u2014 no email is stored or sent by this tool.</span>" +
-      "<button onclick=\"signInWithGoogle()\">Sign out</button>";
-  } else {
-    b.textContent = "Sign in with Google";
-    b.className = "btn";
-    b.title = "Sign in with your Google account to make your named projects follow you to another device.";
-    bar.className = "";
-    bar.innerHTML = "";
-  }
-}
-function stripIds(v){ return JSON.parse(JSON.stringify(v), (k, val) => k === "id" ? undefined : val); }
-function isUntouchedPage(pg){
-  if (!pg || pg.name !== "Page 1") return false;
-  return JSON.stringify(stripIds(pg.process)) === JSON.stringify(stripIds(blankProcess())) &&
-         JSON.stringify(stripIds(pg.driver)) === JSON.stringify(stripIds(blankDriver())) &&
-         JSON.stringify(stripIds(pg.whys)) === JSON.stringify(stripIds(blankWhys()));
-}
-function mergeCloudLibrary(cloudPages, cloudCur){
-  if (!Array.isArray(cloudPages) || !cloudPages.length){ pushCloudLibrary(true); return; }  // nothing in the cloud yet \u2014 seed it
-  const onlyDefault = state.pages.length === 1 && isUntouchedPage(state.pages[0]);
-  sync.applying = true;
-  if (onlyDefault){
-    state.pages = cloudPages;
-    state.cur = Math.min(cloudCur || 0, cloudPages.length - 1);
-  } else {
-    const cloudIds = new Set(cloudPages.map(p => p.id));
-    const extra = state.pages.filter(p => !cloudIds.has(p.id));
-    state.pages = cloudPages.concat(extra);
-    state.cur = 0;
-  }
-  sync.applying = false;
-  state.sel = null; render();
-  pushCloudLibrary(true);   // write the merged result straight back so both sides agree
-}
-function pushCloudLibrary(immediate){
-  if (!sync.on || sync.applying || collab.on) return;
-  clearTimeout(sync.timer);
-  const go = () => sync.ref.set({ pages: state.pages, cur: state.cur, t: Date.now() }).catch(() => {});
-  if (immediate) go(); else sync.timer = setTimeout(go, 500);
-}
-function attachSync(user){
-  sync.on = true; sync.uid = user.uid; sync.email = user.email;
-  sync.ref = firebase.database().ref("users/" + user.uid + "/library");
-  try { localStorage.setItem("aimqip.synced", "1"); } catch (e) {}
-  sync.ref.get().then(snap => {
-    const v = snap.val();
-    mergeCloudLibrary(v && v.pages, v && v.cur);
-  }).catch(() => showToast("Signed in, but couldn\u2019t reach your synced projects \u2014 check your connection", 4500));
-  renderSync();
-}
-function signInWithGoogle(){
-  if (sync.on){ signOutOfSync(); return; }
-  if (!fbReady()){
-    alert("Cross-device sync isn\u2019t switched on for this copy of the tool yet.\n\n" +
-          "It needs the same free Firebase project as Collaborate, with the Google sign-in provider turned on (Authentication \u2192 Sign-in method). See COLLABORATION_SETUP.md.\n\n" +
-          "Until then, use \u201CSave file\u201D and \u201COpen\u2026\u201D to move projects between devices.");
-    return;
-  }
-  const finish = result => {
-    if (!result || !result.user) return;
-    attachSync(result.user);
-    showToast("Signed in as " + result.user.email + " \u2014 your saved projects have joined this device", 5500);
-  };
-  const fallbackToRedirect = () => {
-    // Popups can be blocked on phones. Redirect is the fallback \u2014 but note it needs the browser to allow
-    // cross-site storage for the Firebase auth domain, so it is the second choice, not the first.
-    try { localStorage.setItem("aimqip.redirectPending", "1"); } catch (e) {}
-    showToast("Taking you to Google to sign in\u2026", 3000);
-    return firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
-  };
-  const handleErr = err => {
-    if (!err || err.code === "auth/popup-closed-by-user" || err.code === "auth/cancelled-popup-request") return;
-    if (err.code === "auth/popup-blocked" || err.code === "auth/operation-not-supported-in-this-environment"){
-      return fallbackToRedirect().catch(e2 => alert("Couldn\u2019t sign in with Google (" + ((e2 && e2.message) || "check your connection") + ")."));
-    }
-    alert("Couldn\u2019t sign in with Google (" + (err.message || "check your connection") + ").");
-  };
-  // The popup must open inside the tap itself \u2014 browsers (especially on phones) block one that opens
-  // after an asynchronous script download. The SDK is preloaded at start-up so this path is the normal one.
-  if (window.firebase && firebase.auth){
-    firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(finish).catch(handleErr);
-    return;
-  }
-  loadFirebase()
-    .then(() => firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()))
-    .then(finish).catch(handleErr);
-}
-function completeRedirectSignIn(){
-  // Called at start-up when we sent the user to Google via redirect and they have just come back.
-  return loadFirebase().then(() => firebase.auth().getRedirectResult()).then(result => {
-    try { localStorage.removeItem("aimqip.redirectPending"); } catch (e) {}
-    if (result && result.user){
-      attachSync(result.user);
-      showToast("Signed in as " + result.user.email + " \u2014 your saved projects have joined this device", 5500);
-      return true;
-    }
-    return false;
-  }).catch(err => {
-    try { localStorage.removeItem("aimqip.redirectPending"); } catch (e) {}
-    alert("Google sign-in didn\u2019t complete (" + ((err && err.message) || "check your connection") + "). Try the button again.");
-    return false;
-  });
-}
-function signOutOfSync(){
-  if (!sync.on) return;
-  try { sync.ref.off(); } catch (e) {}
-  try { firebase.auth().signOut(); } catch (e) {}
-  try { localStorage.removeItem("aimqip.synced"); } catch (e) {}
-  sync.on = false; sync.uid = null; sync.email = null; sync.ref = null;
-  renderSync();
-  showToast("Signed out \u2014 these projects stay on this device; sign in again anytime to reconnect them", 5000);
-}
-/* ---------- boot ---------- */
-const q = new URLSearchParams(location.search);
-if (q.get("mode")){ const m = q.get("mode"); state.mode = ["driver","whys","pitch","grid","fish"].indexOf(m) >= 0 ? m : "process"; }
-const hadLocal = loadLocal();                 // restore this browser's own named, separate projects
-const opened = loadShared(!hadLocal);         // replace only into a truly empty tool; otherwise merge in as new pages
-render();
-let bootToasted = false;
-if (q.get("room")){
-  if (fbReady()){
-    joinRoom(q.get("room").toUpperCase(), false)
-      .then(() => showToast("Joined live room " + q.get("room").toUpperCase() + " \u2014 you are editing together", 5500))
-      .catch(() => alert("Couldn\u2019t join that room \u2014 check your connection."));
-    bootToasted = true;
-  } else {
-    alert("This invite is for a live room, but collaboration isn\u2019t configured on this copy of the tool.");
-  }
-}
-if (opened){
-  showToast(hadLocal ? "Shared pages added \u2014 your own saved projects are untouched" : "Opened from a shared link \u2014 edit freely, then Share link to send it back", 6000);
-  bootToasted = true;
-}
-if (q.get("example")){
-  // the deck links here repeatedly \u2014 reuse an existing example page rather than stacking up duplicates
-  const ex = state.pages.findIndex(p => /^Example \u2014 VTE/.test(p.name || ""));
-  if (ex >= 0){ state.cur = ex; state.sel = null; render(); } else loadExample();
-}
-const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
-if (fbReady() && lsGet("aimqip.redirectPending")){
-  completeRedirectSignIn();
-} else if (fbReady() && lsGet("aimqip.synced")){
-  loadFirebase().then(() => {
-    firebase.auth().onAuthStateChanged(user => { if (user && !sync.on) attachSync(user); });
-  }).catch(() => {});
-} else if (fbReady()){
-  const preload = () => loadFirebase().catch(() => {});
-  if (window.requestIdleCallback) requestIdleCallback(preload, { timeout: 4000 }); else setTimeout(preload, 1500);
-}
-if (!bootToasted && hadLocal) showToast("Welcome back \u2014 your saved projects are just as you left them", 3200);
-if (!lsGet("aimqip.tourSeen")){
-  try { localStorage.setItem("aimqip.tourSeen", "1"); } catch (e) {}
-  setTimeout(() => { try { openHowTo(); howtoOpener = $("tabHelp"); } catch (e) {} }, 400);
-}
+  })();
 </script>
 </body>
 </html>

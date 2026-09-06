@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAM QI Abstract Compliance Checker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #faf9f7;
+    --surface: #ffffff;
+    --surface-alt: #f1efec;
+    --ink: #15151a;
+    --ink-soft: #55555e;
+    --ink-faint: #8a8a92;
+    --line: #d8d6d1;
+    --line-strong: #a3a19b;
+    --accent: #036E3A;
+    --accent-soft: #E7F2EB;
+    --amber: #9A6A00;
+    --amber-soft: #FBF2DF;
+    --red: #A33327;
+    --red-soft: #FBEAE7;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+    --measure: 46rem;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #0c0c0e; --surface: #17171a; --surface-alt: #131315;
+      --ink: #f3f2ef; --ink-soft: #b0aea8; --ink-faint: #7c7a75;
+      --line: #2d2d30; --line-strong: #47474a; --accent: #7DD08F;
+      --accent-soft: #12241a; --amber-soft: #2b2210; --red-soft: #2a1613;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #0c0c0e; --surface: #17171a; --surface-alt: #131315;
+    --ink: #f3f2ef; --ink-soft: #b0aea8; --ink-faint: #7c7a75;
+    --line: #2d2d30; --line-strong: #47474a; --accent: #7DD08F;
+    --accent-soft: #12241a; --amber-soft: #2b2210; --red-soft: #2a1613;
+  }
+  *{ box-sizing: border-box; }
+  body{
+    background: var(--paper); color: var(--ink);
+    font-family: var(--font-body); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  .wrap{ max-width: 56rem; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
+  h1,h2,h3{ font-family: var(--font-display); font-weight: 500; text-wrap: balance; }
+  header.top{
+    border-bottom: 1px solid var(--line);
+    padding: 1.4rem 0;
+  }
+  header.top .wrap{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .wordmark{ font-weight:700; font-size:1.05rem; text-decoration:none; }
+  .wordmark .tick{ font-family: var(--font-mono); font-size:0.68rem; letter-spacing:0.06em; color: var(--ink-faint); margin-left:0.6rem; font-weight:500; }
+  .eyebrow{ font-family: var(--font-mono); font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase; color: var(--accent); margin:0 0 0.5rem; }
+
+  .hero{ padding: 2.75rem 0 1.5rem; }
+  .hero h1{ font-size: clamp(1.9rem, 4vw, 2.6rem); margin: 0 0 0.6rem; }
+  .hero p.lede{ color: var(--ink-soft); font-size:1.05rem; max-width: var(--measure); margin: 0; }
+
+  .noticebar{
+    background: var(--accent-soft); border:1px solid var(--line);
+    border-radius: 10px; padding: 0.9rem 1.1rem; margin: 1.5rem 0 2rem;
+    font-size: 0.92rem; color: var(--ink-soft);
+  }
+  .noticebar b{ color: var(--ink); }
+
+  .blurb{ color: var(--ink-soft); font-size:1rem; max-width: var(--measure); margin: 0 0 1.5rem; }
+
+  .card{
+    background: var(--surface); border:1px solid var(--line); border-radius: 12px;
+    padding: 1.4rem 1.5rem; margin-bottom: 1.5rem;
+  }
+  .card h3{ font-size:1.05rem; margin: 0 0 0.9rem; }
+
+  .checklist label{
+    display:flex; gap:0.65rem; align-items:flex-start;
+    padding: 0.5rem 0; font-size: 0.94rem; cursor:pointer;
+    border-bottom: 1px solid var(--line);
+  }
+  .checklist label:last-child{ border-bottom:none; }
+  .checklist input[type=checkbox]{ margin-top:0.2rem; width:1.05rem; height:1.05rem; accent-color: var(--accent); flex:none; }
+  .checklist span.done{ color: var(--ink-faint); text-decoration: line-through; }
+
+  ul.pitfalls{ margin:0; padding-left: 1.2rem; font-size:0.92rem; color: var(--ink-soft); }
+  ul.pitfalls li{ margin-bottom:0.4rem; }
+  ul.pitfalls li::marker{ color: var(--red); }
+
+  .field{ margin-bottom: 1.35rem; }
+  .field-head{ display:flex; justify-content:space-between; align-items:baseline; gap:1rem; margin-bottom:0.4rem; }
+  .field-head label{ font-weight:600; font-size:0.95rem; }
+  .field-head .count{ font-family: var(--font-mono); font-size:0.78rem; color: var(--ink-faint); white-space:nowrap; }
+  .field p.hint{ margin: 0 0 0.5rem; font-size:0.85rem; color: var(--ink-faint); font-style: italic; }
+  textarea{
+    width:100%; min-height: 5.2rem; resize: vertical;
+    font-family: var(--font-body); font-size:0.95rem; color: var(--ink);
+    background: var(--surface); border:1px solid var(--line); border-radius:8px;
+    padding: 0.7rem 0.85rem; line-height:1.5;
+  }
+  textarea:focus{ outline:none; border-color: var(--accent); }
+
+  .totalbar{
+    display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    background: var(--surface-alt); border:1px solid var(--line); border-radius: 10px;
+    padding: 0.9rem 1.2rem; margin: 1.5rem 0;
+    position: sticky; bottom: 1rem;
+  }
+  .totalbar .label{ font-size:0.88rem; color: var(--ink-soft); }
+  .totalbar .figure{ font-family: var(--font-mono); font-weight:600; font-size:1.15rem; }
+  .status-ok{ color: var(--accent); }
+  .status-warn{ color: var(--amber); }
+  .status-over{ color: var(--red); }
+  .totalbar.ok{ border-color: var(--accent); }
+  .totalbar.warn{ background: var(--amber-soft); }
+  .totalbar.over{ background: var(--red-soft); }
+
+  .btnrow{ display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center; margin: 0.5rem 0 2.5rem; }
+  button.btn{
+    font-family: var(--font-body); font-weight:600; font-size:0.9rem;
+    padding: 0.7rem 1.3rem; border-radius: 8px; cursor:pointer; border:1px solid var(--accent);
+  }
+  button.btn.primary{ background: var(--accent); color:#fff; }
+  button.btn.line{ background: transparent; color: var(--ink); border-color: var(--line-strong); }
+  button.btn.line:hover{ border-color: var(--accent); color: var(--accent); }
+  .copied{ font-size:0.85rem; color: var(--accent); font-weight:600; }
+
+  footer{ border-top:1px solid var(--line); padding: 2rem 0 3rem; margin-top:2rem; }
+  footer .wrap{ font-size:0.82rem; color: var(--ink-faint); display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+
+  @media (max-width: 640px){
+    .totalbar{ flex-direction:column; align-items:flex-start; gap:0.4rem; position:static; }
+    footer .wrap{ flex-direction:column; }
+    .wordmark .tick{ display:none; }
+  }
+  @media (pointer: coarse), (max-width: 640px){
+    button.btn{ min-height: 44px; }
+    .checklist label{ min-height: 44px; align-items:center; padding: 0.6rem 0; }
+    .checklist input[type=checkbox]{ width:1.35rem; height:1.35rem; margin-top:0; }
+    .eyebrow, .wordmark .tick, .field-head .count{ font-size: 0.78rem; }
+    textarea{ font-size: 1rem; }  /* 16px stops iOS zooming the page on focus */
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="wordmark" href="./index.html">SAM QIP Hub <span class="tick">MDT QUALITY IMPROVEMENT</span></a>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <p class="eyebrow">SAM QIP Toolkit · RES-12</p>
+  <h1>QI Abstract Compliance Checker</h1>
+  <p class="lede">SAM's Quality Improvement submission category — required structure, word limit and the reasons QI abstracts most often get rejected — with a live checker so you can see where your draft stands before you submit.</p>
+</div>
+
+<div class="wrap">
+  <div class="noticebar">
+    <b>No dates here on purpose.</b> Submission windows and portals change every year — always confirm the current deadline and where to submit with the Society for Acute Medicine before you write against the clock. This tool checks structure and word count only; it doesn't submit anything for you.
+  </div>
+
+  <p class="blurb">For completed QI projects demonstrating objective, measurable improvement of Acute Internal Medicine services — patient safety, pathways, documentation, flow, digital systems, wellbeing or MDT interventions.</p>
+
+  <div class="card">
+    <h3>Before you write — essential content</h3>
+    <div class="checklist" id="checklist"></div>
+  </div>
+
+  <div class="card">
+    <h3>Will not be accepted</h3>
+    <ul class="pitfalls">
+      <li>Clinical audits without implementation of change, or repeated measurements with no intervention between them</li>
+      <li>A change was implemented, but post-intervention data hasn't been collected yet</li>
+      <li>Project proposals, business cases, or planned future work</li>
+      <li>Implementation is still ongoing and results aren't available yet</li>
+      <li>Abstracts describing an intended intervention rather than completed improvement work</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>Your abstract, by required section</h3>
+    <div id="fields"></div>
+  </div>
+
+  <div class="totalbar ok" id="totalbar">
+    <span class="label">Total across all sections (headings are separate — up to 50 words, already accounted for)</span>
+    <span class="figure status-ok" id="totalfigure">0 / 300 — within the 300-word limit</span>
+  </div>
+  <div class="btnrow">
+    <button class="btn primary" id="copyBtn">Copy formatted abstract</button>
+    <button class="btn line" id="clearBtn">Clear everything</button>
+    <span class="copied" id="copiedMsg" style="display:none;">Copied to clipboard</span>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>SAM QIP Hub — a QIP resource hub for Society for Acute Medicine members. <a href="./index.html">Back to the hub</a></span>
+    <span>Structure and word limits drawn from SAM's published Quality Improvement category guidance.</span>
+  </div>
+</footer>
+
+<script>
+const CHECKLIST = [
+  "At least one complete PDSA cycle: baseline measurement → intervention → repeat measurement — with results already in hand",
+  "This is a completed project, not a proposal, a plan, or work still in progress",
+  "Measurements were taken with a defined change in between, not just repeated audits at different times",
+  "Uses objective outcome data, not a single audit time-point"
+];
+
+const SUBHEADINGS = [
+  { title: "Problem", hint: "The issue identified, how it was recognised, and why it matters in AIM." },
+  { title: "Aim statement", hint: "A clear, specific, measurable aim." },
+  { title: "Baseline Measurement", hint: "Initial data, and the standards, guidance or benchmarks used." },
+  { title: "Intervention", hint: "The change(s) implemented, including the QI methods used." },
+  { title: "Results", hint: "Post-intervention data, showing impact using objective measures." },
+  { title: "Lessons Learned", hint: "Key learning points, challenges, and what influenced success or failure." },
+  { title: "Sustainability and Future Plans", hint: "How the improvement will be maintained, further work planned, and wider relevance." }
+];
+
+const WORD_LIMIT = 300;
+const state = {
+  texts: SUBHEADINGS.map(() => ""),
+  checks: CHECKLIST.map(() => false)
+};
+
+function countWords(str){
+  const t = str.trim();
+  return t.length ? t.split(/\s+/).length : 0;
+}
+
+function renderChecklist(){
+  const el = document.getElementById('checklist');
+  el.innerHTML = CHECKLIST.map((txt, i) => `
+    <label>
+      <input type="checkbox" data-i="${i}" ${state.checks[i] ? 'checked' : ''}>
+      <span class="${state.checks[i] ? 'done' : ''}">${txt}</span>
+    </label>`).join('');
+  el.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      state.checks[+cb.dataset.i] = cb.checked;
+      cb.nextElementSibling.classList.toggle('done', cb.checked);
+    });
+  });
+}
+
+function renderFields(){
+  const el = document.getElementById('fields');
+  el.innerHTML = SUBHEADINGS.map((sh, i) => `
+    <div class="field">
+      <div class="field-head">
+        <label>${sh.title}</label>
+        <span class="count" id="count-${i}">${countWords(state.texts[i])} words</span>
+      </div>
+      <p class="hint">${sh.hint}</p>
+      <textarea id="text-${i}" placeholder="Write this section here…">${state.texts[i]}</textarea>
+    </div>`).join('');
+  SUBHEADINGS.forEach((sh, i) => {
+    document.getElementById(`text-${i}`).addEventListener('input', (e) => {
+      state.texts[i] = e.target.value;
+      document.getElementById(`count-${i}`).textContent = `${countWords(e.target.value)} words`;
+      updateTotal();
+    });
+  });
+}
+
+function updateTotal(){
+  const total = state.texts.reduce((sum, t) => sum + countWords(t), 0);
+  const bar = document.getElementById('totalbar');
+  const fig = document.getElementById('totalfigure');
+  let statusClass = 'ok', statusWord = 'within the 300-word limit';
+  if (total > WORD_LIMIT){ statusClass = 'over'; statusWord = `${total - WORD_LIMIT} words over the 300-word limit`; }
+  else if (total >= WORD_LIMIT - 30){ statusClass = 'warn'; statusWord = 'close to the 300-word limit'; }
+  bar.className = `totalbar ${statusClass}`;
+  fig.className = `figure status-${statusClass}`;
+  fig.textContent = `${total} / ${WORD_LIMIT} — ${statusWord}`;
+}
+
+document.getElementById('copyBtn').addEventListener('click', () => {
+  const text = SUBHEADINGS.map((sh, i) => `${sh.title}\n${state.texts[i].trim()}`).join('\n\n');
+  navigator.clipboard.writeText(text).then(() => {
+    const msg = document.getElementById('copiedMsg');
+    msg.style.display = 'inline';
+    setTimeout(() => { msg.style.display = 'none'; }, 2200);
+  });
+});
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  if (!confirm('Clear all written text? This cannot be undone.')) return;
+  state.texts = SUBHEADINGS.map(() => "");
+  renderFields();
+  updateTotal();
+});
+
+renderChecklist();
+renderFields();
+updateTotal();
+</script>
+
+</body>
+</html>
